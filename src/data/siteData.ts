@@ -14,7 +14,7 @@ export const siteConfig = {
   name: "The Cosy Guest House",
   tagline: "Experience Jodhpur From The Heart of Blue City",
   description: "A cozy heritage guest house offering rooftop dining, beautiful rooms and unforgettable views of Mehrangarh Fort.",
-  phone: "+91 98765 43210",
+  phone: "+91 xyz",
   email: "info@thecosyguesthouse.com",
   whatsapp: "+91xyz",
   instagram: "https://instagram.com/thecosyguesthouse",
