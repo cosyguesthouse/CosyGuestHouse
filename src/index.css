@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 30% 97%;
+    --foreground: 220 30% 12%;
+
+    --card: 40 25% 95%;
+    --card-foreground: 220 30% 12%;
+
+    --popover: 40 30% 97%;
+    --popover-foreground: 220 30% 12%;
+
+    --primary: 218 58% 22%;
+    --primary-foreground: 40 30% 97%;
+
+    --secondary: 35 30% 88%;
+    --secondary-foreground: 220 30% 12%;
+
+    --muted: 35 20% 92%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 42 65% 55%;
+    --accent-foreground: 220 30% 12%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 35 20% 85%;
+    --input: 35 20% 85%;
+    --ring: 218 58% 22%;
+
+    --radius: 0.25rem;
+
+    /* Custom tokens */
+    --royal-blue: 218 58% 22%;
+    --sandstone: 35 30% 88%;
+    --warm-gold: 42 65% 55%;
+    --cream: 40 30% 97%;
+    --deep-navy: 220 40% 10%;
+
+    --font-heading: 'Cormorant Garamond', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --shadow-soft: 0 4px 30px hsl(220 30% 12% / 0.06);
+    --shadow-elevated: 0 12px 40px hsl(220 30% 12% / 0.1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-6 py-20 md:px-12 lg:px-20 lg:py-28;
+  }
+
+  .section-heading {
+    font-family: var(--font-heading);
+    @apply text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-foreground;
+  }
+
+  .section-subheading {
+    font-family: var(--font-heading);
+    @apply text-lg md:text-xl font-light italic text-muted-foreground tracking-wide;
+  }
+
+  .gold-divider {
+    @apply w-16 h-[1px] bg-accent mx-auto;
+  }
+
+  .img-hover-zoom {
+    @apply overflow-hidden;
+  }
+
+  .img-hover-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  .img-hover-zoom:hover img {
+    @apply scale-110;
+  }
+}
