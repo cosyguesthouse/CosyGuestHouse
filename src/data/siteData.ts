@@ -15,9 +15,9 @@ export const siteConfig = {
   tagline: "Experience Jodhpur From The Heart of Blue City",
   description: "A cozy heritage guest house offering rooftop dining, beautiful rooms and unforgettable views of Mehrangarh Fort.",
   phone: "+91 98765 43210",
-  email: "info@castleviewjodhpur.com",
-  whatsapp: "+919876543210",
-  instagram: "https://instagram.com/castleviewjodhpur",
+  email: "info@thecosyguesthouse.com",
+  whatsapp: "+91xyz",
+  instagram: "https://instagram.com/thecosyguesthouse",
   address: {
     line1: "27, Brahampuri, Chune ki Chowk",
     line2: "Navchokiya",
