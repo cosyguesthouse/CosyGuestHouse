@@ -155,11 +155,23 @@ export default function AdminSettings() {
 
                 {/* Google Maps */}
                 <Card>
-                    <CardHeader><CardTitle>Google Maps Embed</CardTitle><CardDescription>Paste the iframe HTML from Google Maps → Share → Embed</CardDescription></CardHeader>
+                    <CardHeader>
+                        <CardTitle>Google Maps Embed</CardTitle>
+                        <CardDescription>
+                            ⚠️ Paste the <strong>iframe HTML code</strong> from Google Maps — <em>not</em> a plain URL.<br />
+                            Go to Google Maps → Search your location → Share → Embed a map → Copy HTML.<br />
+                            It should start with <code className="bg-muted px-1 rounded text-xs">&lt;iframe src="https://www.google.com/maps/embed?..."</code>
+                        </CardDescription>
+                    </CardHeader>
                     <CardContent>
-                        <Textarea rows={4} value={settings.google_maps_embed}
+                        <Textarea rows={5} value={settings.google_maps_embed}
                             onChange={e => setSettings({ ...settings, google_maps_embed: e.target.value })}
-                            placeholder='<iframe src="https://www.google.com/maps/embed?..." ...' />
+                            placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>' />
+                        {settings.google_maps_embed && !settings.google_maps_embed.trim().startsWith("<iframe") && (
+                            <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
+                                ⚠️ This looks like a plain URL, not an embed code. Please paste the iframe HTML instead.
+                            </p>
+                        )}
                     </CardContent>
                 </Card>
 

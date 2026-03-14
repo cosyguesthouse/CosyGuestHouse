@@ -36,7 +36,11 @@ export default function ContactPage() {
     const address1 = settings?.address_line1 || siteConfig.address.line1;
     const address2 = settings?.address_line2 || siteConfig.address.line2;
     const addressCity = settings?.address_city || siteConfig.address.city;
-    const mapEmbed = settings?.google_maps_embed || "";
+    const rawEmbed = settings?.google_maps_embed || "";
+    // Only treat it as a valid embed if it's an actual Google Maps iframe (not a plain URL)
+    const isValidMapEmbed = rawEmbed.trim().startsWith("<iframe") &&
+        (rawEmbed.includes("google.com/maps") || rawEmbed.includes("maps.google.com"));
+    const mapEmbed = isValidMapEmbed ? rawEmbed : "";
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
