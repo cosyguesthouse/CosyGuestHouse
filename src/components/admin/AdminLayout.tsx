@@ -17,6 +17,7 @@ import {
     MessageSquare,
     Star,
     Settings,
+    Key,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,8 @@ const navItems = [
     { name: "Homepage Content", href: "/admin/homepage", icon: Home },
     { name: "Site Images", href: "/admin/images", icon: ImagePlus },
     { name: "Experiences", href: "/admin/experiences", icon: Compass },
-    { name: "Rooms", href: "/admin/rooms", icon: BedDouble },
+    { name: "Room Categories", href: "/admin/rooms", icon: BedDouble },
+    { name: "Physical Rooms", href: "/admin/physical-rooms", icon: Key },
     { name: "Bookings", href: "/admin/bookings", icon: CalendarDays },
     { name: "Dining", href: "/admin/dining", icon: UtensilsCrossed },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },

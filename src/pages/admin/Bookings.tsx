@@ -18,7 +18,7 @@ export default function AdminBookings() {
         setLoading(true);
         const { data, error } = await supabase
             .from("bookings")
-            .select("*")
+            .select("*, rooms(room_number)")
             .order("created_at", { ascending: false });
         if (error) toast.error("Failed to fetch bookings: " + error.message);
         else setBookings(data || []);
@@ -89,7 +89,7 @@ export default function AdminBookings() {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Guest</TableHead>
-                                        <TableHead>Room</TableHead>
+                                        <TableHead>Category & Room</TableHead>
                                         <TableHead>Check-in</TableHead>
                                         <TableHead>Check-out</TableHead>
                                         <TableHead>Guests</TableHead>
@@ -102,7 +102,12 @@ export default function AdminBookings() {
                                     {bookings.map(b => (
                                         <TableRow key={b.id}>
                                             <TableCell className="font-medium">{b.guest_name}</TableCell>
-                                            <TableCell>{b.room_name || "—"}</TableCell>
+                                            <TableCell>
+                                                <div className="font-medium">{b.category_name || "—"}</div>
+                                                <div className="text-xs text-muted-foreground">
+                                                    Room: {b.rooms?.room_number || "Unassigned"}
+                                                </div>
+                                            </TableCell>
                                             <TableCell>{format(new Date(b.check_in), "dd MMM yy")}</TableCell>
                                             <TableCell>{format(new Date(b.check_out), "dd MMM yy")}</TableCell>
                                             <TableCell>{b.num_guests}</TableCell>

@@ -42,18 +42,18 @@ export const useRoomsData = () => {
         queryFn: async () => {
             // Try fetching with the room_images relation (requires the new schema)
             const { data, error } = await supabase
-                .from('rooms')
+                .from('room_categories')
                 .select('*, room_images(id, image_url, display_order)')
                 .order('created_at', { ascending: false });
 
             // If error (e.g. room_images table doesn't exist), fall back to rooms only
             if (error) {
                 const { data: fallback, error: fallbackErr } = await supabase
-                    .from('rooms')
+                    .from('room_categories')
                     .select('*')
                     .order('created_at', { ascending: false });
                 if (fallbackErr) throw fallbackErr;
-                return fallback || [];
+                return fallback?.map(room => ({ ...room, name: room.category_name })) || [];
             }
 
             // Map the nested room_images onto the .images array to not break UI while retaining explicit relation
@@ -63,6 +63,7 @@ export const useRoomsData = () => {
                     : [];
                 return {
                     ...room,
+                    name: room.category_name,
                     images: sortedImages.length > 0
                         ? sortedImages.map((img: any) => img.image_url)
                         : (room.images || [])

@@ -16,13 +16,13 @@ export default function AdminRooms() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
 
-    // Form State
     const [formData, setFormData] = useState({
-        name: "",
+        category_name: "",
         description: "",
-        features: "", // Comma-separated internally, text input
+        features: "",
         price: "",
-        images: [] as { url: string; id?: string }[], // Track images with URLs
+        capacity: "2",
+        images: [] as { url: string; id?: string }[],
     });
     const [uploading, setUploading] = useState(false);
 
@@ -33,7 +33,7 @@ export default function AdminRooms() {
     async function fetchRooms() {
         setLoading(true);
         const { data, error } = await supabase
-            .from("rooms")
+            .from("room_categories")
             .select("*, room_images(id, image_url, display_order)")
             .order("created_at", { ascending: false });
 
@@ -52,7 +52,7 @@ export default function AdminRooms() {
 
     const handleOpenNew = () => {
         setEditingId(null);
-        setFormData({ name: "", description: "", features: "", price: "", images: [] });
+        setFormData({ category_name: "", description: "", features: "", price: "", capacity: "2", images: [] });
         setIsDialogOpen(true);
     };
 
@@ -60,10 +60,11 @@ export default function AdminRooms() {
         setEditingId(room.id);
         const mappedImages = room.room_images ? room.room_images.map((img: any) => ({ url: img.image_url, id: img.id })) : [];
         setFormData({
-            name: room.name,
+            category_name: room.category_name,
             description: room.description || "",
             features: room.features ? room.features.join(", ") : "",
             price: room.price || "",
+            capacity: room.capacity?.toString() || "2",
             images: mappedImages,
         });
         setIsDialogOpen(true);
@@ -72,11 +73,11 @@ export default function AdminRooms() {
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this room?")) return;
 
-        const { error } = await supabase.from("rooms").delete().eq("id", id);
+        const { error } = await supabase.from("room_categories").delete().eq("id", id);
         if (error) {
-            toast.error("Failed to delete room: " + error.message);
+            toast.error("Failed to delete category: " + error.message);
         } else {
-            toast.success("Room deleted successfully");
+            toast.success("Category deleted successfully");
             fetchRooms();
         }
     };
@@ -140,26 +141,27 @@ export default function AdminRooms() {
         setLoading(true);
 
         const payload = {
-            name: formData.name,
+            category_name: formData.category_name,
             description: formData.description,
             features: formData.features.split(",").map(f => f.trim()).filter(Boolean),
             price: formData.price ? parseFloat(formData.price) : null,
+            capacity: formData.capacity ? parseInt(formData.capacity, 10) : 2,
         };
 
         let roomId = editingId;
 
-        // 1. Save or Update Room
+        // 1. Save or Update Room Category
         if (roomId) {
-            const { error: updateErr } = await supabase.from("rooms").update(payload).eq("id", roomId);
+            const { error: updateErr } = await supabase.from("room_categories").update(payload).eq("id", roomId);
             if (updateErr) {
-                toast.error("Error updating room: " + updateErr.message);
+                toast.error("Error updating category: " + updateErr.message);
                 setLoading(false);
                 return;
             }
         } else {
-            const { data: newRoom, error: insertErr } = await supabase.from("rooms").insert([payload]).select().single();
+            const { data: newRoom, error: insertErr } = await supabase.from("room_categories").insert([payload]).select().single();
             if (insertErr) {
-                toast.error("Error creating room: " + insertErr.message);
+                toast.error("Error creating category: " + insertErr.message);
                 setLoading(false);
                 return;
             }
@@ -195,11 +197,11 @@ export default function AdminRooms() {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-800">Rooms Management</h2>
-                    <p className="text-muted-foreground mt-2">Add, edit, and delete property rooms.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-800">Room Categories Management</h2>
+                    <p className="text-muted-foreground mt-2">Add, edit, and delete room categories.</p>
                 </div>
                 <Button onClick={handleOpenNew} className="gap-2">
-                    <PlusCircle className="h-4 w-4" /> Add Room
+                    <PlusCircle className="h-4 w-4" /> Add Category
                 </Button>
             </div>
 
@@ -239,7 +241,7 @@ export default function AdminRooms() {
                                                 <div className="h-12 w-20 rounded bg-slate-200 flex items-center justify-center text-[10px] text-muted-foreground">No img</div>
                                             )}
                                         </TableCell>
-                                        <TableCell className="font-medium">{room.name}</TableCell>
+                                        <TableCell className="font-medium">{room.category_name}</TableCell>
                                         <TableCell>{room.price ? `₹${room.price}` : "N/A"}</TableCell>
                                         <TableCell className="text-right flex justify-end gap-2 mt-2">
                                             <Button variant="outline" size="icon" onClick={() => handleEdit(room)}>
@@ -260,13 +262,13 @@ export default function AdminRooms() {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>{editingId ? "Edit Room" : "Add New Room"}</DialogTitle>
+                        <DialogTitle>{editingId ? "Edit Category" : "Add New Category"}</DialogTitle>
                         <DialogDescription>Fill out the details below.</DialogDescription>
                     </DialogHeader>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Room Name</Label>
-                            <Input id="name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+                            <Label htmlFor="category_name">Category Name</Label>
+                            <Input id="category_name" value={formData.category_name} onChange={e => setFormData({ ...formData, category_name: e.target.value })} required />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="description">Description</Label>
@@ -281,6 +283,10 @@ export default function AdminRooms() {
                                 <Label htmlFor="price">Price (₹)</Label>
                                 <Input id="price" type="number" placeholder="4500" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
                             </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="capacity">Capacity (Guests)</Label>
+                            <Input id="capacity" type="number" placeholder="2" value={formData.capacity} onChange={e => setFormData({ ...formData, capacity: e.target.value })} />
                         </div>
 
                         <div className="space-y-2 border-t pt-4">

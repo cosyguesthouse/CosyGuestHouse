@@ -21,7 +21,8 @@ import { AdminLayout } from "./components/admin/AdminLayout.tsx";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute.tsx";
 import AdminDashboard from "./pages/admin/Dashboard.tsx";
 import AdminHomepage from "./pages/admin/Homepage.tsx";
-import AdminRooms from "./pages/admin/Rooms.tsx";
+import AdminRooms from "./pages/admin/Rooms.tsx"; // Acts as Room Categories
+import AdminPhysicalRooms from "./pages/admin/PhysicalRooms.tsx";
 import AdminDining from "./pages/admin/Dining.tsx";
 import AdminGallery from "./pages/admin/Gallery.tsx";
 import AdminStories from "./pages/admin/Stories.tsx";
@@ -62,6 +63,7 @@ const App = () => (
                 <Route path="images" element={<AdminSiteImages />} />
                 <Route path="experiences" element={<AdminExperiences />} />
                 <Route path="rooms" element={<AdminRooms />} />
+                <Route path="physical-rooms" element={<AdminPhysicalRooms />} />
                 <Route path="bookings" element={<AdminBookings />} />
                 <Route path="dining" element={<AdminDining />} />
                 <Route path="gallery" element={<AdminGallery />} />

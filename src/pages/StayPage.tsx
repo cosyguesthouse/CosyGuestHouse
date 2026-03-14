@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { format, differenceInDays, isWithinInterval, parseISO } from "date-fns";
+import { useRef, useState, useEffect } from "react";
+import { format, differenceInDays, isWithinInterval, parseISO, addDays, isSameDay } from "date-fns";
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { ChevronLeft, ChevronRight, X, Check, Wifi, Snowflake, Droplets, Eye, Bath, Users } from "lucide-react";
@@ -40,25 +40,55 @@ function BookingModal({ room, onClose }: { room: any; onClose: () => void }) {
         num_guests: "1", special_request: ""
     });
 
-    // Fetch booked dates for this room
-    useState(() => {
+    const [disabledDates, setDisabledDates] = useState<Date[]>([]);
+    const [totalPhysicalRooms, setTotalPhysicalRooms] = useState<any[]>([]);
+
+    // Fetch booked dates and max physical rooms
+    useEffect(() => {
         (async () => {
+            // Fetch physical rooms
+            const { data: pRooms } = await supabase
+                .from("rooms")
+                .select("id")
+                .eq("category_id", room.id)
+                .eq("status", "available");
+            
+            const foundRooms = pRooms || [];
+            setTotalPhysicalRooms(foundRooms);
+            const maxRooms = foundRooms.length || 1; // Default to 1 to allow booking if physical rooms not set up yet
+
             const { data } = await supabase
                 .from("bookings")
                 .select("check_in, check_out")
-                .eq("room_id", room.id)
+                .eq("category_id", room.id)
                 .eq("status", "confirmed");
-            if (data) {
-                setBookedDates(data.map((b: any) => ({
-                    from: parseISO(b.check_in),
-                    to: parseISO(b.check_out),
-                })));
+            
+            if (data && maxRooms > 0) {
+                const dateCounts = new Map<string, number>();
+                data.forEach((b: any) => {
+                    const start = parseISO(b.check_in);
+                    const end = parseISO(b.check_out);
+                    let current = start;
+                    while (current < end) {
+                        const dateStr = format(current, "yyyy-MM-dd");
+                        dateCounts.set(dateStr, (dateCounts.get(dateStr) || 0) + 1);
+                        current = addDays(current, 1);
+                    }
+                });
+
+                const fullyBooked: Date[] = [];
+                dateCounts.forEach((count, dateStr) => {
+                    if (count >= maxRooms) {
+                        fullyBooked.push(parseISO(dateStr));
+                    }
+                });
+                setDisabledDates(fullyBooked);
             }
         })();
-    });
+    }, [room.id]);
 
     const isDateBooked = (date: Date) =>
-        bookedDates.some(bd => isWithinInterval(date, { start: bd.from, end: bd.to }));
+        disabledDates.some(bd => isSameDay(date, bd));
 
     const nights = range?.from && range?.to ? differenceInDays(range.to, range.from) : 0;
     const total = nights * (room.price || 0);
@@ -68,24 +98,30 @@ function BookingModal({ room, onClose }: { room: any; onClose: () => void }) {
         if (!range?.from || !range?.to) return;
         setLoading(true);
 
-        // Check for overlapping confirmed bookings
+        // Check for overlapping confirmed bookings to assign an available room
         const { data: overlap } = await supabase
             .from("bookings")
-            .select("id")
-            .eq("room_id", room.id)
+            .select("room_id")
+            .eq("category_id", room.id)
             .eq("status", "confirmed")
-            .lte("check_in", format(range.to, "yyyy-MM-dd"))
-            .gte("check_out", format(range.from, "yyyy-MM-dd"));
+            .lt("check_in", format(range.to, "yyyy-MM-dd"))
+            .gt("check_out", format(range.from, "yyyy-MM-dd"));
 
-        if (overlap && overlap.length > 0) {
-            toast.error("This room is already booked for the selected dates. Please choose different dates.");
+        const bookedRoomIds = overlap?.map(b => b.room_id) || [];
+        const availableRooms = totalPhysicalRooms.filter(r => !bookedRoomIds.includes(r.id));
+
+        if (totalPhysicalRooms.length > 0 && availableRooms.length === 0) {
+            toast.error("All rooms of this category are booked for the selected dates. Please choose different dates.");
             setLoading(false);
             return;
         }
 
+        const assignedRoomId = availableRooms.length > 0 ? availableRooms[0].id : null;
+
         const { error } = await supabase.from("bookings").insert([{
-            room_id: room.id,
-            room_name: room.name,
+            category_id: room.id,
+            category_name: room.name,
+            room_id: assignedRoomId,
             ...form,
             num_guests: parseInt(form.num_guests),
             check_in: format(range.from, "yyyy-MM-dd"),
