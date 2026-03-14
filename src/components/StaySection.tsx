@@ -115,7 +115,7 @@ const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
 const StaySection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const { data: rooms = [] } = useRoomsData();
+  const { data: rooms = [], isLoading } = useRoomsData();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -129,7 +129,7 @@ const StaySection = () => {
 
   const displayRooms = rooms;
 
-  if (displayRooms.length === 0) return null;
+  if (!isLoading && displayRooms.length === 0) return null;
 
   return (
     <section id="stay" className="section-padding bg-background overflow-hidden" ref={ref}>

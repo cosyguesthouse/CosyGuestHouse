@@ -345,7 +345,7 @@ function RoomCard({ room, index, inView }: { room: any; index: number; inView: b
 export default function StayPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-50px" });
-    const { data: rooms = [] } = useRoomsData();
+    const { data: rooms = [], isLoading } = useRoomsData();
     const { data: siteImages = [] } = useSiteImages();
     const displayRooms = rooms;
     const banner = (siteImages as any[]).find(img => img.image_key === 'stay_banner')?.image_url || heroImg;
@@ -375,7 +375,11 @@ export default function StayPage() {
 
             {/* Rooms Grid */}
             <section className="section-padding max-w-7xl mx-auto" ref={ref}>
-                {displayRooms.length === 0 ? (
+                {isLoading ? (
+                    <div className="text-center py-20 flex justify-center">
+                        <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                ) : displayRooms.length === 0 ? (
                     <div className="text-center py-20">
                         <p className="text-muted-foreground">No rooms are currently available.</p>
                     </div>
