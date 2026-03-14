@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { roomData as staticRoomData } from "@/data/siteData";
 import { useRoomsData } from "@/hooks/useSupabaseData";
@@ -14,8 +15,8 @@ import {
 
 const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const images = room.images?.length > 0 ? room.images : staticRoomData.images;
-  const features = room.features?.length > 0 ? room.features : staticRoomData.features;
+  const images = room.images?.length > 0 ? room.images : [staticRoomData.images[0]]; // Need at least 1 image to avoid crash
+  const features = room.features || [];
 
   const nextSlide = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -79,14 +80,14 @@ const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
         className="flex flex-col gap-6"
       >
         <div>
-          <h3 className="font-heading text-4xl md:text-5xl font-light mb-2">{room.name || staticRoomData.name}</h3>
+          <h3 className="font-heading text-4xl md:text-5xl font-light mb-2">{room.name}</h3>
           {room.price && (
             <p className="text-xl text-warm-gold">From ₹{room.price} / night</p>
           )}
         </div>
         <div className="gold-divider !mx-0" />
         <p className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light whitespace-pre-line">
-          {room.description || staticRoomData.description}
+          {room.description || "No description available."}
         </p>
 
         <div className="grid grid-cols-2 gap-3 mt-2">
@@ -99,12 +100,12 @@ const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
         </div>
 
         <div className="pt-4">
-          <a
-            href="#"
+          <Link
+            to="/stay"
             className="inline-block px-10 py-3.5 bg-primary text-primary-foreground text-xs tracking-[0.2em] uppercase font-medium hover:bg-primary/90 transition-all duration-300"
           >
             Book Now
-          </a>
+          </Link>
         </div>
       </motion.div>
     </div>
@@ -126,7 +127,9 @@ const StaySection = () => {
     });
   }, [api]);
 
-  const displayRooms = rooms.length > 0 ? rooms : [staticRoomData];
+  const displayRooms = rooms;
+
+  if (displayRooms.length === 0) return null;
 
   return (
     <section id="stay" className="section-padding bg-background overflow-hidden" ref={ref}>

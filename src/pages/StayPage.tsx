@@ -268,8 +268,8 @@ function BookingModal({ room, onClose }: { room: any; onClose: () => void }) {
 function RoomCard({ room, index, inView }: { room: any; index: number; inView: boolean }) {
     const [slide, setSlide] = useState(0);
     const [showBooking, setShowBooking] = useState(false);
-    const images = room.images?.length > 0 ? room.images : staticRoom.images;
-    const features = room.features?.length > 0 ? room.features : staticRoom.features;
+    const images = room.images?.length > 0 ? room.images : [staticRoom.images[0]];
+    const features = room.features || [];
 
     return (
         <>
@@ -318,7 +318,7 @@ function RoomCard({ room, index, inView }: { room: any; index: number; inView: b
                     <h3 className="font-heading text-2xl font-light mb-2">{room.name}</h3>
                     <div className="w-8 h-px bg-accent mb-4" />
                     <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5">
-                        {room.description || staticRoom.description}
+                        {room.description || "No description available."}
                     </p>
                     <div className="grid grid-cols-2 gap-2 mb-6">
                         {features.slice(0, 6).map((f: string, i: number) => (
@@ -347,7 +347,7 @@ export default function StayPage() {
     const inView = useInView(ref, { once: true, margin: "-50px" });
     const { data: rooms = [] } = useRoomsData();
     const { data: siteImages = [] } = useSiteImages();
-    const displayRooms = rooms.length > 0 ? rooms : [staticRoom];
+    const displayRooms = rooms;
     const banner = (siteImages as any[]).find(img => img.image_key === 'stay_banner')?.image_url || heroImg;
 
     return (
@@ -375,11 +375,17 @@ export default function StayPage() {
 
             {/* Rooms Grid */}
             <section className="section-padding max-w-7xl mx-auto" ref={ref}>
-                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {displayRooms.map((room: any, i: number) => (
-                        <RoomCard key={room.id || i} room={room} index={i} inView={inView} />
-                    ))}
-                </div>
+                {displayRooms.length === 0 ? (
+                    <div className="text-center py-20">
+                        <p className="text-muted-foreground">No rooms are currently available.</p>
+                    </div>
+                ) : (
+                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {displayRooms.map((room: any, i: number) => (
+                            <RoomCard key={room.id || i} room={room} index={i} inView={inView} />
+                        ))}
+                    </div>
+                )}
             </section>
 
             <Footer />

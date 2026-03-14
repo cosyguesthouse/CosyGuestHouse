@@ -49,11 +49,23 @@ export const useRoomsData = () => {
         queryKey: ['rooms'],
         queryFn: async () => {
             const { data, error } = await supabase
-                .from('rooms')
-                .select('*')
+                .from('room_categories')
+                .select('*, room_images(id, image_url, display_order)')
                 .order('created_at', { ascending: false });
             if (error) return [];
-            return data || [];
+            
+            const processedRooms = data?.map(room => {
+                const sortedImages = room.room_images 
+                    ? room.room_images.sort((a: any, b: any) => a.display_order - b.display_order) 
+                    : [];
+                return {
+                    ...room,
+                    name: room.category_name,
+                    images: sortedImages.map((img: any) => img.image_url)
+                };
+            }) || [];
+            
+            return processedRooms;
         },
     });
 };
