@@ -8,10 +8,14 @@ import { toast } from "sonner";
 import { Loader2, Upload, Trash2, Image as ImageIcon } from "lucide-react";
 
 const SECTIONS = [
-    { section_name: "Hero Section", image_key: "hero_background", description: "Main background image or video for the hero section." },
-    { section_name: "Story Section", image_key: "story_image", description: "Image displayed in the Our Story section." },
-    { section_name: "Dining Section", image_key: "dining_banner", description: "Hero image for the Dining section." },
-    { section_name: "About Page", image_key: "about_image", description: "Main image for the About page." },
+    { section_name: "Hero Section", image_key: "hero_background", description: "Main background image or video for the home page hero section." },
+    { section_name: "Stay Page", image_key: "stay_banner", description: "Hero background image for the Stay page." },
+    { section_name: "Dining Section", image_key: "dining_banner", description: "Hero background image for the Dining page/section." },
+    { section_name: "Experiences Page", image_key: "experiences_banner", description: "Hero background image for the Experiences page." },
+    { section_name: "Stories Page", image_key: "stories_banner", description: "Hero background image for the Travel Stories page." },
+    { section_name: "Story Section", image_key: "story_image", description: "Image displayed in the Our Story section on home page." },
+    { section_name: "About Page", image_key: "about_image", description: "Hero background image for the About page." },
+    { section_name: "Contact Page", image_key: "contact_banner", description: "Hero background image for the Contact page." },
     { section_name: "Site Assets", image_key: "site_logo", description: "Logo used across the site." },
     { section_name: "Site Assets", image_key: "footer_bg", description: "Background image for the footer." },
 ];

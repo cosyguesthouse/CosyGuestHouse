@@ -3,14 +3,16 @@ import { useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { experiencesData as staticData } from "@/data/siteData";
-import { useExperiencesData } from "@/hooks/useSupabaseData";
+import { useExperiencesData, useSiteImages } from "@/hooks/useSupabaseData";
 import blueCityViewImg from "@/assets/blue-city-view.jpg";
 
 export default function ExperiencesPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: experiences = [] } = useExperiencesData();
+    const { data: siteImages = [] } = useSiteImages();
     const active = experiences.length > 0 ? experiences : staticData;
+    const banner = (siteImages as any[]).find(img => img.image_key === 'experiences_banner')?.image_url || blueCityViewImg;
 
     return (
         <div className="min-h-screen bg-background">
@@ -18,7 +20,7 @@ export default function ExperiencesPage() {
 
             {/* Hero */}
             <div className="relative h-[60vh] overflow-hidden">
-                <img src={blueCityViewImg} alt="Experiences" className="w-full h-full object-cover scale-105" />
+                <img src={banner} alt="Experiences" className="w-full h-full object-cover scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/60 via-deep-navy/30 to-background/90" />
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}

@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { useSiteImages } from "@/hooks/useSupabaseData";
 import guesthouseImg from "@/assets/guesthouse-exterior.jpg";
 import blueCityImg from "@/assets/blue-city-view.jpg";
 import rooftopImg from "@/assets/rooftop-dining.jpg";
@@ -22,6 +23,7 @@ export default function AboutPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: settings } = useSettings();
+    const { data: siteImages = [] } = useSiteImages();
 
     const aboutContent = settings?.about_content ||
         "Nestled in the ancient lanes of Brahampuri, Castle View Guest House is a family-run heritage property that has been welcoming travelers for over 40 years.\n\nFounded by our grandfather, this haveli was transformed into a guest house with one simple vision — to offer every guest the warmth of a Rajasthani home with the charm of the Blue City at their doorstep.\n\nToday, we continue that tradition, blending authentic hospitality with modern comforts, while our rooftop offers one of the most breathtaking views of Mehrangarh Fort and the sprawling blue cityscape below.";
@@ -31,6 +33,7 @@ export default function AboutPage() {
         : [guesthouseImg, blueCityImg, rooftopImg];
 
     const paragraphs = aboutContent.split("\n").filter((p: string) => p.trim());
+    const banner = (siteImages as any[]).find((img: any) => img.image_key === 'about_image')?.image_url || guesthouseImg;
 
     return (
         <div className="min-h-screen bg-background">
@@ -38,7 +41,7 @@ export default function AboutPage() {
 
             {/* Hero */}
             <div className="relative h-[60vh] overflow-hidden">
-                <img src={guesthouseImg} alt="About Us" className="w-full h-full object-cover scale-105" />
+                <img src={banner} alt="About Us" className="w-full h-full object-cover scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/70 via-deep-navy/30 to-background/90" />
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}

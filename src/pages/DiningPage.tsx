@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDiningData, useSiteImages } from "@/hooks/useSupabaseData";
@@ -7,15 +7,67 @@ import { diningData as staticDining } from "@/data/siteData";
 import rooftopImg from "@/assets/rooftop-dining.jpg";
 import candlelightImg from "@/assets/dining-candlelight.jpg";
 import foodImg from "@/assets/food-rajasthani.jpg";
+import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 
-const HIGHLIGHTS = [
-    { icon: "🌅", title: "Rooftop Seating", desc: "Dine under the open sky with panoramic Blue City views" },
-    { icon: "🏰", title: "Fort View Dining", desc: "Uninterrupted vistas of the majestic Mehrangarh Fort" },
-    { icon: "🍛", title: "Authentic Rajasthani", desc: "Traditional recipes passed down through generations" },
-    { icon: "🕯️", title: "Candlelight Evenings", desc: "Romantic sunset dinners and candlelight experiences" },
-    { icon: "🌙", title: "Sunset Experience", desc: "Watch the city turn golden as dusk falls over Jodhpur" },
-    { icon: "🥘", title: "North Indian & Continental", desc: "A curated menu for every palate and preference" },
-];
+function DiningCard({ item, index, inView }: { item: any; index: number; inView: boolean }) {
+    const [slide, setSlide] = useState(0);
+    const images = item.images?.length > 0 ? item.images : [rooftopImg, candlelightImg, foodImg];
+    const features = item.features || [];
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: index * 0.15 }}
+            className="group border border-border hover:border-accent/50 transition-all duration-500 bg-card"
+        >
+            <div className="relative aspect-[16/10] overflow-hidden">
+                <img
+                    src={images[slide]}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                    loading="lazy"
+                />
+                {images.length > 1 && (
+                    <>
+                        <button onClick={() => setSlide(p => (p - 1 + images.length) % images.length)}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-background/80 flex items-center justify-center hover:bg-background transition-colors opacity-0 group-hover:opacity-100">
+                            <ChevronLeft size={16} />
+                        </button>
+                        <button onClick={() => setSlide(p => (p + 1) % images.length)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-background/80 flex items-center justify-center hover:bg-background transition-colors opacity-0 group-hover:opacity-100">
+                            <ChevronRight size={16} />
+                        </button>
+                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                            {images.map((_: any, i: number) => (
+                                <button key={i} onClick={() => setSlide(i)}
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${i === slide ? "w-5 bg-accent" : "w-1.5 bg-white/60"}`} />
+                            ))}
+                        </div>
+                    </>
+                )}
+            </div>
+
+            <div className="p-6">
+                <h3 className="font-heading text-2xl font-light mb-2">{item.title}</h3>
+                <div className="w-8 h-px bg-accent mb-4" />
+                <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5 whitespace-pre-line">
+                    {item.description}
+                </p>
+                {features.length > 0 && (
+                    <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-border">
+                        {features.map((f: string, i: number) => (
+                            <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                <span className="text-accent mt-0.5"><Check size={12} /></span>
+                                <span>{f}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+}
 
 export default function DiningPage() {
     const ref = useRef(null);
@@ -28,6 +80,15 @@ export default function DiningPage() {
     const images = active?.images?.length >= 3 ? active.images : [rooftopImg, candlelightImg, foodImg];
 
     const banner = (siteImages as any[]).find(img => img.image_key === 'dining_banner')?.image_url || images[0];
+
+    const displayItems = diningItems.length > 0 ? diningItems : [
+        {
+            title: staticDining.title,
+            description: staticDining.description,
+            features: staticDining.highlights,
+            images: images
+        }
+    ];
 
     return (
         <div className="min-h-screen bg-background">
@@ -53,66 +114,22 @@ export default function DiningPage() {
                 </motion.div>
             </div>
 
-            {/* Description */}
-            <section className="section-padding bg-background" ref={ref}>
-                <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-                    <motion.div
-                        initial={{ opacity: 0, x: -40 }}
-                        animate={inView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">The Experience</p>
-                        <h2 className="section-heading text-left">A Table Above<br />the Blue City</h2>
-                        <div className="gold-divider !mx-0 my-6" />
-                        <p className="font-body text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
-                            {description}
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: 40 }}
-                        animate={inView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="grid grid-cols-2 gap-4"
-                    >
-                        <div className="img-hover-zoom aspect-[3/4]">
-                            <img src={images[1] || images[0]} alt="Dining" className="w-full h-full object-cover" loading="lazy" />
-                        </div>
-                        <div className="img-hover-zoom aspect-[3/4] mt-10">
-                            <img src={images[2] || images[0]} alt="Food" className="w-full h-full object-cover" loading="lazy" />
-                        </div>
-                    </motion.div>
+            {/* Dining Options Grid */}
+            <section className="section-padding max-w-7xl mx-auto" ref={ref}>
+                <div className="text-center mb-14">
+                    <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">The Experience</p>
+                    <h2 className="section-heading">Our Dining Options</h2>
+                    <div className="gold-divider mt-6" />
                 </div>
-            </section>
-
-            {/* Highlights */}
-            <section className="section-padding bg-secondary/30">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-14">
-                        <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">What We Offer</p>
-                        <h2 className="section-heading">Dining Highlights</h2>
-                        <div className="gold-divider mt-6" />
-                    </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {HIGHLIGHTS.map((h, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={inView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ duration: 0.6, delay: i * 0.1 }}
-                                className="p-6 border border-border/50 hover:border-accent/50 transition-all duration-300 group"
-                            >
-                                <span className="text-3xl mb-4 block">{h.icon}</span>
-                                <h3 className="font-heading text-lg font-light mb-2">{h.title}</h3>
-                                <p className="font-body text-sm text-muted-foreground">{h.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    {displayItems.map((item: any, i: number) => (
+                        <DiningCard key={item.id || i} item={item} index={i} inView={inView} />
+                    ))}
                 </div>
             </section>
 
             {/* Gallery */}
-            <section className="section-padding bg-background">
+            <section className="section-padding bg-background border-t border-border">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-14">
                         <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Gallery</p>

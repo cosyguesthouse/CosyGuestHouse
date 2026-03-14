@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useTravelStoriesData } from "@/hooks/useSupabaseData";
+import { useTravelStoriesData, useSiteImages } from "@/hooks/useSupabaseData";
 import { travelStoriesData as staticStories } from "@/data/siteData";
 import blueAlleyImg from "@/assets/blue-alley.jpg";
 
@@ -11,9 +11,11 @@ export default function StoriesPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: stories = [] } = useTravelStoriesData();
+    const { data: siteImages = [] } = useSiteImages();
     const [expanded, setExpanded] = useState<string | null>(null);
 
     const active = stories.length > 0 ? stories : staticStories;
+    const banner = (siteImages as any[]).find(img => img.image_key === 'stories_banner')?.image_url || blueAlleyImg;
 
     return (
         <div className="min-h-screen bg-background">
@@ -21,7 +23,7 @@ export default function StoriesPage() {
 
             {/* Hero */}
             <div className="relative h-[60vh] overflow-hidden">
-                <img src={blueAlleyImg} alt="Travel Stories" className="w-full h-full object-cover scale-105" />
+                <img src={banner} alt="Travel Stories" className="w-full h-full object-cover scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/60 via-deep-navy/30 to-background/90" />
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}

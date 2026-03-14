@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { useRoomsData } from "@/hooks/useSupabaseData";
+import { useRoomsData, useSiteImages } from "@/hooks/useSupabaseData";
 import { roomData as staticRoom } from "@/data/siteData";
 import heroImg from "@/assets/room-neela-mahal.jpg";
 
@@ -346,7 +346,9 @@ export default function StayPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-50px" });
     const { data: rooms = [] } = useRoomsData();
+    const { data: siteImages = [] } = useSiteImages();
     const displayRooms = rooms.length > 0 ? rooms : [staticRoom];
+    const banner = (siteImages as any[]).find(img => img.image_key === 'stay_banner')?.image_url || heroImg;
 
     return (
         <div className="min-h-screen bg-background">
@@ -354,7 +356,7 @@ export default function StayPage() {
 
             {/* Hero */}
             <div className="relative h-[60vh] overflow-hidden">
-                <img src={heroImg} alt="Rooms" className="w-full h-full object-cover scale-105" />
+                <img src={banner} alt="Rooms" className="w-full h-full object-cover scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/70 via-deep-navy/30 to-background/90" />
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}

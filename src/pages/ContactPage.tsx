@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { MapPin, Phone, Mail, Check } from "lucide-react";
 import { siteConfig } from "@/data/siteData";
+import { useSiteImages } from "@/hooks/useSupabaseData";
 import blueCityImg from "@/assets/blue-city-view.jpg";
 
 function useSettings() {
@@ -27,6 +28,7 @@ export default function ContactPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: settings } = useSettings();
+    const { data: siteImages = [] } = useSiteImages();
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -55,13 +57,15 @@ export default function ContactPage() {
         setLoading(false);
     };
 
+    const banner = (siteImages as any[]).find((img: any) => img.image_key === 'contact_banner')?.image_url || blueCityImg;
+
     return (
         <div className="min-h-screen bg-background">
             <Navbar />
 
             {/* Hero */}
             <div className="relative h-[50vh] overflow-hidden">
-                <img src={blueCityImg} alt="Contact" className="w-full h-full object-cover scale-105" />
+                <img src={banner} alt="Contact" className="w-full h-full object-cover scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/60 via-deep-navy/30 to-background/90" />
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
