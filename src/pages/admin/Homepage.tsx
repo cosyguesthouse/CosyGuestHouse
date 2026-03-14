@@ -25,15 +25,20 @@ export default function AdminHomepage() {
 
     useEffect(() => {
         async function fetchData() {
-            const { data: result, error } = await supabase.from("homepage_content").select("*").single();
+            const { data: result, error } = await supabase
+                .from("homepage_content")
+                .select("*")
+                .maybeSingle();             // returns null (not 406) when table is empty
             if (result) {
                 setData(result);
-            } else if (error && error.code !== "PGRST116") {
-                toast.error("Failed to load homepage data");
+            } else if (error) {
+                toast.error("Failed to load homepage data: " + error.message);
             }
+            // if result is null (no rows yet) — that's fine, keep default empty state
         }
         fetchData();
     }, []);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
