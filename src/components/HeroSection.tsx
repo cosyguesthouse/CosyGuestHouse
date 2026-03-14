@@ -6,7 +6,19 @@ const HeroSection = () => {
   const { data, isLoading } = useHomepageData();
   const { data: siteImages = [] } = useSiteImages();
 
-  if (isLoading) return <div className="h-screen bg-deep-navy flex items-center justify-center text-warm-gold">Loading...</div>;
+  const siteLogo = (siteImages as any[]).find((img: any) => img.image_key === 'site_logo')?.image_url;
+
+  if (isLoading) {
+    return (
+      <div className="h-screen bg-deep-navy flex flex-col items-center justify-center text-warm-gold">
+        {siteLogo ? (
+          <img src={siteLogo} alt="Loading..." className="w-32 h-32 object-contain animate-pulse" />
+        ) : (
+          <div className="text-xl tracking-widest animate-pulse">Loading...</div>
+        )}
+      </div>
+    );
+  }
 
   const headline = data?.hero_title || staticHeroData.headline;
   const subtext = data?.hero_subtitle || staticHeroData.subtext;

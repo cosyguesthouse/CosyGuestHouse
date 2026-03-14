@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { roomData as staticRoomData } from "@/data/siteData";
-import { useRoomsData } from "@/hooks/useSupabaseData";
+import { useRoomsData, useSiteImages } from "@/hooks/useSupabaseData";
 import {
   Carousel,
   CarouselContent,
@@ -116,6 +116,8 @@ const StaySection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: rooms = [], isLoading } = useRoomsData();
+  const { data: siteImages = [] } = useSiteImages();
+  const siteLogo = (siteImages as any[]).find(img => img.image_key === 'site_logo')?.image_url;
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -129,7 +131,19 @@ const StaySection = () => {
 
   const displayRooms = rooms;
 
-  if (!isLoading && displayRooms.length === 0) return null;
+  if (isLoading) {
+    return (
+      <section id="stay" ref={ref} className="section-padding bg-background flex flex-col items-center justify-center min-h-[40vh]">
+        {siteLogo ? (
+            <img src={siteLogo} alt="Loading..." className="w-24 h-24 object-contain animate-pulse" />
+        ) : (
+            <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+        )}
+      </section>
+    );
+  }
+
+  if (displayRooms.length === 0) return null;
 
   return (
     <section id="stay" className="section-padding bg-background overflow-hidden" ref={ref}>

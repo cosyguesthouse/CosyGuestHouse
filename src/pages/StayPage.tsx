@@ -349,6 +349,7 @@ export default function StayPage() {
     const { data: siteImages = [] } = useSiteImages();
     const displayRooms = rooms;
     const banner = (siteImages as any[]).find(img => img.image_key === 'stay_banner')?.image_url || heroImg;
+    const siteLogo = (siteImages as any[]).find(img => img.image_key === 'site_logo')?.image_url;
 
     return (
         <div className="min-h-screen bg-background">
@@ -376,8 +377,12 @@ export default function StayPage() {
             {/* Rooms Grid */}
             <section className="section-padding max-w-7xl mx-auto" ref={ref}>
                 {isLoading ? (
-                    <div className="text-center py-20 flex justify-center">
-                        <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+                    <div className="text-center py-24 flex justify-center">
+                        {siteLogo ? (
+                            <img src={siteLogo} alt="Loading..." className="w-24 h-24 object-contain animate-pulse" />
+                        ) : (
+                            <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+                        )}
                     </div>
                 ) : displayRooms.length === 0 ? (
                     <div className="text-center py-20">
