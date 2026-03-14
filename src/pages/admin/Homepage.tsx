@@ -66,17 +66,32 @@ export default function AdminHomepage() {
         e.preventDefault();
         setLoading(true);
 
+        // Build payload — exclude `id` when it's empty so Postgres auto-generates it
+        const { id, ...rest } = data;
+        // Sanitise: turn empty strings into null for optional fields
+        const sanitised = Object.fromEntries(
+            Object.entries(rest).map(([k, v]) => [k, v === "" ? null : v])
+        );
+
         let error;
 
-        if (data.id) {
+        if (id) {
+            // Row already exists — update it
             const { error: updateError } = await supabase
                 .from("homepage_content")
-                .update(data)
-                .eq("id", data.id);
+                .update(sanitised)
+                .eq("id", id);
             error = updateError;
         } else {
-            const { error: insertError } = await supabase.from("homepage_content").insert([data]);
+            // First save — insert without id so Postgres generates a UUID
+            const { data: inserted, error: insertError } = await supabase
+                .from("homepage_content")
+                .insert([sanitised])
+                .select()
+                .single();
             error = insertError;
+            // Store the new id so subsequent saves use UPDATE instead of INSERT
+            if (inserted) setData(prev => ({ ...prev, id: inserted.id }));
         }
 
         if (error) {
