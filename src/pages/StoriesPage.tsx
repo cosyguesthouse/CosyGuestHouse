@@ -1,18 +1,20 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useTravelStoriesData, useSiteImages } from "@/hooks/useSupabaseData";
 import { travelStoriesData as staticStories } from "@/data/siteData";
 import blueAlleyImg from "@/assets/blue-alley.jpg";
+import { ImageSlider } from "@/components/ui/ImageSlider";
 
 export default function StoriesPage() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: stories = [] } = useTravelStoriesData();
     const { data: siteImages = [] } = useSiteImages();
-    const [expanded, setExpanded] = useState<string | null>(null);
+    const [searchParams] = useSearchParams();
+    const [expanded, setExpanded] = useState<string | null>(searchParams.get("id") || null);
 
     const active = stories.length > 0 ? stories : staticStories;
     const banner = (siteImages as any[]).find(img => img.image_key === 'stories_banner')?.image_url || blueAlleyImg;
@@ -52,12 +54,7 @@ export default function StoriesPage() {
                             className="group cursor-pointer"
                         >
                             <div className="img-hover-zoom aspect-[16/10] mb-6 overflow-hidden relative">
-                                <img
-                                    src={story.cover_image || story.image}
-                                    alt={story.title}
-                                    className="w-full h-full object-cover"
-                                    loading="lazy"
-                                />
+                                <ImageSlider images={story.images || []} fallbackImage={story.cover_image || story.image} sliderType="story_slider" />
                                 {story.publish_date && (
                                     <div className="absolute top-4 left-4 bg-background/90 px-3 py-1 text-xs text-muted-foreground">
                                         {new Date(story.publish_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}

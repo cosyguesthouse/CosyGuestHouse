@@ -22,8 +22,10 @@ const quickLinks = [
   { label: "Our Rooms", href: "/stay" },
   { label: "Dining", href: "/dining" },
   { label: "Travel Stories", href: "/stories" },
+  { label: "Attractions", href: "/attractions" },
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
+  { label: "Feedback", href: "/feedback" },
 ];
 
 const Footer = () => {

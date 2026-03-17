@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { diningData as staticDiningData } from "@/data/siteData";
 import { useDiningData, useHomepageData, useSiteImages } from "@/hooks/useSupabaseData";
 
@@ -9,6 +9,8 @@ const DiningSection = () => {
   const { data: diningItems = [] } = useDiningData();
   const { data: homepageData } = useHomepageData();
   const { data: siteImages = [] } = useSiteImages();
+
+  const [expanded, setExpanded] = useState(false);
 
   // If there are specific items from DB, use the first one as primary. 
   // Otherwise default to the static mock.
@@ -22,10 +24,13 @@ const DiningSection = () => {
   const customBanner = siteImages.find((img: any) => img.image_key === 'dining_banner')?.image_url;
   const bannerImage = customBanner || images[0];
 
+  const desc = description || "";
+  const isLong = desc.length > 150;
+
   return (
     <section id="dining" ref={ref} className="relative">
       {/* Full-width hero image */}
-      <div className="relative h-[60vh] md:h-[70vh]">
+      {/* <div className="relative h-[60vh] md:h-[70vh]">
         <img
           src={bannerImage}
           alt="Rooftop candlelight dining"
@@ -44,7 +49,7 @@ const DiningSection = () => {
             {title}
           </h2>
         </motion.div>
-      </div>
+      </div> */}
 
       {/* Content */}
       <div className="section-padding bg-background">
@@ -56,9 +61,19 @@ const DiningSection = () => {
           >
             <p className="section-heading mb-6">{staticDiningData.subtitle}</p>
             <div className="gold-divider !mx-0 mb-6" />
-            <p className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light mb-8 whitespace-pre-line">
-              {description}
-            </p>
+            <div className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light mb-8 whitespace-pre-line">
+              <p>
+                  {expanded || !isLong ? desc : `${desc.slice(0, 150)}...`}
+              </p>
+              {isLong && (
+                  <button 
+                      onClick={() => setExpanded(!expanded)}
+                      className="text-accent hover:underline text-xs mt-2 block font-medium"
+                  >
+                      {expanded ? "Read Less" : "Read More"}
+                  </button>
+              )}
+            </div>
             {/* <ul className="space-y-3">
               {highlights.map((h: string, i: number) => (
                 <li key={i} className="flex items-center gap-3">

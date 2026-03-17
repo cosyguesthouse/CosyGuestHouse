@@ -11,6 +11,8 @@ import ExperiencesPage from "./pages/ExperiencesPage.tsx";
 import StayPage from "./pages/StayPage.tsx";
 import DiningPage from "./pages/DiningPage.tsx";
 import StoriesPage from "./pages/StoriesPage.tsx";
+import AttractionsPage from "./pages/AttractionsPage.tsx";
+import GuestFeedbackPage from "./pages/GuestFeedbackPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -32,6 +34,8 @@ import AdminExperiences from "./pages/admin/Experiences.tsx";
 import AdminBookings from "./pages/admin/Bookings.tsx";
 import AdminContactQueries from "./pages/admin/ContactQueries.tsx";
 import AdminFeedback from "./pages/admin/Feedback.tsx";
+import AdminAttractions from "./pages/admin/Attractions.tsx";
+import AdminSliderSettings from "./pages/admin/SliderSettings.tsx";
 import AdminSettings from "./pages/admin/Settings.tsx";
 
 const queryClient = new QueryClient();
@@ -50,6 +54,8 @@ const App = () => (
             <Route path="/stay" element={<StayPage />} />
             <Route path="/dining" element={<DiningPage />} />
             <Route path="/stories" element={<StoriesPage />} />
+            <Route path="/attractions" element={<AttractionsPage />} />
+            <Route path="/feedback" element={<GuestFeedbackPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
 
@@ -71,6 +77,8 @@ const App = () => (
                 <Route path="facilities" element={<AdminFacilities />} />
                 <Route path="contact-queries" element={<AdminContactQueries />} />
                 <Route path="feedback" element={<AdminFeedback />} />
+                <Route path="attractions" element={<AdminAttractions />} />
+                <Route path="sliders" element={<AdminSliderSettings />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>
             </Route>

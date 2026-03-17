@@ -57,7 +57,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="font-body text-xs md:text-sm tracking-[0.3em] uppercase text-primary-foreground/70 mb-6"
         >
-          Heritage Guest House · Jodhpur
+          Where Comfort Meets the Beauty of the Blue City.
         </motion.p>
 
         <motion.h1

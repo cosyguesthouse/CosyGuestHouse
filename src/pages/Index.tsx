@@ -7,6 +7,8 @@ import DiningSection from "@/components/DiningSection";
 import FacilitiesSection from "@/components/FacilitiesSection";
 import GallerySection from "@/components/GallerySection";
 import TravelStories from "@/components/TravelStories";
+import AttractionsSection from "@/components/AttractionsSection";
+import ReviewsSection from "@/components/ReviewsSection";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 
@@ -22,6 +24,8 @@ const Index = () => {
       <FacilitiesSection />
       <GallerySection />
       <TravelStories />
+      <AttractionsSection />
+      <ReviewsSection />
       <Footer />
       <WhatsAppWidget />
     </div>

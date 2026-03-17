@@ -57,18 +57,21 @@ export const experiencesData = [
     title: "Rooftop Dining",
     description: "Savor authentic Rajasthani cuisine under the open sky with panoramic views of Mehrangarh Fort.",
     image: rooftopDiningImg,
+    images: [rooftopDiningImg, foodRajasthaniImg, diningCandlelightImg],
   },
   {
     id: "blue-city-views",
     title: "Blue City Views",
     description: "Wake up to the mesmerizing blue-washed houses stretching across the ancient cityscape.",
     image: blueCityViewImg,
+    images: [blueCityViewImg, roomNeelaMahalImg, blueAlleyImg],
   },
   {
     id: "cultural-evenings",
     title: "Cultural Evenings",
     description: "Immerse yourself in traditional Rajasthani music and folk performances in our heritage courtyard.",
     image: culturalEveningImg,
+    images: [culturalEveningImg, sunsetFortImg, guestMomentImg],
   },
 ];
 
@@ -132,17 +135,20 @@ export const travelStoriesData = [
     title: "Exploring the Blue City",
     excerpt: "Wander through the ancient indigo lanes of Brahampuri and discover why Jodhpur earned its famous name.",
     image: blueAlleyImg,
+    images: [blueAlleyImg, blueCityViewImg, roomNeelaMahalImg],
   },
   {
     id: "sunset-mehrangarh",
     title: "Sunset at Mehrangarh Fort",
     excerpt: "There's nothing quite like watching the sun dip behind the mighty Mehrangarh as the city turns golden.",
     image: sunsetFortImg,
+    images: [sunsetFortImg, guestMomentImg, rooftopDiningImg],
   },
   {
     id: "best-rooftop-dining",
     title: "Best Rooftop Dining in Jodhpur",
     excerpt: "A guide to the most unforgettable rooftop dining experiences in the Blue City of Rajasthan.",
     image: rooftopDiningImg,
+    images: [rooftopDiningImg, foodRajasthaniImg, diningCandlelightImg],
   },
 ];

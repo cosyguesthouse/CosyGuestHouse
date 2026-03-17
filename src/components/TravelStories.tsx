@@ -1,7 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { travelStoriesData as staticTravelStoriesData } from "@/data/siteData";
 import { useTravelStoriesData } from "@/hooks/useSupabaseData";
+import { ImageSlider } from "@/components/ui/ImageSlider";
+import blueAlleyImg from "@/assets/blue-alley.jpg";
 
 const TravelStories = () => {
   const ref = useRef(null);
@@ -33,12 +36,12 @@ const TravelStories = () => {
               transition={{ duration: 0.7, delay: i * 0.15 }}
               className="group cursor-pointer"
             >
-              <div className="img-hover-zoom aspect-[16/10] mb-6">
-                <img
-                  src={story.cover_image || story.image}
-                  alt={story.title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
+              {/* Image area — uses slider if multiple images exist */}
+              <div className="img-hover-zoom aspect-[16/10] mb-6 overflow-hidden">
+                <ImageSlider
+                  images={story.images || []}
+                  fallbackImage={story.cover_image || story.image || blueAlleyImg}
+                  sliderType="story_slider"
                 />
               </div>
               <h3 className="font-heading text-2xl font-light mb-3 group-hover:text-accent transition-colors duration-300">
@@ -47,9 +50,12 @@ const TravelStories = () => {
               <p className="font-body text-sm text-muted-foreground leading-relaxed font-light mb-4 whitespace-pre-line">
                 {story.description || story.excerpt}
               </p>
-              <span className="font-body text-xs tracking-[0.2em] uppercase text-accent border-b border-accent pb-1 group-hover:border-foreground group-hover:text-foreground transition-colors duration-300">
+              <Link
+                to={`/stories?id=${story.id || story.slug}`}
+                className="inline-block mt-auto font-body text-xs tracking-[0.2em] uppercase text-accent border-b border-accent pb-1 group-hover:border-foreground group-hover:text-foreground transition-colors duration-300"
+              >
                 Read More
-              </span>
+              </Link>
             </motion.article>
           ))}
         </div>

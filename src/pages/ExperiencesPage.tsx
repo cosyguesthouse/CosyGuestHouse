@@ -1,10 +1,47 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { experiencesData as staticData } from "@/data/siteData";
 import { useExperiencesData, useSiteImages } from "@/hooks/useSupabaseData";
 import blueCityViewImg from "@/assets/blue-city-view.jpg";
+import { ImageSlider } from "@/components/ui/ImageSlider";
+
+function ExperiencePageCard({ exp, index, inView }: { exp: any, index: number, inView: boolean }) {
+    const [expanded, setExpanded] = useState(false);
+    const desc = exp.description || "";
+    const isLong = desc.length > 150;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="group cursor-pointer flex flex-col h-full"
+        >
+            <div className="img-hover-zoom aspect-[4/3] mb-5 overflow-hidden">
+                <ImageSlider images={exp.images || []} fallbackImage={exp.image_url || exp.image} sliderType="experience_slider" />
+            </div>
+            <h3 className="font-heading text-2xl font-light mb-3 group-hover:text-accent transition-colors duration-300">
+                {exp.title}
+            </h3>
+            <div className="w-8 h-px bg-accent mb-3" />
+            <div className="font-body text-sm text-muted-foreground leading-relaxed flex-grow">
+                <p>
+                    {expanded || !isLong ? desc : `${desc.slice(0, 150)}...`}
+                </p>
+                {isLong && (
+                    <button 
+                        onClick={() => setExpanded(!expanded)}
+                        className="text-accent hover:underline text-xs mt-2 block font-medium"
+                    >
+                        {expanded ? "Read Less" : "Read More"}
+                    </button>
+                )}
+            </div>
+        </motion.div>
+    );
+}
 
 export default function ExperiencesPage() {
     const ref = useRef(null);
@@ -41,29 +78,7 @@ export default function ExperiencesPage() {
             <section className="section-padding max-w-7xl mx-auto" ref={ref}>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {active.map((exp: any, i: number) => (
-                        <motion.div
-                            key={exp.id || i}
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.6, delay: i * 0.1 }}
-                            className="group cursor-pointer"
-                        >
-                            <div className="img-hover-zoom aspect-[4/3] mb-5 overflow-hidden">
-                                <img
-                                    src={exp.image_url || exp.image}
-                                    alt={exp.title}
-                                    className="w-full h-full object-cover"
-                                    loading="lazy"
-                                />
-                            </div>
-                            <h3 className="font-heading text-2xl font-light mb-3 group-hover:text-accent transition-colors duration-300">
-                                {exp.title}
-                            </h3>
-                            <div className="w-8 h-px bg-accent mb-3" />
-                            <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                                {exp.description}
-                            </p>
-                        </motion.div>
+                        <ExperiencePageCard key={exp.id || i} exp={exp} index={i} inView={inView} />
                     ))}
                 </div>
             </section>

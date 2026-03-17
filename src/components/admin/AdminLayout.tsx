@@ -18,6 +18,8 @@ import {
     Star,
     Settings,
     Key,
+    MapPin,
+    SlidersHorizontal,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -33,9 +35,11 @@ const navItems = [
     { name: "Dining", href: "/admin/dining", icon: UtensilsCrossed },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
     { name: "Travel Stories", href: "/admin/stories", icon: BookOpen },
+    { name: "Attractions", href: "/admin/attractions", icon: MapPin },
     { name: "Facilities", href: "/admin/facilities", icon: Wifi },
     { name: "Contact Queries", href: "/admin/contact-queries", icon: MessageSquare },
-    { name: "Feedback", href: "/admin/feedback", icon: Star },
+    { name: "Reviews Manager", href: "/admin/feedback", icon: Star },
+    { name: "Slider Settings", href: "/admin/sliders", icon: SlidersHorizontal },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

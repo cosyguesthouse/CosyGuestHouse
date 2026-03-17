@@ -8,51 +8,39 @@ import rooftopImg from "@/assets/rooftop-dining.jpg";
 import candlelightImg from "@/assets/dining-candlelight.jpg";
 import foodImg from "@/assets/food-rajasthani.jpg";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { ImageSlider } from "@/components/ui/ImageSlider";
 
 function DiningCard({ item, index, inView }: { item: any; index: number; inView: boolean }) {
-    const [slide, setSlide] = useState(0);
     const images = item.images?.length > 0 ? item.images : [rooftopImg, candlelightImg, foodImg];
     const features = item.features || [];
+    const [expanded, setExpanded] = useState(false);
+    const desc = item.description || "";
+    const isLong = desc.length > 150;
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: index * 0.15 }}
-            className="group border border-border hover:border-accent/50 transition-all duration-500 bg-card"
+            className="group border border-border hover:border-accent/50 transition-all duration-500 bg-card flex flex-col h-full"
         >
             <div className="relative aspect-[16/10] overflow-hidden">
-                <img
-                    src={images[slide]}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                    loading="lazy"
-                />
-                {images.length > 1 && (
-                    <>
-                        <button onClick={() => setSlide(p => (p - 1 + images.length) % images.length)}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-background/80 flex items-center justify-center hover:bg-background transition-colors opacity-0 group-hover:opacity-100">
-                            <ChevronLeft size={16} />
-                        </button>
-                        <button onClick={() => setSlide(p => (p + 1) % images.length)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-background/80 flex items-center justify-center hover:bg-background transition-colors opacity-0 group-hover:opacity-100">
-                            <ChevronRight size={16} />
-                        </button>
-                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                            {images.map((_: any, i: number) => (
-                                <button key={i} onClick={() => setSlide(i)}
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${i === slide ? "w-5 bg-accent" : "w-1.5 bg-white/60"}`} />
-                            ))}
-                        </div>
-                    </>
-                )}
+                <ImageSlider images={images} fallbackImage={rooftopImg} sliderType="dining_slider" />
             </div>
 
-            <div className="p-6">
+            <div className="p-6 flex flex-col flex-grow">
                 <h3 className="font-heading text-2xl font-light mb-2">{item.title}</h3>
                 <div className="w-8 h-px bg-accent mb-4" />
-                <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5 whitespace-pre-line">
-                    {item.description}
+                <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5 whitespace-pre-line flex-grow">
+                    {expanded || !isLong ? desc : `${desc.slice(0, 150)}...`}
+                    {isLong && (
+                        <button 
+                            onClick={() => setExpanded(!expanded)}
+                            className="text-accent hover:underline text-xs mt-2 block font-medium"
+                        >
+                            {expanded ? "Read Less" : "Read More"}
+                        </button>
+                    )}
                 </p>
                 {features.length > 0 && (
                     <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-border">
@@ -77,7 +65,7 @@ export default function DiningPage() {
 
     const active = diningItems.length > 0 ? diningItems[0] : null;
     const description = active?.description || staticDining.description;
-    const images = active?.images?.length >= 3 ? active.images : [rooftopImg, candlelightImg, foodImg];
+    const images = active?.images?.length > 0 ? active.images : [rooftopImg, candlelightImg, foodImg];
 
     const banner = (siteImages as any[]).find(img => img.image_key === 'dining_banner')?.image_url || images[0];
 

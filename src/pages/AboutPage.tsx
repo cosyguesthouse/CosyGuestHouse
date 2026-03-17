@@ -94,7 +94,7 @@ export default function AboutPage() {
                 {/* Values */}
                 <div className="grid md:grid-cols-3 gap-8">
                     {[
-                        { icon: "🏛️", title: "Heritage", desc: "A haveli that has stood for generations, preserving the architecture and soul of Rajasthan." },
+                        { icon: "🏛️", title: "Guest House", desc: "A Guest House that has stood for generations, preserving the architecture and soul of Rajasthan." },
                         { icon: "❤️", title: "Hospitality", desc: "Every guest is treated as family — with warmth, care, and genuine Rajasthani love." },
                         { icon: "🌅", title: "Experience", desc: "From fort views to rooftop dining, we curate every moment of your Jodhpur journey." },
                     ].map((v, i) => (

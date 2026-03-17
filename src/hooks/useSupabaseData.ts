@@ -36,10 +36,13 @@ export const useExperiencesData = () => {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('experiences')
-                .select('*')
+                .select('*, experience_images(image_url, order_index)')
                 .order('display_order', { ascending: true });
             if (error) return [];
-            return data || [];
+            return data?.map(exp => ({
+                ...exp,
+                images: exp.experience_images?.sort((a: any, b: any) => a.order_index - b.order_index).map((img: any) => img.image_url) || []
+            })) || [];
         },
     });
 };
@@ -79,7 +82,10 @@ export const useDiningData = () => {
                 .select('*')
                 .order('created_at', { ascending: false });
             if (error) return [];
-            return data || [];
+            return data?.map(item => ({
+                ...item,
+                images: item.images || []
+            })) || [];
         },
     });
 };
@@ -104,10 +110,13 @@ export const useTravelStoriesData = () => {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('travel_stories')
-                .select('*')
+                .select('*, story_images(image_url, order_index)')
                 .order('created_at', { ascending: false });
             if (error) return [];
-            return data || [];
+            return data?.map(story => ({
+                ...story,
+                images: story.story_images?.sort((a: any, b: any) => a.order_index - b.order_index).map((img: any) => img.image_url) || []
+            })) || [];
         },
     });
 };
@@ -125,3 +134,47 @@ export const useFacilitiesData = () => {
         },
     });
 };
+
+export const useAttractionsData = () => {
+    return useQuery({
+        queryKey: ['attractions'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('attractions')
+                .select('*, attraction_images(image_url, order_index)')
+                .order('created_at', { ascending: false });
+            if (error) return [];
+            return data?.map(attr => ({
+                ...attr,
+                images: attr.attraction_images?.sort((a: any, b: any) => a.order_index - b.order_index).map((img: any) => img.image_url) || []
+            })) || [];
+        },
+    });
+};
+
+export const useSliderSettings = () => {
+    return useQuery({
+        queryKey: ['slider_settings'],
+        queryFn: async () => {
+            const { data, error } = await supabase.from('slider_settings').select('*');
+            if (error) return [];
+            return data || [];
+        },
+    });
+};
+
+export const useGoogleReviews = () => {
+    return useQuery({
+        queryKey: ['google_reviews'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('google_reviews')
+                .select('*')
+                .eq('is_visible', true)
+                .order('review_date', { ascending: false });
+            if (error) return [];
+            return data || [];
+        },
+    });
+};
+
