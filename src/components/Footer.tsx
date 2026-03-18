@@ -35,17 +35,17 @@ const Footer = () => {
   const customBg = (siteImages as any[]).find((img: any) => img.image_key === "footer_bg")?.image_url;
 
   // Prefer Supabase settings, fall back to siteConfig static values
-  const name        = siteConfig.name;
+  const name = siteConfig.name;
   const description = siteConfig.description;
-  const phone       = settings?.phone        || siteConfig.phone;
-  const email       = settings?.email        || siteConfig.email;
-  const whatsapp    = settings?.whatsapp     || siteConfig.whatsapp;
-  const instagram   = settings?.instagram    || siteConfig.instagram;
-  const facebook    = settings?.facebook     || "";
-  const tripadvisor = settings?.tripadvisor  || "";
-  const addressL1   = settings?.address_line1 || siteConfig.address.line1;
-  const addressL2   = settings?.address_line2 || siteConfig.address.line2;
-  const addressCity = settings?.address_city  || siteConfig.address.city;
+  const phone = settings?.phone || siteConfig.phone;
+  const email = settings?.email || siteConfig.email;
+  const whatsapp = settings?.whatsapp || siteConfig.whatsapp;
+  const instagram = settings?.instagram || siteConfig.instagram;
+  const facebook = settings?.facebook || "";
+  const tripadvisor = settings?.tripadvisor || "";
+  const addressL1 = settings?.address_line1 || siteConfig.address.line1;
+  const addressL2 = settings?.address_line2 || siteConfig.address.line2;
+  const addressCity = settings?.address_city || siteConfig.address.city;
 
   return (
     <footer id="footer" className="bg-primary text-primary-foreground relative overflow-hidden">
@@ -169,7 +169,7 @@ const Footer = () => {
             © {new Date().getFullYear()} {name}. All rights reserved.
           </p>
           <p className="font-body text-xs text-primary-foreground/30">
-            Made with ❤️ in Jodhpur
+            Made by <a href="https://sintechnologies.in" target="_blank" rel="noopener noreferrer" className="text-warm-gold hover:text-primary-foreground transition-colors">SIN Technologies</a>
           </p>
         </div>
       </div>
