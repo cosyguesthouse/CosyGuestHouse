@@ -18,7 +18,7 @@ function useSettings() {
     return useQuery({
         queryKey: ["settings"],
         queryFn: async () => {
-            const { data } = await supabase.from("settings").select("*").single();
+            const { data } = await supabase.from("settings").select("*").maybeSingle();
             return data;
         },
     });
@@ -51,6 +51,12 @@ export default function ContactPage() {
         if (error) {
             toast.error("Failed to send message. Please try again.");
         } else {
+            // Trigger Notification
+            await supabase.from("notifications").insert([{
+                type: "contact",
+                message: `New contact query from ${form.name}`
+            }]);
+            
             setSubmitted(true);
             toast.success("Message sent successfully!");
         }
@@ -218,6 +224,12 @@ function FeedbackForm() {
         if (error) {
             toast.error("Failed to submit feedback.");
         } else {
+            // Trigger Notification
+            await supabase.from("notifications").insert([{
+                type: "feedback",
+                message: `New ${rating}-star feedback from ${form.name}`
+            }]);
+            
             setSubmitted(true);
             toast.success("Thank you for your feedback!");
         }

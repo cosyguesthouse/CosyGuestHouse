@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Trash2, Loader2, CalendarDays } from "lucide-react";
+import { Check, X, Trash2, Loader2, CalendarDays, ExternalLink, CreditCard } from "lucide-react";
 import { format } from "date-fns";
 
 export default function AdminBookings() {
@@ -31,6 +31,19 @@ export default function AdminBookings() {
         else { toast.success(`Booking ${status}`); fetchBookings(); }
     };
 
+    const updatePaymentStatus = async (id: string, payment_status: string) => {
+        // If payment verified, also confirm the booking status
+        const updates: any = { payment_status };
+        if (payment_status === 'verified') updates.status = 'confirmed';
+        
+        const { error } = await supabase.from("bookings").update(updates).eq("id", id);
+        if (error) toast.error("Failed to update payment status: " + error.message);
+        else { 
+            toast.success(`Payment ${payment_status}`); 
+            fetchBookings(); 
+        }
+    };
+
     const deleteBooking = async (id: string) => {
         if (!confirm("Delete this booking permanently?")) return;
         const { error } = await supabase.from("bookings").delete().eq("id", id);
@@ -44,6 +57,12 @@ export default function AdminBookings() {
         return "bg-yellow-100 text-yellow-700 border-yellow-200";
     };
 
+    const paymentStatusColor = (s: string) => {
+        if (s === "verified") return "bg-green-100 text-green-700 border-green-200";
+        if (s === "rejected") return "bg-red-100 text-red-700 border-red-200";
+        return "bg-slate-100 text-slate-700 border-slate-200";
+    };
+
     const counts = {
         pending: bookings.filter(b => b.status === "pending").length,
         confirmed: bookings.filter(b => b.status === "confirmed").length,
@@ -52,16 +71,18 @@ export default function AdminBookings() {
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-800">Bookings Management</h2>
-                <p className="text-muted-foreground mt-2">Manage all room booking requests.</p>
+            <div className="flex justify-between items-center">
+                <div>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-800">Bookings Management</h2>
+                    <p className="text-muted-foreground mt-2">Manage all room booking requests and payments.</p>
+                </div>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
-                    { label: "Pending", count: counts.pending, color: "text-yellow-600", bg: "bg-yellow-50" },
-                    { label: "Confirmed", count: counts.confirmed, color: "text-green-600", bg: "bg-green-50" },
+                    { label: "Pending Requests", count: counts.pending, color: "text-yellow-600", bg: "bg-yellow-50" },
+                    { label: "Confirmed Bookings", count: counts.confirmed, color: "text-green-600", bg: "bg-green-50" },
                     { label: "Cancelled", count: counts.cancelled, color: "text-red-600", bg: "bg-red-50" },
                 ].map(s => (
                     <Card key={s.label} className={s.bg}>
@@ -77,7 +98,10 @@ export default function AdminBookings() {
             </div>
 
             <Card>
-                <CardHeader><CardTitle>All Bookings</CardTitle></CardHeader>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle>All Bookings</CardTitle>
+                    <CreditCard className="text-muted-foreground h-5 w-5" />
+                </CardHeader>
                 <CardContent className="p-0">
                     {loading ? (
                         <div className="flex justify-center py-12"><Loader2 className="animate-spin h-8 w-8 text-primary" /></div>
@@ -88,12 +112,10 @@ export default function AdminBookings() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Guest</TableHead>
-                                        <TableHead>Category & Room</TableHead>
-                                        <TableHead>Check-in</TableHead>
-                                        <TableHead>Check-out</TableHead>
-                                        <TableHead>Guests</TableHead>
-                                        <TableHead>Contact</TableHead>
+                                        <TableHead>Guest & Booking</TableHead>
+                                        <TableHead>Dates & Room</TableHead>
+                                        <TableHead>Payment Proof</TableHead>
+                                        <TableHead>Amounts</TableHead>
                                         <TableHead>Status</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
@@ -101,42 +123,77 @@ export default function AdminBookings() {
                                 <TableBody>
                                     {bookings.map(b => (
                                         <TableRow key={b.id}>
-                                            <TableCell className="font-medium">{b.guest_name}</TableCell>
                                             <TableCell>
-                                                <div className="font-medium">{b.category_name || "—"}</div>
-                                                <div className="text-xs text-muted-foreground">
-                                                    Room: {b.rooms?.room_number || "Unassigned"}
+                                                <div className="font-semibold">{b.guest_name}</div>
+                                                <div className="text-xs text-muted-foreground">{b.mobile}</div>
+                                                <div className="text-xs text-muted-foreground">{b.email}</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="text-sm font-medium">
+                                                    {format(new Date(b.check_in), "dd MMM")} - {format(new Date(b.check_out), "dd MMM yy")}
+                                                </div>
+                                                <div className="text-xs text-accent">
+                                                    {b.category_name} ({b.rooms?.room_number || "Unassigned"})
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    {b.num_guests} Guests
                                                 </div>
                                             </TableCell>
-                                            <TableCell>{format(new Date(b.check_in), "dd MMM yy")}</TableCell>
-                                            <TableCell>{format(new Date(b.check_out), "dd MMM yy")}</TableCell>
-                                            <TableCell>{b.num_guests}</TableCell>
                                             <TableCell>
-                                                <div className="text-xs">{b.email}</div>
-                                                <div className="text-xs text-muted-foreground">{b.mobile}</div>
+                                                {b.payment_screenshot_url ? (
+                                                    <div className="space-y-1.5">
+                                                        <div className="text-[11px] font-mono bg-slate-100 p-1 rounded truncate w-32 border" title={b.transaction_id}>
+                                                            ID: {b.transaction_id || "N/A"}
+                                                        </div>
+                                                        <a 
+                                                            href={b.payment_screenshot_url} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                            className="flex items-center gap-1.5 text-xs text-blue-600 hover:underline"
+                                                        >
+                                                            <div className="h-10 w-10 border rounded overflow-hidden">
+                                                                <img src={b.payment_screenshot_url} className="h-full w-full object-cover" alt="Proof" />
+                                                            </div>
+                                                            View Proof
+                                                        </a>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-xs text-muted-foreground italic font-body">No proof provided</span>
+                                                )}
                                             </TableCell>
                                             <TableCell>
-                                                <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${statusColor(b.status)}`}>
-                                                    {b.status}
-                                                </span>
+                                                <div className="text-xs">
+                                                    <div className="text-muted-foreground">Advance: <span className="font-semibold text-slate-900 font-mono">₹{b.advance_amount || 0}</span></div>
+                                                    <div className="text-muted-foreground">Total: <span className="font-mono">₹{b.total_amount || 0}</span></div>
+                                                </div>
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex justify-end gap-1">
-                                                    {b.status !== "confirmed" && (
-                                                        <Button size="icon" variant="outline" className="h-7 w-7 text-green-600 border-green-300 hover:bg-green-50"
-                                                            onClick={() => updateStatus(b.id, "confirmed")} title="Confirm">
-                                                            <Check size={13} />
+                                                <div className="flex flex-col gap-1.5">
+                                                    <Badge variant="outline" className={`${statusColor(b.status)} border-none shadow-none text-[10px] uppercase font-bold py-0 h-4`}>
+                                                        {b.status}
+                                                    </Badge>
+                                                    <Badge variant="outline" className={`${paymentStatusColor(b.payment_status)} border-none shadow-none text-[10px] uppercase font-bold py-0 h-4`}>
+                                                        Pay: {b.payment_status || "pending"}
+                                                    </Badge>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex justify-end gap-1.5">
+                                                    {b.payment_status !== "verified" && (
+                                                        <Button size="sm" variant="outline" className="h-8 text-green-600 border-green-200 bg-green-50 hover:bg-green-100 hover:text-green-700 gap-1 px-2"
+                                                            onClick={() => updatePaymentStatus(b.id, "verified")}>
+                                                            <Check size={14} /> Verify
                                                         </Button>
                                                     )}
-                                                    {b.status !== "cancelled" && (
-                                                        <Button size="icon" variant="outline" className="h-7 w-7 text-orange-500 border-orange-300 hover:bg-orange-50"
-                                                            onClick={() => updateStatus(b.id, "cancelled")} title="Cancel">
-                                                            <X size={13} />
+                                                    {b.payment_status === "pending" && (
+                                                        <Button size="sm" variant="outline" className="h-8 text-red-500 border-red-200 bg-red-50 hover:bg-red-100 px-2"
+                                                            onClick={() => updatePaymentStatus(b.id, "rejected")}>
+                                                            <X size={14} /> Reject
                                                         </Button>
                                                     )}
-                                                    <Button size="icon" variant="outline" className="h-7 w-7 text-destructive border-destructive/30 hover:bg-destructive/5"
+                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:bg-red-50"
                                                         onClick={() => deleteBooking(b.id)} title="Delete">
-                                                        <Trash2 size={13} />
+                                                        <Trash2 size={15} />
                                                     </Button>
                                                 </div>
                                             </TableCell>
@@ -151,3 +208,4 @@ export default function AdminBookings() {
         </div>
     );
 }
+

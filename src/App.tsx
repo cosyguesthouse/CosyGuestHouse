@@ -37,6 +37,8 @@ import AdminFeedback from "./pages/admin/Feedback.tsx";
 import AdminAttractions from "./pages/admin/Attractions.tsx";
 import AdminSliderSettings from "./pages/admin/SliderSettings.tsx";
 import AdminSettings from "./pages/admin/Settings.tsx";
+import AdminPaymentSettings from "./pages/admin/PaymentSettings.tsx";
+import AdminNotifications from "./pages/admin/Notifications.tsx";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +82,8 @@ const App = () => (
                 <Route path="attractions" element={<AdminAttractions />} />
                 <Route path="sliders" element={<AdminSliderSettings />} />
                 <Route path="settings" element={<AdminSettings />} />
+                <Route path="payment-settings" element={<AdminPaymentSettings />} />
+                <Route path="notifications" element={<AdminNotifications />} />
               </Route>
             </Route>
 

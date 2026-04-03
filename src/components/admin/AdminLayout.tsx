@@ -20,9 +20,12 @@ import {
     Key,
     MapPin,
     SlidersHorizontal,
+    Bell,
+    CreditCard,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const navItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -40,6 +43,7 @@ const navItems = [
     { name: "Contact Queries", href: "/admin/contact-queries", icon: MessageSquare },
     { name: "Reviews Manager", href: "/admin/feedback", icon: Star },
     { name: "Slider Settings", href: "/admin/sliders", icon: SlidersHorizontal },
+    { name: "Payment Settings", href: "/admin/payment-settings", icon: CreditCard },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
@@ -47,6 +51,27 @@ export function AdminLayout() {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    useEffect(() => {
+        fetchUnreadCount();
+        const notificationSubscription = supabase
+            .channel('notifications_changes')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, fetchUnreadCount)
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(notificationSubscription);
+        };
+    }, []);
+
+    async function fetchUnreadCount() {
+        const { count } = await supabase
+            .from("notifications")
+            .select("*", { count: "exact", head: true })
+            .eq("is_read", false);
+        setUnreadCount(count || 0);
+    }
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -54,11 +79,19 @@ export function AdminLayout() {
     };
 
     return (
-        <div className="flex h-screen bg-gray-100 overflow-hidden">
+        <div className="flex h-screen bg-gray-100 overflow-hidden text-slate-900">
             {/* Sidebar for Desktop */}
             <aside className="hidden md:flex flex-col w-64 bg-white border-r shadow-sm">
-                <div className="flex items-center justify-center py-6 border-b">
+                <div className="flex items-center justify-between px-6 py-6 border-b">
                     <h1 className="text-xl font-bold text-slate-800">Admin Panel</h1>
+                    <Link to="/admin/notifications" className="relative text-slate-600 hover:text-primary transition-colors">
+                        <Bell size={20} />
+                        {unreadCount > 0 && (
+                            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+                                {unreadCount > 9 ? "9+" : unreadCount}
+                            </span>
+                        )}
+                    </Link>
                 </div>
                 <nav className="flex-1 overflow-y-auto py-4">
                     <ul className="space-y-1">
@@ -97,9 +130,19 @@ export function AdminLayout() {
             <div className="flex-1 flex flex-col h-screen overflow-hidden">
                 <header className="md:hidden flex items-center justify-between p-4 bg-white border-b">
                     <h1 className="text-xl font-bold text-slate-800">Admin Panel</h1>
-                    <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                        <Menu className="h-6 w-6" />
-                    </Button>
+                    <div className="flex items-center gap-4">
+                        <Link to="/admin/notifications" className="relative text-slate-600 hover:text-primary transition-colors">
+                            <Bell size={20} />
+                            {unreadCount > 0 && (
+                                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+                                    {unreadCount > 9 ? "9+" : unreadCount}
+                                </span>
+                            )}
+                        </Link>
+                        <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            <Menu className="h-6 w-6" />
+                        </Button>
+                    </div>
                 </header>
 
                 {isMobileMenuOpen && (
@@ -155,3 +198,4 @@ export function AdminLayout() {
         </div>
     );
 }
+
