@@ -36,11 +36,48 @@ export default function AdminBookings() {
         const updates: any = { payment_status };
         if (payment_status === 'verified') updates.status = 'confirmed';
         
-        const { error } = await supabase.from("bookings").update(updates).eq("id", id);
-        if (error) toast.error("Failed to update payment status: " + error.message);
-        else { 
+        const { data: updatedBooking, error } = await supabase
+            .from("bookings")
+            .update(updates)
+            .eq("id", id)
+            .select() // Get the updated record for the email
+            .single();
+
+        if (error) {
+            toast.error("Failed to update payment status: " + error.message);
+        } else { 
             toast.success(`Payment ${payment_status}`); 
+            
+            // Send email notifications automatically when confirmed
+            if (payment_status === 'verified' && updatedBooking) {
+                sendBookingEmails(updatedBooking);
+            }
+            
             fetchBookings(); 
+        }
+    };
+
+    const sendBookingEmails = async (booking: any) => {
+        try {
+            const { data, error } = await supabase.functions.invoke('send-booking-email', {
+                body: {
+                    name: booking.guest_name,
+                    email: booking.email,
+                    phone: booking.mobile,
+                    room_category: booking.category_name,
+                    checkin: booking.check_in,
+                    checkout: booking.check_out,
+                    guests: booking.num_guests
+                },
+            });
+            
+            if (error) {
+                console.error('Email Function Error:', error);
+            } else {
+                console.log('Email sent successfully:', data);
+            }
+        } catch (err) {
+            console.error('Failed to send booking emails:', err);
         }
     };
 
