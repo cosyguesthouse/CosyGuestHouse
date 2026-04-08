@@ -59,8 +59,12 @@ export default function AdminBookings() {
 
     const sendBookingEmails = async (booking: any) => {
         try {
-            const { data, error } = await supabase.functions.invoke('send-booking-email', {
-                body: {
+            const response = await fetch('/.netlify/functions/send-booking-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
                     name: booking.guest_name,
                     email: booking.email,
                     phone: booking.mobile,
@@ -68,11 +72,21 @@ export default function AdminBookings() {
                     checkin: booking.check_in,
                     checkout: booking.check_out,
                     guests: booking.num_guests
-                },
+                })
             });
             
-            if (error) {
-                console.error('Email Function Error:', error);
+            let data: any = {};
+            try {
+                const text = await response.text();
+                data = text ? JSON.parse(text) : {};
+            } catch (parseError) {
+                console.error("Non-JSON response received:", parseError);
+                // Return early or show an error state if parsing fails (likely a 404 HTML page)
+                return;
+            }
+            
+            if (!response.ok) {
+                console.error('Email Function Error:', data.error || 'Unknown error');
             } else {
                 console.log('Email sent successfully:', data);
             }

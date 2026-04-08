@@ -1,10 +1,12 @@
 import { Handler } from "@netlify/functions";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-const adminEmail = process.env.ADMIN_EMAIL || "yourgmail@gmail.com";
-
 const handler: Handler = async (event, context) => {
+  console.log("NETLIFY FUNCTION HIT");
+  
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const adminEmail = process.env.ADMIN_EMAIL || "yourgmail@gmail.com";
+
   // Only allow POST
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -61,6 +63,7 @@ const handler: Handler = async (event, context) => {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: true, customerRes, adminRes }),
+
     };
   } catch (error: any) {
     console.error("Email Error:", error);
