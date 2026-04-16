@@ -45,6 +45,9 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <p>
+        Cosy Guest House in Jodhpur offers clean, comfortable and budget-friendly rooms with great hospitality and easy booking.
+      </p>
       <TooltipProvider>
         <Toaster />
         <Sonner />
