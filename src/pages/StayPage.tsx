@@ -32,12 +32,12 @@ const getIcon = (f: string) => {
     return <Check size={14} />;
 };
 
-type GuestRoom = { adults: number; children: number };
+type GuestRoom = { adults: number; childAbove5: number; childBelow5: number };
 
-function GuestSelector({ rooms, maxRooms, onChange }: { rooms: GuestRoom[], maxRooms: number, onChange: (rooms: GuestRoom[]) => void }) {
+function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms: GuestRoom[], maxRooms: number, isSingleOrBudget: boolean, onChange: (rooms: GuestRoom[]) => void }) {
     const handleAddRoom = () => {
         if (rooms.length < maxRooms) {
-            onChange([...rooms, { adults: 2, children: 0 }]);
+            onChange([...rooms, { adults: 2, childAbove5: 0, childBelow5: 0 }]);
         }
     };
     const handleRemoveRoom = (index: number) => {
@@ -49,6 +49,9 @@ function GuestSelector({ rooms, maxRooms, onChange }: { rooms: GuestRoom[], maxR
         const newRooms = [...rooms];
         newRooms[index] = { ...newRooms[index], [field]: Math.max(0, value) };
         if (field === 'adults' && newRooms[index].adults < 1) newRooms[index].adults = 1; // min 1 adult per room
+        if (field === 'adults' && newRooms[index].adults > 2) newRooms[index].adults = 2; // max 2 adults explicitly
+        if (field === 'childAbove5' && newRooms[index].childAbove5 > 1) newRooms[index].childAbove5 = 1; // max 1
+        if (field === 'childBelow5' && newRooms[index].childBelow5 > 1) newRooms[index].childBelow5 = 1; // max 1
         onChange(newRooms);
     };
 
@@ -69,33 +72,54 @@ function GuestSelector({ rooms, maxRooms, onChange }: { rooms: GuestRoom[], maxR
                         <div className="flex items-center justify-between">
                             <div className="text-sm">
                                 <p>Adults</p>
-                                <p className="text-xs text-muted-foreground">+12 yrs</p>
+                                <p className="text-xs text-muted-foreground">Max 2</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <button type="button" onClick={() => updateRoom(idx, 'adults', room.adults - 1)} className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-secondary disabled:opacity-30" disabled={room.adults <= 1}>
                                     <Minus size={14} />
                                 </button>
                                 <span className="w-4 text-center text-sm font-medium">{room.adults}</span>
-                                <button type="button" onClick={() => updateRoom(idx, 'adults', room.adults + 1)} className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-secondary disabled:opacity-30" disabled={room.adults >= 4}>
+                                <button type="button" onClick={() => updateRoom(idx, 'adults', room.adults + 1)} className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-secondary disabled:opacity-30" disabled={room.adults >= 2}>
                                     <Plus size={14} />
                                 </button>
                             </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                            <div className="text-sm">
-                                <p>Children</p>
-                                <p className="text-xs text-muted-foreground">0-12 yrs</p>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <button type="button" onClick={() => updateRoom(idx, 'children', room.children - 1)} className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-secondary disabled:opacity-30" disabled={room.children <= 0}>
-                                    <Minus size={14} />
-                                </button>
-                                <span className="w-4 text-center text-sm font-medium">{room.children}</span>
-                                <button type="button" onClick={() => updateRoom(idx, 'children', room.children + 1)} className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-secondary disabled:opacity-30" disabled={room.children >= 3}>
-                                    <Plus size={14} />
-                                </button>
-                            </div>
-                        </div>
+                        
+                        {!isSingleOrBudget && (
+                            <>
+                                <div className="flex items-center justify-between">
+                                    <div className="text-sm">
+                                        <p>Child (&gt; 5 yrs)</p>
+                                        <p className="text-xs text-muted-foreground">+₹500 for mattress</p>
+                                    </div>
+                                    <select 
+                                        className="h-8 w-16 text-center text-sm border rounded bg-background"
+                                        value={room.childAbove5}
+                                        onChange={(e) => updateRoom(idx, 'childAbove5', parseInt(e.target.value))}
+                                    >
+                                        <option value={0}>0</option>
+                                        <option value={1}>1</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <div className="text-sm">
+                                        <p>Child (&le; 5 yrs)</p>
+                                        <p className="text-xs text-muted-foreground">No extra charge</p>
+                                    </div>
+                                    <select 
+                                        className="h-8 w-16 text-center text-sm border rounded bg-background"
+                                        value={room.childBelow5}
+                                        onChange={(e) => updateRoom(idx, 'childBelow5', parseInt(e.target.value))}
+                                    >
+                                        <option value={0}>0</option>
+                                        <option value={1}>1</option>
+                                    </select>
+                                </div>
+                            </>
+                        )}
+                        {isSingleOrBudget && (
+                            <p className="text-[10px] text-amber-600 font-medium leading-tight">Children not allowed in Single/Budget rooms.</p>
+                        )}
                     </div>
                 ))}
             </div>
@@ -131,7 +155,7 @@ function BookingModal({
     // Booking config state
     const [selectedCategory, setSelectedCategory] = useState(initialCategory.id);
     const [range, setRange] = useState<DateRange | undefined>(initialRange);
-    const [guestRooms, setGuestRooms] = useState<GuestRoom[]>([{ adults: 2, children: 0 }]);
+    const [guestRooms, setGuestRooms] = useState<GuestRoom[]>([{ adults: 2, childAbove5: 0, childBelow5: 0 }]);
     
     // UI state
     const [isCalOpen, setIsCalOpen] = useState(false);
@@ -165,18 +189,38 @@ function BookingModal({
     const availInfo = availabilityMap[selectedCategory] || { total: 0, available: 0, pRooms: [] };
     const maxAvailable = availInfo.available;
     
+    const roomNameForLogic = (roomDetails.name || "").toLowerCase();
+    const isSingleOrBudget = roomNameForLogic.includes("single") || roomNameForLogic.includes("budget");
+    
     // If they change category and current guestRooms length exceeds maxAvailable, trim it.
     useEffect(() => {
-        if (maxAvailable > 0 && guestRooms.length > maxAvailable) {
-            setGuestRooms(prev => prev.slice(0, maxAvailable));
+        let updated = [...guestRooms];
+        if (maxAvailable > 0 && updated.length > maxAvailable) {
+            updated = updated.slice(0, maxAvailable);
+        }
+        if (isSingleOrBudget) {
+            updated = updated.map(r => ({ ...r, childAbove5: 0, childBelow5: 0 }));
+        }
+        // Only set if changed to avoid infinite loop
+        if (JSON.stringify(updated) !== JSON.stringify(guestRooms)) {
+            setGuestRooms(updated);
         }
     }, [selectedCategory, maxAvailable]);
 
     const nights = range?.from && range?.to ? differenceInDays(range.to, range.from) : 0;
-    const totalAmount = nights * (roomDetails.price || 0) * guestRooms.length;
+    const baseRoomPriceTotal = nights * (roomDetails.price || 0) * guestRooms.length;
+    
+    let extraMattressPriceTotal = 0;
+    guestRooms.forEach(r => {
+        if (!isSingleOrBudget && r.childAbove5 > 0) {
+            extraMattressPriceTotal += (500 * nights); // 500 per night max 1 child
+        }
+    });
+
+    const totalAmount = baseRoomPriceTotal + extraMattressPriceTotal;
     const advanceAmount = Math.ceil((totalAmount * paySettings.advance_percentage) / 100);
 
-    const totalGuests = guestRooms.reduce((acc, r) => acc + r.adults + r.children, 0);
+    const totalGuests = guestRooms.reduce((acc, r) => acc + r.adults + r.childAbove5 + r.childBelow5, 0);
 
     const handleScreenshotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -244,8 +288,8 @@ function BookingModal({
                 email: form.email,
                 mobile: form.mobile,
                 address: form.address,
-                special_request: `Room ${idx+1}: ${gRoom.adults} Adults, ${gRoom.children} Children. ${form.special_request}`,
-                num_guests: gRoom.adults + gRoom.children,
+                special_request: `Room ${idx+1}: ${gRoom.adults} Adults, ${gRoom.childAbove5} Child(>5), ${gRoom.childBelow5} Child(<=5). ${form.special_request}`,
+                num_guests: gRoom.adults + gRoom.childAbove5 + gRoom.childBelow5,
                 
                 check_in: format(range.from!, "yyyy-MM-dd"),
                 check_out: format(range.to!, "yyyy-MM-dd"),
@@ -366,7 +410,8 @@ function BookingModal({
                                                 <Popover.Content className="z-[200] mt-1" align="end">
                                                     <GuestSelector 
                                                         rooms={guestRooms} 
-                                                        maxRooms={maxAvailable || 1} 
+                                                        maxRooms={maxAvailable || 1}
+                                                        isSingleOrBudget={isSingleOrBudget}
                                                         onChange={(v) => {
                                                             if (v.length <= maxAvailable) {
                                                                 setGuestRooms(v);
@@ -391,8 +436,14 @@ function BookingModal({
                                             <span>Base Price</span>
                                             <span>₹{roomDetails.price} x {guestRooms.length} Room(s) x {nights} Night(s)</span>
                                         </div>
-                                        <div className="flex justify-between font-medium text-base pt-2 border-t">
-                                            <span>Total Value</span>
+                                        {extraMattressPriceTotal > 0 && (
+                                            <div className="flex justify-between text-amber-600">
+                                                <span>Extra Mattress (Child &gt; 5 yrs)</span>
+                                                <span>₹{extraMattressPriceTotal.toLocaleString()}</span>
+                                            </div>
+                                        )}
+                                        <div className="flex justify-between font-medium text-base pt-2 border-t mt-2">
+                                            <span>Total Price</span>
                                             <span className="text-accent">₹{totalAmount.toLocaleString()}</span>
                                         </div>
                                     </div>
