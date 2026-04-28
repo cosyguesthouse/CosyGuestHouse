@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { PlusCircle, Edit, Trash2, Loader2, Upload, X, Save } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 export default function AdminStories() {
     const [stories, setStories] = useState<any[]>([]);
@@ -94,9 +95,10 @@ export default function AdminStories() {
 
     // Cover image upload
     const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+        const originalFile = e.target.files?.[0];
+        if (!originalFile) return;
         setUploadingCover(true);
+        const file = await compressImage(originalFile);
         const ext = file.name.split(".").pop();
         const path = `stories/cover-${Date.now()}.${ext}`;
         const { error } = await supabase.storage.from("stories").upload(path, file);
@@ -117,7 +119,8 @@ export default function AdminStories() {
         const newImages = [...sliderImages];
 
         for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+            const originalFile = files[i];
+            const file = await compressImage(originalFile);
             const ext = file.name.split(".").pop();
             const path = `stories/slider-${Date.now()}-${Math.random()}.${ext}`;
             const { error } = await supabase.storage.from("stories").upload(path, file);

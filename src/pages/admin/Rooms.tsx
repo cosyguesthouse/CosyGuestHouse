@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { PlusCircle, Edit, Trash2, Loader2, UploadCloud, ChevronUp, ChevronDown } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 export default function AdminRooms() {
     const [rooms, setRooms] = useState<any[]>([]);
@@ -90,7 +91,8 @@ export default function AdminRooms() {
         const newImages = [...formData.images];
 
         for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+            const originalFile = files[i];
+            const file = await compressImage(originalFile);
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `rooms/${fileName}`;

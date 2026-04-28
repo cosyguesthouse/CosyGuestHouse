@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2, Upload, Trash2, Image as ImageIcon } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 const SECTIONS = [
     { section_name: "Hero Section", image_key: "hero_background", description: "Main background image or video for the home page hero section." },
@@ -50,11 +51,12 @@ export default function AdminSiteImages() {
 
     const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, section_name: string, image_key: string) => {
         try {
-            const file = event.target.files?.[0];
-            if (!file) return;
+            const originalFile = event.target.files?.[0];
+            if (!originalFile) return;
 
             setUploading(image_key);
 
+            const file = await compressImage(originalFile);
             const fileExt = file.name.split('.').pop();
             const fileName = `${image_key}-${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Trash2, Loader2, UploadCloud, ChevronLeft, ChevronRight } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 export default function AdminGallery() {
     const [images, setImages] = useState<any[]>([]);
@@ -62,7 +63,8 @@ export default function AdminGallery() {
         const maxOrder = images.length > 0 ? Math.max(...images.map(img => img.display_order || 0)) : -1;
 
         for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+            const originalFile = files[i];
+            const file = await compressImage(originalFile);
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;
