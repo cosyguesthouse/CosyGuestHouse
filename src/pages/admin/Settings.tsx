@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Save, Loader2, UploadCloud, Trash2 } from "lucide-react";
-import { compressImage } from "@/lib/imageCompression";
+import { compressImage, formatFileSize } from "@/lib/imageCompression";
 
 export default function AdminSettings() {
     const [loading, setLoading] = useState(false);
@@ -76,7 +76,8 @@ export default function AdminSettings() {
         const newImages = [...settings.about_images];
         for (let i = 0; i < files.length; i++) {
             const originalFile = files[i];
-            const file = await compressImage(originalFile);
+            const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+            if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
             const ext = file.name.split(".").pop();
             const name = `about-${Math.random()}.${ext}`;
             const { error } = await supabase.storage.from("about").upload(name, file);

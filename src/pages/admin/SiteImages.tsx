@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2, Upload, Trash2, Image as ImageIcon } from "lucide-react";
-import { compressImage } from "@/lib/imageCompression";
+import { compressImage, formatFileSize } from "@/lib/imageCompression";
 
 const SECTIONS = [
     { section_name: "Hero Section", image_key: "hero_background", description: "Main background image or video for the home page hero section." },
@@ -56,7 +56,8 @@ export default function AdminSiteImages() {
 
             setUploading(image_key);
 
-            const file = await compressImage(originalFile);
+            const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+            if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
             const fileExt = file.name.split('.').pop();
             const fileName = `${image_key}-${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;

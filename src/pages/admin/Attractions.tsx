@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus, Trash2, Upload, MapPin, Save, X } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { compressImage } from "@/lib/imageCompression";
+import { compressImage, formatFileSize } from "@/lib/imageCompression";
 
 export default function AdminAttractions() {
     const [attractions, setAttractions] = useState<any[]>([]);
@@ -108,7 +108,8 @@ export default function AdminAttractions() {
 
         for (let i = 0; i < files.length; i++) {
             const originalFile = files[i];
-            const file = await compressImage(originalFile);
+            const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+            if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
             const ext = file.name.split('.').pop();
             const name = `${Date.now()}-${Math.random()}.${ext}`;
             const path = `attractions/${name}`;

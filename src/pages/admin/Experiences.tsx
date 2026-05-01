@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Plus, Trash2, Pencil, Loader2, X, Save, Upload, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { compressImage } from "@/lib/imageCompression";
+import { compressImage, formatFileSize } from "@/lib/imageCompression";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
@@ -90,7 +90,8 @@ export default function Experiences() {
 
         for (let i = 0; i < files.length; i++) {
             const originalFile = files[i];
-            const file = await compressImage(originalFile);
+            const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+            if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
             const ext = file.name.split(".").pop();
             const path = `experiences/${Date.now()}-${Math.random()}.${ext}`;
             const { error: uploadErr } = await supabase.storage.from("experiences").upload(path, file);
@@ -303,7 +304,8 @@ export default function Experiences() {
                                             const originalFile = e.target.files?.[0];
                                             if (!originalFile) return;
                                             setUploading(true);
-                                            const file = await compressImage(originalFile);
+                                            const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+                                            if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
                                             const ext = file.name.split(".").pop();
                                             const path = `experiences/cover-${Date.now()}-${Math.random()}.${ext}`;
                                             const { error } = await supabase.storage.from("experiences").upload(path, file);

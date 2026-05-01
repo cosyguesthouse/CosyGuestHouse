@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Trash2, Loader2, UploadCloud, ChevronLeft, ChevronRight } from "lucide-react";
-import { compressImage } from "@/lib/imageCompression";
+import { compressImage, formatFileSize } from "@/lib/imageCompression";
 
 export default function AdminGallery() {
     const [images, setImages] = useState<any[]>([]);
@@ -64,7 +64,8 @@ export default function AdminGallery() {
 
         for (let i = 0; i < files.length; i++) {
             const originalFile = files[i];
-            const file = await compressImage(originalFile);
+            const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+            if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;

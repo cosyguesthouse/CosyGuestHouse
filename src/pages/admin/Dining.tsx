@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { PlusCircle, Edit, Trash2, Loader2, UploadCloud } from "lucide-react";
-import { compressImage } from "@/lib/imageCompression";
+import { compressImage, formatFileSize } from "@/lib/imageCompression";
 
 export default function AdminDining() {
     const [dining, setDining] = useState<any[]>([]);
@@ -74,7 +74,8 @@ export default function AdminDining() {
         if (!originalFile) return;
 
         setUploading(true);
-        const file = await compressImage(originalFile);
+        const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
+        if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `${fileName}`;
