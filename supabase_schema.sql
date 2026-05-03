@@ -210,7 +210,7 @@ BEGIN
     ) THEN
         CREATE POLICY "Public read all buckets"
         ON storage.objects FOR SELECT
-        USING ( bucket_id IN ('gallery', 'rooms', 'dining', 'stories', 'site_assets', 'hero', 'about', 'experiences') );
+        USING ( bucket_id IN ('gallery', 'rooms', 'dining', 'stories', 'site_assets', 'hero', 'about', 'experiences', 'attractions') );
     END IF;
 
     IF NOT EXISTS (
@@ -342,6 +342,50 @@ BEGIN
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'settings' AND policyname = 'Auth manage settings') THEN
         CREATE POLICY "Auth manage settings" ON public.settings FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+END $$;
+
+-- =============================================================
+-- ATTRACTIONS
+-- =============================================================
+
+CREATE TABLE IF NOT EXISTS public.attractions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    location TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.attraction_images (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    attraction_id UUID REFERENCES public.attractions(id) ON DELETE CASCADE,
+    image_url TEXT NOT NULL,
+    order_index INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- RLS for attractions
+ALTER TABLE public.attractions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.attraction_images ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    -- Attractions policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attractions' AND policyname = 'Public read attractions') THEN
+        CREATE POLICY "Public read attractions" ON public.attractions FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attractions' AND policyname = 'Auth manage attractions') THEN
+        CREATE POLICY "Auth manage attractions" ON public.attractions FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    -- Attraction Images policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attraction_images' AND policyname = 'Public read attraction_images') THEN
+        CREATE POLICY "Public read attraction_images" ON public.attraction_images FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attraction_images' AND policyname = 'Auth manage attraction_images') THEN
+        CREATE POLICY "Auth manage attraction_images" ON public.attraction_images FOR ALL USING (auth.role() = 'authenticated');
     END IF;
 END $$;
 

@@ -29,6 +29,11 @@ export const compressImage = async (file: File): Promise<CompressionResult> => {
         return { file, originalSize, compressedSize: originalSize, savedPercent: 0 };
     }
 
+    // Skip compression if the image is already less than 700KB
+    if (originalSize <= 700 * 1024) {
+        return { file, originalSize, compressedSize: originalSize, savedPercent: 0 };
+    }
+
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (event) => {
