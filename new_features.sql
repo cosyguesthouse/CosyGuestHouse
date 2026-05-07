@@ -76,7 +76,81 @@ CREATE TABLE IF NOT EXISTS public.google_reviews (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- Note: Ensure to configure RLS securely directly in the Supabase dashboard afterwards so admins can insert and public can SELECT.
--- Example of enabling RLS on attractions:
--- ALTER TABLE public.attractions ENABLE ROW LEVEL SECURITY;
--- CREATE POLICY "allow selects public" ON public.attractions FOR SELECT USING (true);
+-- =============================================================
+-- ROW LEVEL SECURITY (RLS) POLICIES
+-- =============================================================
+
+-- Enable RLS on all new tables
+ALTER TABLE public.attractions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.attraction_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.dining_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.story_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.experience_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.slider_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.google_reviews ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    -- Attractions & Images
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attractions' AND policyname = 'Public read attractions') THEN
+        CREATE POLICY "Public read attractions" ON public.attractions FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attractions' AND policyname = 'Auth manage attractions') THEN
+        CREATE POLICY "Auth manage attractions" ON public.attractions FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attraction_images' AND policyname = 'Public read attraction_images') THEN
+        CREATE POLICY "Public read attraction_images" ON public.attraction_images FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'attraction_images' AND policyname = 'Auth manage attraction_images') THEN
+        CREATE POLICY "Auth manage attraction_images" ON public.attraction_images FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    -- Dining Images
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'dining_images' AND policyname = 'Public read dining_images') THEN
+        CREATE POLICY "Public read dining_images" ON public.dining_images FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'dining_images' AND policyname = 'Auth manage dining_images') THEN
+        CREATE POLICY "Auth manage dining_images" ON public.dining_images FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    -- Story Images
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'story_images' AND policyname = 'Public read story_images') THEN
+        CREATE POLICY "Public read story_images" ON public.story_images FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'story_images' AND policyname = 'Auth manage story_images') THEN
+        CREATE POLICY "Auth manage story_images" ON public.story_images FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    -- Experience Images
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'experience_images' AND policyname = 'Public read experience_images') THEN
+        CREATE POLICY "Public read experience_images" ON public.experience_images FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'experience_images' AND policyname = 'Auth manage experience_images') THEN
+        CREATE POLICY "Auth manage experience_images" ON public.experience_images FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    -- Slider Settings
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'slider_settings' AND policyname = 'Public read slider_settings') THEN
+        CREATE POLICY "Public read slider_settings" ON public.slider_settings FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'slider_settings' AND policyname = 'Auth manage slider_settings') THEN
+        CREATE POLICY "Auth manage slider_settings" ON public.slider_settings FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+
+    -- Google Reviews
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'google_reviews' AND policyname = 'Public read google_reviews') THEN
+        CREATE POLICY "Public read google_reviews" ON public.google_reviews FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'google_reviews' AND policyname = 'Auth manage google_reviews') THEN
+        CREATE POLICY "Auth manage google_reviews" ON public.google_reviews FOR ALL USING (auth.role() = 'authenticated');
+    END IF;
+END $$;
+
+-- ADD SEASONAL PRICING TO ROOM CATEGORIES
+ALTER TABLE public.room_categories ADD COLUMN IF NOT EXISTS seasonal_prices JSONB DEFAULT '{}'::jsonb;
+
+-- ADD EXTRA MATTRESS RATE TO PAYMENT SETTINGS
+ALTER TABLE public.payment_settings ADD COLUMN IF NOT EXISTS extra_mattress_rate INTEGER DEFAULT 500;
+
+

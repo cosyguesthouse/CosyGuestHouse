@@ -14,6 +14,7 @@ export default function AdminPaymentSettings() {
     const [settings, setSettings] = useState({
         qr_code_image_url: "",
         advance_percentage: 50,
+        extra_mattress_rate: 500,
     });
 
     useEffect(() => { fetchSettings(); }, []);
@@ -25,6 +26,7 @@ export default function AdminPaymentSettings() {
             setSettings({
                 qr_code_image_url: data.qr_code_image_url || "",
                 advance_percentage: data.advance_percentage || 50,
+                extra_mattress_rate: data.extra_mattress_rate || 500,
             });
         }
     }
@@ -85,17 +87,30 @@ export default function AdminPaymentSettings() {
                         <CardDescription>Configure how guests pay for their bookings.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        <div className="space-y-1.5">
-                            <Label>Advance Payment Percentage (%)</Label>
-                            <Input 
-                                type="number" 
-                                min="0" 
-                                max="100" 
-                                value={settings.advance_percentage} 
-                                onChange={e => setSettings({ ...settings, advance_percentage: parseInt(e.target.value) || 0 })} 
-                                placeholder="e.g. 50"
-                            />
-                            <p className="text-xs text-muted-foreground">The percentage of the total amount guests must pay in advance.</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1.5">
+                                <Label>Advance Payment Percentage (%)</Label>
+                                <Input 
+                                    type="number" 
+                                    min="0" 
+                                    max="100" 
+                                    value={settings.advance_percentage} 
+                                    onChange={e => setSettings({ ...settings, advance_percentage: parseInt(e.target.value) || 0 })} 
+                                    placeholder="e.g. 50"
+                                />
+                                <p className="text-xs text-muted-foreground">Advance amount percentage.</p>
+                            </div>
+                            <div className="space-y-1.5">
+                                <Label>Extra Mattress Rate (₹)</Label>
+                                <Input 
+                                    type="number" 
+                                    min="0" 
+                                    value={settings.extra_mattress_rate} 
+                                    onChange={e => setSettings({ ...settings, extra_mattress_rate: parseInt(e.target.value) || 0 })} 
+                                    placeholder="e.g. 500"
+                                />
+                                <p className="text-xs text-muted-foreground">Price per night for extra bed/mattress.</p>
+                            </div>
                         </div>
 
                         <div className="space-y-3">

@@ -32,12 +32,12 @@ const getIcon = (f: string) => {
     return <Check size={14} />;
 };
 
-type GuestRoom = { adults: number; childAbove5: number; childBelow5: number };
+type GuestRoom = { adults: number; childAbove5: number; childBelow5: number; extraMattress: boolean };
 
 function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms: GuestRoom[], maxRooms: number, isSingleOrBudget: boolean, onChange: (rooms: GuestRoom[]) => void }) {
     const handleAddRoom = () => {
         if (rooms.length < maxRooms) {
-            onChange([...rooms, { adults: 2, childAbove5: 0, childBelow5: 0 }]);
+            onChange([...rooms, { adults: 2, childAbove5: 0, childBelow5: 0, extraMattress: false }]);
         }
     };
     const handleRemoveRoom = (index: number) => {
@@ -56,9 +56,9 @@ function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms:
     };
 
     return (
-        <div className="w-80 p-4 bg-background border shadow-xl rounded-md z-50">
+        <div className="w-80 p-4 bg-background border shadow-2xl rounded-lg z-50 flex flex-col">
             <h4 className="font-heading tracking-wider text-sm mb-4 border-b pb-2">Guest Selection</h4>
-            <div className="space-y-4 max-h-64 overflow-y-auto pr-2">
+            <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-accent/20">
                 {rooms.map((room, idx) => (
                     <div key={idx} className="bg-secondary/20 p-3 rounded space-y-3">
                         <div className="flex justify-between items-center text-sm font-medium">
@@ -117,8 +117,20 @@ function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms:
                                 </div>
                             </>
                         )}
+                        <div className="flex items-center justify-between pt-1">
+                            <div className="text-sm">
+                                <p>Extra Mattress/Bed</p>
+                            </div>
+                            <input 
+                                type="checkbox"
+                                className="w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent"
+                                checked={room.extraMattress}
+                                onChange={(e) => updateRoom(idx, 'extraMattress', e.target.checked ? 1 : 0)}
+                            />
+                        </div>
+
                         {isSingleOrBudget && (
-                            <p className="text-[10px] text-amber-600 font-medium leading-tight">Children not allowed in Single/Budget rooms.</p>
+                            <p className="text-[10px] text-amber-600 font-medium leading-tight">Children/Extra beds not allowed in Single/Budget rooms.</p>
                         )}
                     </div>
                 ))}
@@ -155,7 +167,7 @@ function BookingModal({
     // Booking config state
     const [selectedCategory, setSelectedCategory] = useState(initialCategory.id);
     const [range, setRange] = useState<DateRange | undefined>(initialRange);
-    const [guestRooms, setGuestRooms] = useState<GuestRoom[]>([{ adults: 2, childAbove5: 0, childBelow5: 0 }]);
+    const [guestRooms, setGuestRooms] = useState<GuestRoom[]>([{ adults: 2, childAbove5: 0, childBelow5: 0, extraMattress: false }]);
     
     // UI state
     const [isCalOpen, setIsCalOpen] = useState(false);
@@ -172,14 +184,19 @@ function BookingModal({
         screenshot_file: null as File | null,
         screenshot_preview: "",
     });
-    const [paySettings, setPaySettings] = useState({ qr_code_image_url: "", advance_percentage: 50 });
+    const [paySettings, setPaySettings] = useState({ 
+        qr_code_image_url: "", 
+        advance_percentage: 50,
+        extra_mattress_rate: 500 
+    });
 
     useEffect(() => {
         (async () => {
             const { data: pSet } = await supabase.from("payment_settings").select("*").maybeSingle();
             if (pSet) setPaySettings({ 
                 qr_code_image_url: pSet.qr_code_image_url || "", 
-                advance_percentage: pSet.advance_percentage || 50 
+                advance_percentage: pSet.advance_percentage || 50,
+                extra_mattress_rate: pSet.extra_mattress_rate || 500
             });
         })();
     }, []);
@@ -208,12 +225,19 @@ function BookingModal({
     }, [selectedCategory, maxAvailable]);
 
     const nights = range?.from && range?.to ? differenceInDays(range.to, range.from) : 0;
-    const baseRoomPriceTotal = nights * (roomDetails.price || 0) * guestRooms.length;
+    
+    // Seasonal Pricing Logic
+    const checkInMonth = range?.from ? format(range.from, "MMMM") : "";
+    const seasonalPrice = roomDetails.seasonal_prices?.[checkInMonth];
+    const activePrice = seasonalPrice || roomDetails.price || 0;
+    const isSeasonalApplied = !!seasonalPrice;
+
+    const baseRoomPriceTotal = nights * activePrice * guestRooms.length;
     
     let extraMattressPriceTotal = 0;
     guestRooms.forEach(r => {
-        if (!isSingleOrBudget && r.childAbove5 > 0) {
-            extraMattressPriceTotal += (500 * nights); // 500 per night max 1 child
+        if (!isSingleOrBudget && (r.childAbove5 > 0 || r.extraMattress)) {
+            extraMattressPriceTotal += (paySettings.extra_mattress_rate * nights);
         }
     });
 
@@ -288,7 +312,7 @@ function BookingModal({
                 email: form.email,
                 mobile: form.mobile,
                 address: form.address,
-                special_request: `Room ${idx+1}: ${gRoom.adults} Adults, ${gRoom.childAbove5} Child(>5), ${gRoom.childBelow5} Child(<=5). ${form.special_request}`,
+                special_request: `Room ${idx+1}: ${gRoom.adults} Adults, ${gRoom.childAbove5} Child(>5), ${gRoom.childBelow5} Child(<=5), Extra Mattress: ${gRoom.extraMattress ? 'Yes' : 'No'}. ${form.special_request}`,
                 num_guests: gRoom.adults + gRoom.childAbove5 + gRoom.childBelow5,
                 
                 check_in: format(range.from!, "yyyy-MM-dd"),
@@ -367,7 +391,7 @@ function BookingModal({
                                             const aInfo = availabilityMap[c.id] || { available: 0 };
                                             return (
                                                 <option key={c.id} value={c.id} disabled={aInfo.available === 0}>
-                                                    {c.name} {aInfo.available === 0 ? "(Sold Out)" : `(${aInfo.available} Left - ₹${c.price}/night)`}
+                                                    {c.name} {aInfo.available === 0 ? "(Sold Out)" : `(${aInfo.available} Left - ₹${c.seasonal_prices?.[checkInMonth] || c.price}/night)`}
                                                 </option>
                                             )
                                         })}
@@ -407,7 +431,7 @@ function BookingModal({
                                                 </Button>
                                             </Popover.Trigger>
                                             <Popover.Portal>
-                                                <Popover.Content className="z-[200] mt-1" align="end">
+                                                <Popover.Content className="z-[200] mt-1 outline-none" align="end" side="bottom" sideOffset={5} collisionPadding={20}>
                                                     <GuestSelector 
                                                         rooms={guestRooms} 
                                                         maxRooms={maxAvailable || 1}
@@ -433,12 +457,19 @@ function BookingModal({
                                 {range?.from && range?.to && maxAvailable > 0 && (
                                     <div className="bg-secondary/20 p-4 rounded-md text-sm space-y-2 mt-4">
                                         <div className="flex justify-between text-muted-foreground">
-                                            <span>Base Price</span>
-                                            <span>₹{roomDetails.price} x {guestRooms.length} Room(s) x {nights} Night(s)</span>
+                                            <span>
+                                                Price per Night 
+                                                {isSeasonalApplied && <span className="ml-2 text-[10px] bg-accent/20 text-accent px-1.5 py-0.5 rounded uppercase font-bold">Seasonal rate applied</span>}
+                                            </span>
+                                            <span>₹{activePrice}</span>
+                                        </div>
+                                        <div className="flex justify-between text-muted-foreground">
+                                            <span>Subtotal ({guestRooms.length} Room{guestRooms.length>1?'s':''} x {nights} Night{nights>1?'s':''})</span>
+                                            <span>₹{baseRoomPriceTotal.toLocaleString()}</span>
                                         </div>
                                         {extraMattressPriceTotal > 0 && (
                                             <div className="flex justify-between text-amber-600">
-                                                <span>Extra Mattress (Child &gt; 5 yrs)</span>
+                                                <span>Extra Mattress / Bed (₹{paySettings.extra_mattress_rate} x {nights}n)</span>
                                                 <span>₹{extraMattressPriceTotal.toLocaleString()}</span>
                                             </div>
                                         )}
@@ -574,18 +605,26 @@ function RoomCard({
     index, 
     inView, 
     availability, 
+    searchRange,
     onBook 
 }: { 
     room: any; 
     index: number; 
     inView: boolean; 
     availability: number;
+    searchRange?: DateRange;
     onBook: () => void;
 }) {
     const [slide, setSlide] = useState(0);
     const images = room.images?.length > 0 ? room.images : [staticRoom.images[0]];
     const features = room.features || [];
     
+    // Seasonal Pricing Logic for Card
+    const checkInMonth = searchRange?.from ? format(searchRange.from, "MMMM") : "";
+    const seasonalPrice = room.seasonal_prices?.[checkInMonth];
+    const displayPrice = seasonalPrice || room.price || 0;
+    const isSeasonal = !!seasonalPrice;
+
     const isSoldOut = availability === 0;
 
     return (
@@ -621,10 +660,13 @@ function RoomCard({
                         </button>
                     </>
                 )}
-                {room.price && (
-                    <div className="absolute bottom-4 right-4 bg-background/95 px-3 py-1.5 rounded text-sm font-medium shadow-lg backdrop-blur-sm">
-                        <span className="text-accent font-semibold">₹{room.price}</span>
-                        <span className="text-muted-foreground text-xs"> / night</span>
+                {displayPrice > 0 && (
+                    <div className="absolute bottom-4 right-4 bg-background/95 px-3 py-1.5 rounded text-sm font-medium shadow-lg backdrop-blur-sm flex flex-col items-end">
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-accent font-semibold">₹{displayPrice}</span>
+                            <span className="text-muted-foreground text-xs"> / night</span>
+                        </div>
+                        {isSeasonal && <span className="text-[9px] text-accent uppercase font-bold tracking-tighter">Seasonal rate applied</span>}
                     </div>
                 )}
             </div>
@@ -807,7 +849,7 @@ export default function StayPage() {
                 ) : (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {rooms.map((room: any, i: number) => {
-                            const avail = availabilityMap[room.id]?.available ?? room.capacity ?? 1;
+                            const avail = availabilityMap[room.id]?.available ?? 0;
                             return (
                                 <RoomCard 
                                     key={room.id || i} 
@@ -815,6 +857,7 @@ export default function StayPage() {
                                     index={i} 
                                     inView={inView} 
                                     availability={avail}
+                                    searchRange={searchRange}
                                     onBook={() => setSelectedRoomToBook(room)}
                                 />
                             )

@@ -24,6 +24,7 @@ export default function AdminRooms() {
         price: "",
         capacity: "2",
         images: [] as { url: string; id?: string }[],
+        seasonal_prices: {} as Record<string, number>,
     });
     const [uploading, setUploading] = useState(false);
 
@@ -53,7 +54,7 @@ export default function AdminRooms() {
 
     const handleOpenNew = () => {
         setEditingId(null);
-        setFormData({ category_name: "", description: "", features: "", price: "", capacity: "2", images: [] });
+        setFormData({ category_name: "", description: "", features: "", price: "", capacity: "2", images: [], seasonal_prices: {} });
         setIsDialogOpen(true);
     };
 
@@ -67,6 +68,7 @@ export default function AdminRooms() {
             price: room.price || "",
             capacity: room.capacity?.toString() || "2",
             images: mappedImages,
+            seasonal_prices: room.seasonal_prices || {},
         });
         setIsDialogOpen(true);
     };
@@ -149,6 +151,7 @@ export default function AdminRooms() {
             features: formData.features.split(",").map(f => f.trim()).filter(Boolean),
             price: formData.price ? parseFloat(formData.price) : null,
             capacity: formData.capacity ? parseInt(formData.capacity, 10) : 2,
+            seasonal_prices: formData.seasonal_prices,
         };
 
         let roomId = editingId;
@@ -290,6 +293,85 @@ export default function AdminRooms() {
                         <div className="space-y-2">
                             <Label htmlFor="capacity">Capacity (Guests)</Label>
                             <Input id="capacity" type="number" placeholder="2" value={formData.capacity} onChange={e => setFormData({ ...formData, capacity: e.target.value })} />
+                        </div>
+
+                        {/* Seasonal Pricing Section */}
+                        <div className="space-y-4 border-t pt-4">
+                            <div className="flex justify-between items-center">
+                                <Label className="text-base font-semibold">Seasonal Pricing</Label>
+                                <div className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded uppercase font-bold tracking-wider">Optional</div>
+                            </div>
+                            <p className="text-xs text-muted-foreground">Override base price for specific months. If a month isn't set, base price is used.</p>
+                            
+                            <div className="grid grid-cols-12 gap-2 items-end">
+                                <div className="col-span-6 space-y-1.5">
+                                    <Label className="text-[10px] uppercase">Month</Label>
+                                    <select 
+                                        id="seasonal_month"
+                                        className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                    >
+                                        {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map(m => (
+                                            <option key={m} value={m}>{m}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="col-span-4 space-y-1.5">
+                                    <Label className="text-[10px] uppercase">Price (₹)</Label>
+                                    <Input id="seasonal_price" type="number" placeholder="5500" className="h-9" />
+                                </div>
+                                <div className="col-span-2">
+                                    <Button 
+                                        type="button" 
+                                        size="sm" 
+                                        className="w-full h-9"
+                                        onClick={() => {
+                                            const monthSelect = document.getElementById("seasonal_month") as HTMLSelectElement;
+                                            const priceInput = document.getElementById("seasonal_price") as HTMLInputElement;
+                                            const month = monthSelect.value;
+                                            const price = parseFloat(priceInput.value);
+                                            
+                                            if (month && !isNaN(price)) {
+                                                setFormData({
+                                                    ...formData,
+                                                    seasonal_prices: {
+                                                        ...formData.seasonal_prices,
+                                                        [month]: price
+                                                    }
+                                                });
+                                                priceInput.value = "";
+                                            } else {
+                                                toast.error("Please enter a valid price");
+                                            }
+                                        }}
+                                    >
+                                        Add
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {Object.keys(formData.seasonal_prices).length > 0 && (
+                                <div className="bg-slate-50 border rounded-md p-3 space-y-2">
+                                    {Object.entries(formData.seasonal_prices).map(([month, price]) => (
+                                        <div key={month} className="flex justify-between items-center text-sm border-b border-slate-200 last:border-0 pb-2 last:pb-0">
+                                            <span className="font-medium text-slate-700">{month}</span>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-accent font-semibold">₹{price}</span>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => {
+                                                        const newPrices = { ...formData.seasonal_prices };
+                                                        delete newPrices[month];
+                                                        setFormData({ ...formData, seasonal_prices: newPrices });
+                                                    }}
+                                                    className="text-destructive hover:text-destructive/80"
+                                                >
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-2 border-t pt-4">

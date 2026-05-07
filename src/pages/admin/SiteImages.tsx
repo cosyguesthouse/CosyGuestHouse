@@ -15,6 +15,7 @@ const SECTIONS = [
     { section_name: "Experiences Page", image_key: "experiences_banner", description: "Hero background image for the Experiences page." },
     { section_name: "Stories Page", image_key: "stories_banner", description: "Hero background image for the Travel Stories page." },
     { section_name: "Story Section", image_key: "story_image", description: "Image displayed in the Our Story section on home page." },
+    { section_name: "Attractions Page", image_key: "attractions_banner", description: "Hero background image for the Attractions page." },
     { section_name: "About Page", image_key: "about_image", description: "Hero background image for the About page." },
     { section_name: "Contact Page", image_key: "contact_banner", description: "Hero background image for the Contact page." },
     { section_name: "Site Assets", image_key: "site_logo", description: "Logo used across the site." },
@@ -25,6 +26,7 @@ export default function AdminSiteImages() {
     const [images, setImages] = useState<Record<string, any>>({});
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState<string | null>(null);
+    const [previews, setPreviews] = useState<Record<string, string>>({});
 
     useEffect(() => {
         fetchSiteImages();
@@ -55,6 +57,10 @@ export default function AdminSiteImages() {
             if (!originalFile) return;
 
             setUploading(image_key);
+            
+            // Show local preview immediately
+            const objectUrl = URL.createObjectURL(originalFile);
+            setPreviews(prev => ({ ...prev, [image_key]: objectUrl }));
 
             const { file, originalSize, compressedSize, savedPercent } = await compressImage(originalFile);
             if (savedPercent > 0) toast.success(`Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${savedPercent}% saved)`);
@@ -96,6 +102,8 @@ export default function AdminSiteImages() {
             toast.error(error.message || "Failed to upload image");
         } finally {
             setUploading(null);
+            // We keep the preview until fetchSiteImages finishes if we want, 
+            // but fetchSiteImages will overwrite with the real URL.
         }
     };
 
@@ -148,11 +156,11 @@ export default function AdminSiteImages() {
                             </CardHeader>
                             <CardContent className="p-4 flex flex-col items-center justify-center gap-4">
                                 <div className="w-full aspect-video bg-slate-100 rounded-md border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden relative">
-                                    {currentImage?.image_url ? (
-                                        currentImage.image_url.endsWith(".mp4") ? (
-                                            <video src={currentImage.image_url} className="w-full h-full object-cover" autoPlay muted loop />
+                                    {previews[section.image_key] || currentImage?.image_url ? (
+                                        (previews[section.image_key] || currentImage?.image_url).endsWith(".mp4") ? (
+                                            <video src={previews[section.image_key] || currentImage.image_url} className="w-full h-full object-cover" autoPlay muted loop />
                                         ) : (
-                                            <img src={currentImage.image_url} alt={section.image_key} className="w-full h-full object-cover" />
+                                            <img src={previews[section.image_key] || currentImage.image_url} alt={section.image_key} className="w-full h-full object-cover" />
                                         )
                                     ) : (
                                         <div className="text-slate-400 flex flex-col items-center gap-2">
