@@ -151,6 +151,6 @@ END $$;
 ALTER TABLE public.room_categories ADD COLUMN IF NOT EXISTS seasonal_prices JSONB DEFAULT '{}'::jsonb;
 
 -- ADD EXTRA MATTRESS RATE TO PAYMENT SETTINGS
-ALTER TABLE public.payment_settings ADD COLUMN IF NOT EXISTS extra_mattress_rate INTEGER DEFAULT 500;
+
 
 

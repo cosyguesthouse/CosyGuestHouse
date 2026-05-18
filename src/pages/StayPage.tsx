@@ -32,6 +32,38 @@ const getIcon = (f: string) => {
     return <Check size={14} />;
 };
 
+const getPriceForDate = (date: Date, room: any) => {
+    const dateStr = format(date, "yyyy-MM-dd");
+    const monthStr = dateStr.substring(0, 7);
+    const calData = room.seasonal_prices || {};
+    
+    let dayPrice = room.price || 0;
+    
+    if (typeof calData === 'object' && (calData.datePricing || calData.rangePricing || calData.monthlyPricing)) {
+        if (calData.datePricing && calData.datePricing[dateStr]) {
+            dayPrice = calData.datePricing[dateStr];
+        } else {
+            let rangeFound = false;
+            if (calData.rangePricing) {
+                for (const r of calData.rangePricing) {
+                    if (dateStr >= r.start && dateStr <= r.end) {
+                        dayPrice = r.price;
+                        rangeFound = true;
+                        break;
+                    }
+                }
+            }
+            if (!rangeFound && calData.monthlyPricing && calData.monthlyPricing[monthStr]) {
+                dayPrice = calData.monthlyPricing[monthStr];
+            }
+        }
+    } else if (calData && typeof calData === 'object' && calData[format(date, "MMMM")]) {
+        dayPrice = calData[format(date, "MMMM")];
+    }
+    
+    return dayPrice;
+};
+
 type GuestRoom = { adults: number; childAbove5: number; childBelow5: number; extraMattress: boolean };
 
 function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms: GuestRoom[], maxRooms: number, isSingleOrBudget: boolean, onChange: (rooms: GuestRoom[]) => void }) {
@@ -226,13 +258,24 @@ function BookingModal({
 
     const nights = range?.from && range?.to ? differenceInDays(range.to, range.from) : 0;
     
-    // Seasonal Pricing Logic
-    const checkInMonth = range?.from ? format(range.from, "MMMM") : "";
-    const seasonalPrice = roomDetails.seasonal_prices?.[checkInMonth];
-    const activePrice = seasonalPrice || roomDetails.price || 0;
-    const isSeasonalApplied = !!seasonalPrice;
+    // Calendar Pricing Logic
+    let baseRoomPriceTotal = 0;
+    let activePrice = roomDetails.price || 0;
+    let isSeasonalApplied = false;
 
-    const baseRoomPriceTotal = nights * activePrice * guestRooms.length;
+    if (range?.from && range?.to) {
+        let currentDate = new Date(range.from);
+        let singleRoomTotal = 0;
+        
+        for (let i = 0; i < nights; i++) {
+            const dayPrice = getPriceForDate(currentDate, roomDetails);
+            if (i === 0) activePrice = dayPrice;
+            if (dayPrice !== (roomDetails.price || 0)) isSeasonalApplied = true;
+            singleRoomTotal += dayPrice;
+            currentDate = addDays(currentDate, 1);
+        }
+        baseRoomPriceTotal = singleRoomTotal * guestRooms.length;
+    }
     
     let extraMattressPriceTotal = 0;
     guestRooms.forEach(r => {
@@ -391,7 +434,7 @@ function BookingModal({
                                             const aInfo = availabilityMap[c.id] || { available: 0 };
                                             return (
                                                 <option key={c.id} value={c.id} disabled={aInfo.available === 0}>
-                                                    {c.name} {aInfo.available === 0 ? "(Sold Out)" : `(${aInfo.available} Left - ₹${c.seasonal_prices?.[checkInMonth] || c.price}/night)`}
+                                                    {c.name} {aInfo.available === 0 ? "(Sold Out)" : `(${aInfo.available} Left - ₹${getPriceForDate(range?.from || new Date(), c)}/night)`}
                                                 </option>
                                             )
                                         })}
@@ -619,11 +662,9 @@ function RoomCard({
     const images = room.images?.length > 0 ? room.images : [staticRoom.images[0]];
     const features = room.features || [];
     
-    // Seasonal Pricing Logic for Card
-    const checkInMonth = searchRange?.from ? format(searchRange.from, "MMMM") : "";
-    const seasonalPrice = room.seasonal_prices?.[checkInMonth];
-    const displayPrice = seasonalPrice || room.price || 0;
-    const isSeasonal = !!seasonalPrice;
+    // Calendar Pricing Logic for Card
+    const displayPrice = getPriceForDate(searchRange?.from || new Date(), room);
+    const isSeasonal = displayPrice !== (room.price || 0);
 
     const isSoldOut = availability === 0;
 

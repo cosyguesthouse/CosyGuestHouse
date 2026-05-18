@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { format, addMonths, startOfMonth, endOfMonth, eachDayOfInterval, getDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,8 +9,235 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { PlusCircle, Edit, Trash2, Loader2, UploadCloud, ChevronUp, ChevronDown } from "lucide-react";
+import { PlusCircle, Edit, Trash2, Loader2, UploadCloud, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { compressImage, formatFileSize } from "@/lib/imageCompression";
+
+const CalendarPricingEditor = ({ value, onChange }: { value: any, onChange: (v: any) => void }) => {
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+    const [pricingTab, setPricingTab] = useState("single");
+    
+    const [singleDate, setSingleDate] = useState("");
+    const [singlePrice, setSinglePrice] = useState("");
+    
+    const [rangeStart, setRangeStart] = useState("");
+    const [rangeEnd, setRangeEnd] = useState("");
+    const [rangePrice, setRangePrice] = useState("");
+    
+    const [monthInput, setMonthInput] = useState("");
+    const [monthPrice, setMonthPrice] = useState("");
+
+    const daysInMonth = eachDayOfInterval({
+        start: startOfMonth(currentMonth),
+        end: endOfMonth(currentMonth)
+    });
+    
+    const startDayOfWeek = getDay(startOfMonth(currentMonth));
+    const blanks = Array.from({ length: startDayOfWeek }).map((_, i) => i);
+    
+    const getPriceBadge = (dateStr: string) => {
+        if (value?.datePricing?.[dateStr]) return { type: 'single', price: value.datePricing[dateStr] };
+        if (Array.isArray(value?.rangePricing)) {
+            const range = value.rangePricing.find((r: any) => dateStr >= r.start && dateStr <= r.end);
+            if (range) return { type: 'range', price: range.price };
+        }
+        const monthStr = dateStr.substring(0, 7);
+        if (value?.monthlyPricing?.[monthStr]) return { type: 'month', price: value.monthlyPricing[monthStr] };
+        return null;
+    };
+
+    const safeFormat = (dateStr: string, fmt: string) => {
+        try {
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr.replace("-01", ""); // fallback for invalid dates
+            return format(d, fmt);
+        } catch {
+            return dateStr.replace("-01", "");
+        }
+    };
+
+    const handleAddSingle = () => {
+        if (!singleDate || !singlePrice) return toast.error("Enter date and price");
+        const val = { ...value, datePricing: { ...(value?.datePricing || {}), [singleDate]: Number(singlePrice) } };
+        onChange(val);
+        setSinglePrice("");
+    };
+
+    const handleAddRange = () => {
+        if (!rangeStart || !rangeEnd || !rangePrice) return toast.error("Enter start, end and price");
+        if (rangeStart > rangeEnd) return toast.error("Start date must be before end date");
+        const newRange = { start: rangeStart, end: rangeEnd, price: Number(rangePrice) };
+        const val = { ...value, rangePricing: [...(value?.rangePricing || []), newRange] };
+        onChange(val);
+        setRangeStart(""); setRangeEnd(""); setRangePrice("");
+    };
+
+    const handleAddMonth = () => {
+        if (!monthInput || !monthPrice) return toast.error("Select month and price");
+        const val = { ...value, monthlyPricing: { ...(value?.monthlyPricing || {}), [monthInput]: Number(monthPrice) } };
+        onChange(val);
+        setMonthInput(""); setMonthPrice("");
+    };
+
+    const handleRemoveSingle = (d: string) => {
+        const next = { ...value?.datePricing };
+        delete next[d];
+        onChange({ ...value, datePricing: next });
+    };
+
+    const handleRemoveRange = (idx: number) => {
+        const next = [...(value?.rangePricing || [])];
+        next.splice(idx, 1);
+        onChange({ ...value, rangePricing: next });
+    };
+
+    const handleRemoveMonth = (m: string) => {
+        const next = { ...value?.monthlyPricing };
+        delete next[m];
+        onChange({ ...value, monthlyPricing: next });
+    };
+
+    return (
+        <div className="space-y-4">
+            <div className="flex flex-col md:flex-row gap-6">
+               <div className="flex-1 border rounded-md p-4 bg-white shadow-sm">
+                   <div className="flex justify-between items-center mb-4">
+                       <Button type="button" variant="outline" size="sm" onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}><ChevronLeft size={16}/></Button>
+                       <h4 className="font-semibold text-slate-800">{format(currentMonth, 'MMMM yyyy')}</h4>
+                       <Button type="button" variant="outline" size="sm" onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}><ChevronRight size={16}/></Button>
+                   </div>
+                   <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold mb-2 text-slate-500">
+                       {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => <div key={d}>{d}</div>)}
+                   </div>
+                   <div className="grid grid-cols-7 gap-1">
+                       {blanks.map(b => <div key={`blank-${b}`} className="h-12"></div>)}
+                       {daysInMonth.map(day => {
+                           const dateStr = format(day, 'yyyy-MM-dd');
+                           const badge = getPriceBadge(dateStr);
+                           return (
+                               <div key={dateStr} 
+                                    className={`h-12 border rounded-md flex flex-col items-center justify-center cursor-pointer transition-colors hover:bg-slate-50
+                                        ${badge?.type === 'single' ? 'bg-red-50 border-red-200' : ''}
+                                        ${badge?.type === 'range' ? 'bg-amber-50 border-amber-200' : ''}
+                                        ${badge?.type === 'month' ? 'bg-blue-50 border-blue-200' : ''}
+                                    `}
+                                    onClick={() => { setPricingTab('single'); setSingleDate(dateStr); }}
+                               >
+                                   <span className="text-sm font-medium text-slate-700">{format(day, 'd')}</span>
+                                   {badge && <span className={`text-[9px] font-bold ${badge.type==='single'?'text-red-600':badge.type==='range'?'text-amber-600':'text-blue-600'}`}>₹{badge.price}</span>}
+                               </div>
+                           )
+                       })}
+                   </div>
+                   
+                   <div className="flex gap-4 mt-6 text-[10px] text-muted-foreground justify-center uppercase font-bold tracking-wider">
+                       <span className="flex items-center gap-1.5"><div className="w-3 h-3 bg-red-100 border-red-200 border rounded-sm"></div> Single Date</span>
+                       <span className="flex items-center gap-1.5"><div className="w-3 h-3 bg-amber-100 border-amber-200 border rounded-sm"></div> Range</span>
+                       <span className="flex items-center gap-1.5"><div className="w-3 h-3 bg-blue-100 border-blue-200 border rounded-sm"></div> Month</span>
+                   </div>
+               </div>
+               
+               <div className="flex-1 space-y-4">
+                  <div className="flex gap-2 border-b pb-2">
+                      <Button type="button" variant={pricingTab === 'single' ? 'default' : 'ghost'} size="sm" onClick={() => setPricingTab('single')}>Specific Date</Button>
+                      <Button type="button" variant={pricingTab === 'range' ? 'default' : 'ghost'} size="sm" onClick={() => setPricingTab('range')}>Date Range</Button>
+                      <Button type="button" variant={pricingTab === 'month' ? 'default' : 'ghost'} size="sm" onClick={() => setPricingTab('month')}>Full Month</Button>
+                  </div>
+                  
+                  {pricingTab === 'single' && (
+                      <div className="space-y-3 p-4 bg-slate-50 rounded-md border">
+                          <h4 className="text-sm font-semibold text-slate-800">Set Price for Specific Date</h4>
+                          <div className="grid grid-cols-2 gap-2">
+                              <div className="space-y-1">
+                                  <Label className="text-[10px] uppercase">Date</Label>
+                                  <Input type="date" value={singleDate} onChange={e => setSingleDate(e.target.value)} />
+                              </div>
+                              <div className="space-y-1">
+                                  <Label className="text-[10px] uppercase">Price (₹)</Label>
+                                  <Input type="number" placeholder="Price" value={singlePrice} onChange={e => setSinglePrice(e.target.value)} />
+                              </div>
+                          </div>
+                          <Button type="button" size="sm" className="w-full mt-2" onClick={handleAddSingle}>Set Day Price</Button>
+                          
+                          <div className="mt-4 max-h-40 overflow-y-auto space-y-2">
+                              {Object.entries(value?.datePricing || {}).map(([d, p]) => (
+                                  <div key={d} className="flex justify-between items-center text-xs bg-white p-2.5 border rounded shadow-sm">
+                                      <span className="font-medium text-slate-700">{safeFormat(d, 'dd MMM yyyy')}</span>
+                                      <div className="flex items-center gap-3">
+                                          <span className="font-semibold text-red-600">₹{p as number}</span>
+                                          <button type="button" className="text-red-500 hover:text-red-700" onClick={() => handleRemoveSingle(d)}><X size={14}/></button>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  )}
+
+                  {pricingTab === 'range' && (
+                      <div className="space-y-3 p-4 bg-slate-50 rounded-md border">
+                          <h4 className="text-sm font-semibold text-slate-800">Set Price for Date Range</h4>
+                          <div className="grid grid-cols-2 gap-2">
+                              <div className="space-y-1">
+                                  <Label className="text-[10px] uppercase">Start Date</Label>
+                                  <Input type="date" value={rangeStart} onChange={e => setRangeStart(e.target.value)} />
+                              </div>
+                              <div className="space-y-1">
+                                  <Label className="text-[10px] uppercase">End Date</Label>
+                                  <Input type="date" value={rangeEnd} onChange={e => setRangeEnd(e.target.value)} />
+                              </div>
+                          </div>
+                          <div className="space-y-1">
+                              <Label className="text-[10px] uppercase">Price per night (₹)</Label>
+                              <Input type="number" placeholder="Price" value={rangePrice} onChange={e => setRangePrice(e.target.value)} />
+                          </div>
+                          <Button type="button" size="sm" className="w-full mt-2" onClick={handleAddRange}>Set Range Price</Button>
+                          
+                          <div className="mt-4 max-h-40 overflow-y-auto space-y-2">
+                              {(Array.isArray(value?.rangePricing) ? value.rangePricing : []).map((r: any, i: number) => (
+                                  <div key={i} className="flex justify-between items-center text-xs bg-white p-2.5 border rounded shadow-sm">
+                                      <span className="font-medium text-slate-700">{safeFormat(r.start, 'dd MMM')} - {safeFormat(r.end, 'dd MMM yyyy')}</span>
+                                      <div className="flex items-center gap-3">
+                                          <span className="font-semibold text-amber-600">₹{r.price}</span>
+                                          <button type="button" className="text-red-500 hover:text-red-700" onClick={() => handleRemoveRange(i)}><X size={14}/></button>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  )}
+
+                  {pricingTab === 'month' && (
+                      <div className="space-y-3 p-4 bg-slate-50 rounded-md border">
+                          <h4 className="text-sm font-semibold text-slate-800">Set Price for Full Month</h4>
+                          <div className="grid grid-cols-2 gap-2">
+                              <div className="space-y-1">
+                                  <Label className="text-[10px] uppercase">Month</Label>
+                                  <Input type="month" value={monthInput} onChange={e => setMonthInput(e.target.value)} />
+                              </div>
+                              <div className="space-y-1">
+                                  <Label className="text-[10px] uppercase">Price per night (₹)</Label>
+                                  <Input type="number" placeholder="Price" value={monthPrice} onChange={e => setMonthPrice(e.target.value)} />
+                              </div>
+                          </div>
+                          <Button type="button" size="sm" className="w-full mt-2" onClick={handleAddMonth}>Set Month Price</Button>
+                          
+                          <div className="mt-4 max-h-40 overflow-y-auto space-y-2">
+                              {Object.entries(value?.monthlyPricing || {}).map(([m, p]) => (
+                                  <div key={m} className="flex justify-between items-center text-xs bg-white p-2.5 border rounded shadow-sm">
+                                      <span className="font-medium text-slate-700">{safeFormat(m + "-01", 'MMMM yyyy')}</span>
+                                      <div className="flex items-center gap-3">
+                                          <span className="font-semibold text-blue-600">₹{p as number}</span>
+                                          <button type="button" className="text-red-500 hover:text-red-700" onClick={() => handleRemoveMonth(m)}><X size={14}/></button>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  )}
+               </div>
+            </div>
+        </div>
+    );
+};
 
 export default function AdminRooms() {
     const [rooms, setRooms] = useState<any[]>([]);
@@ -24,7 +252,7 @@ export default function AdminRooms() {
         price: "",
         capacity: "2",
         images: [] as { url: string; id?: string }[],
-        seasonal_prices: {} as Record<string, number>,
+        seasonal_prices: { datePricing: {}, rangePricing: [], monthlyPricing: {} } as any,
     });
     const [uploading, setUploading] = useState(false);
 
@@ -54,23 +282,28 @@ export default function AdminRooms() {
 
     const handleOpenNew = () => {
         setEditingId(null);
-        setFormData({ category_name: "", description: "", features: "", price: "", capacity: "2", images: [], seasonal_prices: {} });
+        setFormData({ category_name: "", description: "", features: "", price: "", capacity: "2", images: [], seasonal_prices: { datePricing: {}, rangePricing: [], monthlyPricing: {} } });
         setIsDialogOpen(true);
     };
 
     const handleEdit = (room: any) => {
-        setEditingId(room.id);
-        const mappedImages = room.room_images ? room.room_images.map((img: any) => ({ url: img.image_url, id: img.id })) : [];
-        setFormData({
-            category_name: room.category_name,
-            description: room.description || "",
-            features: room.features ? room.features.join(", ") : "",
-            price: room.price || "",
-            capacity: room.capacity?.toString() || "2",
-            images: mappedImages,
-            seasonal_prices: room.seasonal_prices || {},
-        });
-        setIsDialogOpen(true);
+        try {
+            setEditingId(room.id);
+            const mappedImages = room.room_images ? room.room_images.map((img: any) => ({ url: img.image_url, id: img.id })) : [];
+            setFormData({
+                category_name: room.category_name || "",
+                description: room.description || "",
+                features: Array.isArray(room.features) ? room.features.join(", ") : (typeof room.features === 'string' ? room.features : ""),
+                price: room.price || "",
+                capacity: room.capacity?.toString() || "2",
+                images: mappedImages,
+                seasonal_prices: room.seasonal_prices && typeof room.seasonal_prices === 'object' && !Array.isArray(room.seasonal_prices) && 'datePricing' in room.seasonal_prices ? room.seasonal_prices : { datePricing: {}, rangePricing: [], monthlyPricing: {} },
+            });
+            setIsDialogOpen(true);
+        } catch (error) {
+            console.error("Error in handleEdit:", error);
+            toast.error("Failed to load room data for editing.");
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -295,83 +528,20 @@ export default function AdminRooms() {
                             <Input id="capacity" type="number" placeholder="2" value={formData.capacity} onChange={e => setFormData({ ...formData, capacity: e.target.value })} />
                         </div>
 
-                        {/* Seasonal Pricing Section */}
+                        {/* Calendar Pricing Section */}
                         <div className="space-y-4 border-t pt-4">
                             <div className="flex justify-between items-center">
-                                <Label className="text-base font-semibold">Seasonal Pricing</Label>
+                                <div>
+                                    <Label className="text-base font-semibold">Calendar Pricing (Advanced)</Label>
+                                    <p className="text-xs text-muted-foreground mt-1">Override base price for specific dates, ranges, or full months. Priorities: Date &gt; Range &gt; Month &gt; Base Price.</p>
+                                </div>
                                 <div className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded uppercase font-bold tracking-wider">Optional</div>
                             </div>
-                            <p className="text-xs text-muted-foreground">Override base price for specific months. If a month isn't set, base price is used.</p>
                             
-                            <div className="grid grid-cols-12 gap-2 items-end">
-                                <div className="col-span-6 space-y-1.5">
-                                    <Label className="text-[10px] uppercase">Month</Label>
-                                    <select 
-                                        id="seasonal_month"
-                                        className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                                    >
-                                        {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map(m => (
-                                            <option key={m} value={m}>{m}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="col-span-4 space-y-1.5">
-                                    <Label className="text-[10px] uppercase">Price (₹)</Label>
-                                    <Input id="seasonal_price" type="number" placeholder="5500" className="h-9" />
-                                </div>
-                                <div className="col-span-2">
-                                    <Button 
-                                        type="button" 
-                                        size="sm" 
-                                        className="w-full h-9"
-                                        onClick={() => {
-                                            const monthSelect = document.getElementById("seasonal_month") as HTMLSelectElement;
-                                            const priceInput = document.getElementById("seasonal_price") as HTMLInputElement;
-                                            const month = monthSelect.value;
-                                            const price = parseFloat(priceInput.value);
-                                            
-                                            if (month && !isNaN(price)) {
-                                                setFormData({
-                                                    ...formData,
-                                                    seasonal_prices: {
-                                                        ...formData.seasonal_prices,
-                                                        [month]: price
-                                                    }
-                                                });
-                                                priceInput.value = "";
-                                            } else {
-                                                toast.error("Please enter a valid price");
-                                            }
-                                        }}
-                                    >
-                                        Add
-                                    </Button>
-                                </div>
-                            </div>
-
-                            {Object.keys(formData.seasonal_prices).length > 0 && (
-                                <div className="bg-slate-50 border rounded-md p-3 space-y-2">
-                                    {Object.entries(formData.seasonal_prices).map(([month, price]) => (
-                                        <div key={month} className="flex justify-between items-center text-sm border-b border-slate-200 last:border-0 pb-2 last:pb-0">
-                                            <span className="font-medium text-slate-700">{month}</span>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-accent font-semibold">₹{price}</span>
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => {
-                                                        const newPrices = { ...formData.seasonal_prices };
-                                                        delete newPrices[month];
-                                                        setFormData({ ...formData, seasonal_prices: newPrices });
-                                                    }}
-                                                    className="text-destructive hover:text-destructive/80"
-                                                >
-                                                    <Trash2 size={14} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                            <CalendarPricingEditor 
+                                value={formData.seasonal_prices}
+                                onChange={(val) => setFormData({ ...formData, seasonal_prices: val })}
+                            />
                         </div>
 
                         <div className="space-y-2 border-t pt-4">
