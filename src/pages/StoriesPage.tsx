@@ -7,8 +7,11 @@ import { useTravelStoriesData, useSiteImages } from "@/hooks/useSupabaseData";
 import { travelStoriesData as staticStories } from "@/data/siteData";
 import blueAlleyImg from "@/assets/blue-alley.jpg";
 import { ImageSlider } from "@/components/ui/ImageSlider";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 export default function StoriesPage() {
+    const { t } = useTranslation();
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: stories = [] } = useTravelStoriesData();
@@ -33,11 +36,11 @@ export default function StoriesPage() {
                     transition={{ duration: 0.9 }}
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
                 >
-                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">Journal</p>
-                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">Travel Stories</h1>
+                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">{t('stories.journal', 'Journal')}</p>
+                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">{t('stories.heading', 'Travel Stories')}</h1>
                     <div className="gold-divider mt-6" />
                     <p className="font-body text-sm text-primary-foreground/70 mt-4 max-w-md">
-                        Tales from the Blue City — vivid journeys and unforgettable moments from Jodhpur.
+                        {t('stories.description', 'Tales from the Blue City — vivid journeys and unforgettable moments from Jodhpur.')}
                     </p>
                 </motion.div>
             </div>
@@ -62,10 +65,10 @@ export default function StoriesPage() {
                                 )}
                             </div>
                             <h3 className="font-heading text-2xl font-light mb-3 group-hover:text-accent transition-colors duration-300">
-                                {story.title}
+                                <Translate text={story.title} />
                             </h3>
                             <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">
-                                {story.description || story.excerpt}
+                                <Translate text={story.description || story.excerpt} />
                             </p>
 
                             {/* Full content expandable */}
@@ -77,20 +80,20 @@ export default function StoriesPage() {
                                             animate={{ opacity: 1, height: "auto" }}
                                             className="font-body text-sm text-muted-foreground leading-relaxed mb-4 border-t pt-4 overflow-hidden"
                                         >
-                                            <div dangerouslySetInnerHTML={{ __html: story.content.replace(/\n/g, "<br/>") }} />
+                                            <Translate text={story.content} />
                                         </motion.div>
                                     )}
                                     <button
                                         onClick={() => setExpanded(expanded === (story.id || story.slug) ? null : (story.id || story.slug))}
                                         className="font-body text-xs tracking-[0.2em] uppercase text-accent border-b border-accent pb-1 hover:border-foreground hover:text-foreground transition-colors duration-300"
                                     >
-                                        {expanded === (story.id || story.slug) ? "Read Less" : "Read More"}
+                                        {expanded === (story.id || story.slug) ? t("dining.readLess", "Read Less") : t("dining.readMore", "Read More")}
                                     </button>
                                 </>
                             )}
                             {!story.content && (
                                 <span className="font-body text-xs tracking-[0.2em] uppercase text-accent border-b border-accent pb-1">
-                                    Read More
+                                    {t("dining.readMore", "Read More")}
                                 </span>
                             )}
                         </motion.article>

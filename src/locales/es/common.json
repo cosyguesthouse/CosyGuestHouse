@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "home": "Hogar",
+    "experiences": "Experiencias",
+    "stay": "Permanecer",
+    "dining": "Comida",
+    "stories": "Historias",
+    "attractions": "Atracciones",
+    "contact": "Contacto",
+    "bookNow": "Reserva ahora",
+    "admin": "Administración",
+    "about": "Sobre nosotros",
+    "aboutus": "Sobre nosotros",
+    "ourrooms": "Nuestras Habitaciones",
+    "travelstories": "Historias de viajes",
+    "contactus": "Contáctenos",
+    "feedback": "Comentario"
+  },
+  "hero": {
+    "title": "Acogedora casa de huéspedes",
+    "subtitle": "Donde la comodidad se encuentra con la belleza de la ciudad azul.",
+    "exploreStay": "Explorar Estancia",
+    "viewDining": "Ver Comedor"
+  },
+  "rooms": {
+    "heading": "Nuestras habitaciones y suites",
+    "accommodation": "Alojamiento",
+    "book": "Reserva ahora"
+  },
+  "booking": {
+    "guests": "Selección de invitados",
+    "name": "Nombre del invitado principal *",
+    "email": "Correo electrónico *",
+    "phone": "Móvil *"
+  },
+  "dining": {
+    "subtitle": "Un sabor de Rajastán",
+    "readMore": "Leer más",
+    "readLess": "Leer menos"
+  },
+  "stories": {
+    "journal": "Diario",
+    "heading": "Historias de viajes",
+    "readMore": "Leer más"
+  },
+  "contact": {
+    "reachUs": "Contáctenos",
+    "title": "Contáctenos",
+    "findUs": "Encuéntranos",
+    "getInTouch": "Ponte en contacto",
+    "address": "DIRECCIÓN",
+    "writeToUs": "Escríbenos",
+    "sendMessage": "Enviar un mensaje"
+  },
+  "footer": {
+    "about": "Sobre nosotros",
+    "contact": "Contáctenos",
+    "links": "Explorar",
+    "findUs": "Encuéntranos",
+    "rights": "Reservados todos los derechos",
+    "aboutus": "Sobre nosotros",
+    "ourrooms": "Nuestras Habitaciones",
+    "travelstories": "Historias de viajes",
+    "contactus": "Contáctenos",
+    "feedback": "Comentario",
+    "attractions": "Atracciones",
+    "experiences": "Experiencias",
+    "dining": "Comida"
+  },
+  "admin": {
+    "dashboard": "Panel",
+    "rooms": "Alojamiento",
+    "bookings": "Reservas",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión",
+    "homepagecontent": "Contenido de la página de inicio",
+    "siteimages": "Imágenes del sitio",
+    "experiences": "Experiencias",
+    "roomcategories": "Categorías de habitaciones",
+    "physicalrooms": "Salas Físicas",
+    "dining": "Comida",
+    "gallery": "Galería",
+    "travelstories": "Historias de viajes",
+    "attractions": "Atracciones",
+    "facilities": "Instalaciones",
+    "contactqueries": "Consultas de contacto",
+    "reviewsmanager": "Gerente de reseñas",
+    "slidersettings": "Configuración del control deslizante",
+    "paymentsettings": "Configuración de pago"
+  },
+  "facilities": {
+    "subtitle": "Comodidades",
+    "heading": "Nuestras Instalaciones"
+  },
+  "reviews": {
+    "subtitle": "Voces invitadas",
+    "heading": "Lo que dicen nuestros invitados"
+  },
+  "experiences": {
+    "subtitle": "Descubrir"
+  },
+  "attractions": {
+    "subtitle": "Descubrir",
+    "exploreAll": "Explora todas las atracciones"
+  }
+}

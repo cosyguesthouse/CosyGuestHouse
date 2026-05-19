@@ -7,6 +7,8 @@ import { useAttractionsData, useSiteImages } from "@/hooks/useSupabaseData";
 import { MapPin } from "lucide-react";
 import { ImageSlider } from "@/components/ui/ImageSlider";
 import blueCityImg from "@/assets/blue-city-view.jpg";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 const staticAttractions = [
   { id: "1", title: "Mehrangarh Fort", description: "One of the largest forts in India, perched 400 feet above the city of Jodhpur. The massive walls of this magnificent fort have ramparts and spectacular views of the Blue City.", location: "Fort Road, Jodhpur", images: [] },
@@ -18,6 +20,7 @@ const staticAttractions = [
 ];
 
 function AttractionPageCard({ attraction, index, inView }: { attraction: any, index: number, inView: boolean }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const desc = attraction.description || "";
   const isLong = desc.length > 150;
@@ -38,25 +41,25 @@ function AttractionPageCard({ attraction, index, inView }: { attraction: any, in
       </div>
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="font-heading text-2xl font-light mb-2 group-hover:text-accent transition-colors duration-300">
-          {attraction.title}
+          <Translate text={attraction.title} />
         </h3>
         <div className="w-8 h-px bg-accent mb-4" />
         {attraction.location && (
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
             <MapPin size={12} className="text-accent flex-shrink-0" />
-            <span>{attraction.location}</span>
+            <span><Translate text={attraction.location} /></span>
           </div>
         )}
         <div className="font-body text-sm text-muted-foreground leading-relaxed flex-grow">
           <p>
-            {expanded || !isLong ? desc : `${desc.slice(0, 150)}...`}
+            <Translate text={expanded || !isLong ? desc : `${desc.slice(0, 150)}...`} />
           </p>
           {isLong && (
             <button 
               onClick={() => setExpanded(!expanded)}
               className="text-accent hover:underline text-xs mt-2 block font-medium"
             >
-              {expanded ? "Read Less" : "Read More"}
+              {expanded ? t("dining.readLess", "Read Less") : t("dining.readMore", "Read More")}
             </button>
           )}
         </div>
@@ -66,6 +69,7 @@ function AttractionPageCard({ attraction, index, inView }: { attraction: any, in
 }
 
 export default function AttractionsPage() {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: attractions = [] } = useAttractionsData();
@@ -88,11 +92,11 @@ export default function AttractionsPage() {
           transition={{ duration: 0.9 }}
           className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
         >
-          <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">Explore</p>
-          <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">Jodhpur Attractions</h1>
+          <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">{t('attractions.subtitle', 'Explore')}</p>
+          <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">{t('attractions.heading', 'Jodhpur Attractions')}</h1>
           <div className="gold-divider mt-6" />
           <p className="font-body text-sm text-primary-foreground/70 mt-4 max-w-lg">
-            Discover the magic of the Blue City — from majestic forts to hidden stepwells.
+            {t('attractions.description', 'Discover the magic of the Blue City — from majestic forts to hidden stepwells.')}
           </p>
         </motion.div>
       </div>

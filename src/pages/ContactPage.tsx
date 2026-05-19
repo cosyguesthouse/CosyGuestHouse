@@ -13,6 +13,8 @@ import { MapPin, Phone, Mail, Check } from "lucide-react";
 import { siteConfig } from "@/data/siteData";
 import { useSiteImages } from "@/hooks/useSupabaseData";
 import blueCityImg from "@/assets/blue-city-view.jpg";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 function useSettings() {
     return useQuery({
@@ -25,6 +27,7 @@ function useSettings() {
 }
 
 export default function ContactPage() {
+    const { t } = useTranslation();
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: settings } = useSettings();
@@ -79,8 +82,8 @@ export default function ContactPage() {
                     transition={{ duration: 0.9 }}
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
                 >
-                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">Reach Us</p>
-                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">Contact Us</h1>
+                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">{t('contact.reachUs', 'Reach Us')}</p>
+                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">{t('contact.title', 'Contact Us')}</h1>
                     <div className="gold-divider mt-6" />
                 </motion.div>
             </div>
@@ -95,8 +98,8 @@ export default function ContactPage() {
                         className="space-y-10"
                     >
                         <div>
-                            <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Find Us</p>
-                            <h2 className="font-heading text-4xl font-light mb-6">Get In Touch</h2>
+                            <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('contact.findUs', 'Find Us')}</p>
+                            <h2 className="font-heading text-4xl font-light mb-6">{t('contact.getInTouch', 'Get In Touch')}</h2>
                             <div className="gold-divider !mx-0 mb-8" />
                         </div>
 
@@ -106,10 +109,10 @@ export default function ContactPage() {
                                     <MapPin size={16} className="text-accent" />
                                 </div>
                                 <div>
-                                    <p className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mb-1">Address</p>
-                                    <p className="font-body text-sm text-foreground">{address1}</p>
-                                    <p className="font-body text-sm text-foreground">{address2}</p>
-                                    <p className="font-body text-sm text-foreground">{addressCity}</p>
+                                    <p className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mb-1">{t('contact.address', 'Address')}</p>
+                                    <p className="font-body text-sm text-foreground"><Translate text={address1} /></p>
+                                    <p className="font-body text-sm text-foreground"><Translate text={address2} /></p>
+                                    <p className="font-body text-sm text-foreground"><Translate text={addressCity} /></p>
                                 </div>
                             </div>
 
@@ -160,8 +163,8 @@ export default function ContactPage() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
                         <div className="mb-8">
-                            <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Write to Us</p>
-                            <h2 className="font-heading text-4xl font-light mb-2">Send a Message</h2>
+                            <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('contact.writeToUs', 'Write to Us')}</p>
+                            <h2 className="font-heading text-4xl font-light mb-2">{t('contact.sendMessage', 'Send a Message')}</h2>
                             <div className="gold-divider !mx-0 mt-4" />
                         </div>
 

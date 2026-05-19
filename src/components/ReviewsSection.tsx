@@ -2,6 +2,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useGoogleReviews } from "@/hooks/useSupabaseData";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 const demoReviews = [
   { id: "1", reviewer_name: "Sarah M.", reviewer_photo: "", rating: 5, review_text: "An absolutely magical experience. The rooftop view of Mehrangarh Fort at sunset was breathtaking. The hosts were incredibly warm and attentive. A true gem in the Blue City!", review_date: "2025-12-15" },
@@ -25,6 +27,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 const ReviewCard = ({ review }: { review: any }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const isLong = review.review_text && review.review_text.length > 150;
 
@@ -33,13 +36,13 @@ const ReviewCard = ({ review }: { review: any }) => {
       <Quote size={32} className="text-accent/20 absolute top-6 right-6" />
       <StarRating rating={review.rating} />
       <div className="font-body text-sm text-muted-foreground leading-relaxed flex-1 italic">
-        <p>&ldquo;{expanded || !isLong ? review.review_text : `${review.review_text.slice(0, 150)}...`}&rdquo;</p>
+        <p>&ldquo;<Translate text={expanded || !isLong ? review.review_text : `${review.review_text.slice(0, 150)}...`} />&rdquo;</p>
         {isLong && (
           <button 
             onClick={() => setExpanded(!expanded)}
             className="text-accent hover:underline text-xs mt-2 not-italic font-medium"
           >
-            {expanded ? "Read Less" : "Read More"}
+            {expanded ? t("dining.readLess", "Read Less") : t("dining.readMore", "Read More")}
           </button>
         )}
       </div>
@@ -63,6 +66,7 @@ const ReviewCard = ({ review }: { review: any }) => {
 };
 
 const ReviewsSection = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: reviews = [] } = useGoogleReviews();
@@ -92,8 +96,8 @@ const ReviewsSection = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Guest Voices</p>
-          <h2 className="section-heading">What Our Guests Say</h2>
+          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('reviews.subtitle', 'Guest Voices')}</p>
+          <h2 className="section-heading">{t('reviews.heading', 'What Our Guests Say')}</h2>
           <div className="gold-divider mt-6" />
         </motion.div>
 

@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "ਘਰ",
+    "experiences": "ਅਨੁਭਵ",
+    "stay": "ਰਹੋ",
+    "dining": "ਖਾਣਾ",
+    "stories": "ਕਹਾਣੀਆਂ",
+    "attractions": "ਆਕਰਸ਼ਣ",
+    "contact": "ਸੰਪਰਕ ਕਰੋ",
+    "bookNow": "ਹੁਣੇ ਬੁੱਕ ਕਰੋ",
+    "admin": "ਐਡਮਿਨ",
+    "about": "ਸਾਡੇ ਬਾਰੇ",
+    "aboutus": "ਸਾਡੇ ਬਾਰੇ",
+    "ourrooms": "ਸਾਡੇ ਕਮਰੇ",
+    "travelstories": "ਯਾਤਰਾ ਕਹਾਣੀਆਂ",
+    "contactus": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+    "feedback": "ਫੀਡਬੈਕ"
+  },
+  "hero": {
+    "title": "ਆਰਾਮਦਾਇਕ ਗੈਸਟ ਹਾਊਸ",
+    "subtitle": "ਜਿੱਥੇ ਆਰਾਮ ਨੀਲੇ ਸ਼ਹਿਰ ਦੀ ਸੁੰਦਰਤਾ ਨੂੰ ਪੂਰਾ ਕਰਦਾ ਹੈ.",
+    "exploreStay": "ਰਹਿਣ ਦੀ ਪੜਚੋਲ ਕਰੋ",
+    "viewDining": "ਡਾਇਨਿੰਗ ਦੇਖੋ"
+  },
+  "rooms": {
+    "heading": "ਸਾਡੇ ਕਮਰੇ ਅਤੇ ਸੂਟ",
+    "accommodation": "ਰਿਹਾਇਸ਼",
+    "book": "ਹੁਣੇ ਬੁੱਕ ਕਰੋ"
+  },
+  "booking": {
+    "guests": "ਮਹਿਮਾਨ ਦੀ ਚੋਣ",
+    "name": "ਮੁੱਖ ਮਹਿਮਾਨ ਦਾ ਨਾਮ *",
+    "email": "ਈਮੇਲ *",
+    "phone": "ਮੋਬਾਈਲ *"
+  },
+  "dining": {
+    "subtitle": "ਰਾਜਸਥਾਨ ਦਾ ਇੱਕ ਸਵਾਦ",
+    "readMore": "ਹੋਰ ਪੜ੍ਹੋ",
+    "readLess": "ਘੱਟ ਪੜ੍ਹੋ"
+  },
+  "stories": {
+    "journal": "ਜਰਨਲ",
+    "heading": "ਯਾਤਰਾ ਕਹਾਣੀਆਂ",
+    "readMore": "ਹੋਰ ਪੜ੍ਹੋ"
+  },
+  "contact": {
+    "reachUs": "ਸਾਡੇ ਤੱਕ ਪਹੁੰਚੋ",
+    "title": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+    "findUs": "ਸਾਨੂੰ ਲੱਭੋ",
+    "getInTouch": "ਸੰਪਰਕ ਵਿੱਚ ਰਹੋ",
+    "address": "ਪਤਾ",
+    "writeToUs": "ਸਾਨੂੰ ਲਿਖੋ",
+    "sendMessage": "ਇੱਕ ਸੁਨੇਹਾ ਭੇਜੋ"
+  },
+  "footer": {
+    "about": "ਸਾਡੇ ਬਾਰੇ",
+    "contact": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+    "links": "ਪੜਚੋਲ ਕਰੋ",
+    "findUs": "ਸਾਨੂੰ ਲੱਭੋ",
+    "rights": "ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ",
+    "aboutus": "ਸਾਡੇ ਬਾਰੇ",
+    "ourrooms": "ਸਾਡੇ ਕਮਰੇ",
+    "travelstories": "ਯਾਤਰਾ ਕਹਾਣੀਆਂ",
+    "contactus": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+    "feedback": "ਫੀਡਬੈਕ",
+    "attractions": "ਆਕਰਸ਼ਣ",
+    "experiences": "ਅਨੁਭਵ",
+    "dining": "ਖਾਣਾ"
+  },
+  "admin": {
+    "dashboard": "ਡੈਸ਼ਬੋਰਡ",
+    "rooms": "ਕਮਰੇ",
+    "bookings": "ਬੁਕਿੰਗ",
+    "settings": "ਸੈਟਿੰਗਾਂ",
+    "logout": "ਲਾਗਆਉਟ",
+    "homepagecontent": "ਹੋਮਪੇਜ ਸਮੱਗਰੀ",
+    "siteimages": "ਸਾਈਟ ਚਿੱਤਰ",
+    "experiences": "ਅਨੁਭਵ",
+    "roomcategories": "ਕਮਰੇ ਦੀਆਂ ਸ਼੍ਰੇਣੀਆਂ",
+    "physicalrooms": "ਭੌਤਿਕ ਕਮਰੇ",
+    "dining": "ਖਾਣਾ",
+    "gallery": "ਗੈਲਰੀ",
+    "travelstories": "ਯਾਤਰਾ ਕਹਾਣੀਆਂ",
+    "attractions": "ਆਕਰਸ਼ਣ",
+    "facilities": "ਸੁਵਿਧਾਵਾਂ",
+    "contactqueries": "ਸੰਪਰਕ ਸਵਾਲ",
+    "reviewsmanager": "ਸਮੀਖਿਆਵਾਂ ਪ੍ਰਬੰਧਕ",
+    "slidersettings": "ਸਲਾਈਡਰ ਸੈਟਿੰਗਾਂ",
+    "paymentsettings": "ਭੁਗਤਾਨ ਸੈਟਿੰਗਾਂ"
+  }
+}

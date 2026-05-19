@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "home": "Maison",
+    "experiences": "Expériences",
+    "stay": "Rester",
+    "dining": "À manger",
+    "stories": "Histoires",
+    "attractions": "Attractions",
+    "contact": "Contact",
+    "bookNow": "Réservez maintenant",
+    "admin": "Administrateur",
+    "about": "À propos de nous",
+    "aboutus": "À propos de nous",
+    "ourrooms": "Nos chambres",
+    "travelstories": "Récits de voyage",
+    "contactus": "Contactez-nous",
+    "feedback": "Retour"
+  },
+  "hero": {
+    "title": "Maison d'hôtes confortable",
+    "subtitle": "Où le confort rencontre la beauté de la ville bleue.",
+    "exploreStay": "Explorez Séjour",
+    "viewDining": "Voir la restauration"
+  },
+  "rooms": {
+    "heading": "Nos chambres et suites",
+    "accommodation": "Hébergement",
+    "book": "Réservez maintenant"
+  },
+  "booking": {
+    "guests": "Sélection des invités",
+    "name": "Nom de l'invité principal *",
+    "email": "E-mail *",
+    "phone": "Mobile *"
+  },
+  "dining": {
+    "subtitle": "Un avant-goût du Rajasthan",
+    "readMore": "En savoir plus",
+    "readLess": "Lire moins"
+  },
+  "stories": {
+    "journal": "Journal",
+    "heading": "Récits de voyage",
+    "readMore": "En savoir plus"
+  },
+  "contact": {
+    "reachUs": "Contactez-nous",
+    "title": "Contactez-nous",
+    "findUs": "Trouvez-nous",
+    "getInTouch": "Entrer en contact",
+    "address": "Adresse",
+    "writeToUs": "Écrivez-nous",
+    "sendMessage": "Envoyer un message"
+  },
+  "footer": {
+    "about": "À propos de nous",
+    "contact": "Contactez-nous",
+    "links": "Explorer",
+    "findUs": "Trouvez-nous",
+    "rights": "Tous droits réservés",
+    "aboutus": "À propos de nous",
+    "ourrooms": "Nos chambres",
+    "travelstories": "Récits de voyage",
+    "contactus": "Contactez-nous",
+    "feedback": "Retour",
+    "attractions": "Attractions",
+    "experiences": "Expériences",
+    "dining": "À manger"
+  },
+  "admin": {
+    "dashboard": "Tableau de bord",
+    "rooms": "Chambres",
+    "bookings": "Réservations",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "homepagecontent": "Contenu de la page d'accueil",
+    "siteimages": "Images du site",
+    "experiences": "Expériences",
+    "roomcategories": "Catégories de chambres",
+    "physicalrooms": "Salles physiques",
+    "dining": "À manger",
+    "gallery": "Galerie",
+    "travelstories": "Récits de voyage",
+    "attractions": "Attractions",
+    "facilities": "Installations",
+    "contactqueries": "Requêtes de contact",
+    "reviewsmanager": "Gestionnaire des avis",
+    "slidersettings": "Paramètres du curseur",
+    "paymentsettings": "Paramètres de paiement"
+  },
+  "facilities": {
+    "subtitle": "Équipements",
+    "heading": "Nos installations"
+  },
+  "reviews": {
+    "subtitle": "Voix d'invités",
+    "heading": "Ce que disent nos clients"
+  },
+  "experiences": {
+    "subtitle": "Découvrir"
+  },
+  "attractions": {
+    "subtitle": "Découvrir",
+    "exploreAll": "Explorez toutes les attractions"
+  }
+}

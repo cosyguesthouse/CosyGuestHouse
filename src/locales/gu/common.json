@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "ઘર",
+    "experiences": "અનુભવો",
+    "stay": "રહો",
+    "dining": "જમવાનું",
+    "stories": "વાર્તાઓ",
+    "attractions": "આકર્ષણો",
+    "contact": "સંપર્ક કરો",
+    "bookNow": "હવે બુક કરો",
+    "admin": "એડમિન",
+    "about": "અમારા વિશે",
+    "aboutus": "અમારા વિશે",
+    "ourrooms": "અમારા રૂમ",
+    "travelstories": "પ્રવાસ વાર્તાઓ",
+    "contactus": "અમારો સંપર્ક કરો",
+    "feedback": "પ્રતિસાદ"
+  },
+  "hero": {
+    "title": "હૂંફાળું ગેસ્ટ હાઉસ",
+    "subtitle": "જ્યાં કમ્ફર્ટ બ્લુ સિટીની સુંદરતાને મળે છે.",
+    "exploreStay": "રોકાણનું અન્વેષણ કરો",
+    "viewDining": "ડાઇનિંગ જુઓ"
+  },
+  "rooms": {
+    "heading": "અમારા રૂમ અને સ્યુટ્સ",
+    "accommodation": "આવાસ",
+    "book": "હવે બુક કરો"
+  },
+  "booking": {
+    "guests": "મહેમાન પસંદગી",
+    "name": "મુખ્ય મહેમાનનું નામ *",
+    "email": "ઈમેલ*",
+    "phone": "મોબાઈલ*"
+  },
+  "dining": {
+    "subtitle": "રાજસ્થાનનો એક સ્વાદ",
+    "readMore": "વધુ વાંચો",
+    "readLess": "ઓછું વાંચો"
+  },
+  "stories": {
+    "journal": "જર્નલ",
+    "heading": "પ્રવાસ વાર્તાઓ",
+    "readMore": "વધુ વાંચો"
+  },
+  "contact": {
+    "reachUs": "અમારો સંપર્ક કરો",
+    "title": "અમારો સંપર્ક કરો",
+    "findUs": "અમને શોધો",
+    "getInTouch": "સંપર્કમાં રહો",
+    "address": "સરનામું",
+    "writeToUs": "અમને લખો",
+    "sendMessage": "એક સંદેશ મોકલો"
+  },
+  "footer": {
+    "about": "અમારા વિશે",
+    "contact": "અમારો સંપર્ક કરો",
+    "links": "અન્વેષણ કરો",
+    "findUs": "અમને શોધો",
+    "rights": "સર્વાધિકાર આરક્ષિત",
+    "aboutus": "અમારા વિશે",
+    "ourrooms": "અમારા રૂમ",
+    "travelstories": "પ્રવાસ વાર્તાઓ",
+    "contactus": "અમારો સંપર્ક કરો",
+    "feedback": "પ્રતિસાદ",
+    "attractions": "આકર્ષણો",
+    "experiences": "અનુભવો",
+    "dining": "જમવાનું"
+  },
+  "admin": {
+    "dashboard": "ડેશબોર્ડ",
+    "rooms": "રૂમ",
+    "bookings": "બુકિંગ",
+    "settings": "સેટિંગ્સ",
+    "logout": "લોગઆઉટ",
+    "homepagecontent": "હોમપેજ સામગ્રી",
+    "siteimages": "સાઇટ છબીઓ",
+    "experiences": "અનુભવો",
+    "roomcategories": "રૂમ શ્રેણીઓ",
+    "physicalrooms": "ભૌતિક રૂમ",
+    "dining": "જમવાનું",
+    "gallery": "ગેલેરી",
+    "travelstories": "પ્રવાસ વાર્તાઓ",
+    "attractions": "આકર્ષણો",
+    "facilities": "સુવિધાઓ",
+    "contactqueries": "સંપર્ક પ્રશ્નો",
+    "reviewsmanager": "સમીક્ષાઓ મેનેજર",
+    "slidersettings": "સ્લાઇડર સેટિંગ્સ",
+    "paymentsettings": "ચુકવણી સેટિંગ્સ"
+  }
+}

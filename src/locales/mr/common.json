@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "घर",
+    "experiences": "अनुभव",
+    "stay": "मुक्काम",
+    "dining": "जेवण",
+    "stories": "कथा",
+    "attractions": "आकर्षणे",
+    "contact": "संपर्क करा",
+    "bookNow": "आता बुक करा",
+    "admin": "ॲडमिन",
+    "about": "आमच्याबद्दल",
+    "aboutus": "आमच्याबद्दल",
+    "ourrooms": "आमच्या खोल्या",
+    "travelstories": "प्रवास कथा",
+    "contactus": "आमच्याशी संपर्क साधा",
+    "feedback": "अभिप्राय"
+  },
+  "hero": {
+    "title": "आरामदायक गेस्ट हाऊस",
+    "subtitle": "जेथे कम्फर्ट ब्लू सिटीचे सौंदर्य भेटते.",
+    "exploreStay": "स्टे एक्सप्लोर करा",
+    "viewDining": "जेवण पहा"
+  },
+  "rooms": {
+    "heading": "आमच्या खोल्या आणि सूट",
+    "accommodation": "राहण्याची सोय",
+    "book": "आता बुक करा"
+  },
+  "booking": {
+    "guests": "अतिथी निवड",
+    "name": "प्रमुख अतिथीचे नाव *",
+    "email": "ईमेल*",
+    "phone": "मोबाईल*"
+  },
+  "dining": {
+    "subtitle": "राजस्थानची चव",
+    "readMore": "अधिक वाचा",
+    "readLess": "कमी वाचा"
+  },
+  "stories": {
+    "journal": "जर्नल",
+    "heading": "प्रवास कथा",
+    "readMore": "अधिक वाचा"
+  },
+  "contact": {
+    "reachUs": "आमच्यापर्यंत पोहोचा",
+    "title": "आमच्याशी संपर्क साधा",
+    "findUs": "आम्हाला शोधा",
+    "getInTouch": "संपर्कात रहा",
+    "address": "पत्ता",
+    "writeToUs": "आम्हाला लिहा",
+    "sendMessage": "एक संदेश पाठवा"
+  },
+  "footer": {
+    "about": "आमच्याबद्दल",
+    "contact": "आमच्याशी संपर्क साधा",
+    "links": "एक्सप्लोर करा",
+    "findUs": "आम्हाला शोधा",
+    "rights": "सर्व हक्क राखीव",
+    "aboutus": "आमच्याबद्दल",
+    "ourrooms": "आमच्या खोल्या",
+    "travelstories": "प्रवास कथा",
+    "contactus": "आमच्याशी संपर्क साधा",
+    "feedback": "अभिप्राय",
+    "attractions": "आकर्षणे",
+    "experiences": "अनुभव",
+    "dining": "जेवण"
+  },
+  "admin": {
+    "dashboard": "डॅशबोर्ड",
+    "rooms": "खोल्या",
+    "bookings": "बुकिंग",
+    "settings": "सेटिंग्ज",
+    "logout": "लॉगआउट करा",
+    "homepagecontent": "मुख्यपृष्ठ सामग्री",
+    "siteimages": "साइट प्रतिमा",
+    "experiences": "अनुभव",
+    "roomcategories": "खोली श्रेणी",
+    "physicalrooms": "भौतिक खोल्या",
+    "dining": "जेवण",
+    "gallery": "गॅलरी",
+    "travelstories": "प्रवास कथा",
+    "attractions": "आकर्षणे",
+    "facilities": "सुविधा",
+    "contactqueries": "संपर्क प्रश्न",
+    "reviewsmanager": "पुनरावलोकने व्यवस्थापक",
+    "slidersettings": "स्लाइडर सेटिंग्ज",
+    "paymentsettings": "पेमेंट सेटिंग्ज"
+  }
+}

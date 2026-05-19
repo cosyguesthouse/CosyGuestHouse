@@ -5,8 +5,11 @@ import { travelStoriesData as staticTravelStoriesData } from "@/data/siteData";
 import { useTravelStoriesData } from "@/hooks/useSupabaseData";
 import { ImageSlider } from "@/components/ui/ImageSlider";
 import blueAlleyImg from "@/assets/blue-alley.jpg";
+import { useTranslation } from "react-i18next";
+import { Translate } from "./Translate";
 
 const TravelStories = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: stories = [] } = useTravelStoriesData();
@@ -22,8 +25,8 @@ const TravelStories = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Journal</p>
-          <h2 className="section-heading">Travel Stories</h2>
+          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('stories.journal', 'Journal')}</p>
+          <h2 className="section-heading">{t('stories.heading', 'Travel Stories')}</h2>
           <div className="gold-divider mt-6" />
         </motion.div>
 
@@ -45,16 +48,16 @@ const TravelStories = () => {
                 />
               </div>
               <h3 className="font-heading text-2xl font-light mb-3 group-hover:text-accent transition-colors duration-300">
-                {story.title}
+                <Translate text={story.title} />
               </h3>
               <p className="font-body text-sm text-muted-foreground leading-relaxed font-light mb-4 whitespace-pre-line">
-                {story.description || story.excerpt}
+                <Translate text={story.description || story.excerpt} />
               </p>
               <Link
                 to={`/stories?id=${story.id || story.slug}`}
                 className="inline-block mt-auto font-body text-xs tracking-[0.2em] uppercase text-accent border-b border-accent pb-1 group-hover:border-foreground group-hover:text-foreground transition-colors duration-300"
               >
-                Read More
+                {t('stories.readMore', 'Read More')}
               </Link>
             </motion.article>
           ))}

@@ -26,28 +26,31 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
+import { Translate } from "../Translate";
 
 const navItems = [
-    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Homepage Content", href: "/admin/homepage", icon: Home },
-    { name: "Site Images", href: "/admin/images", icon: ImagePlus },
-    { name: "Experiences", href: "/admin/experiences", icon: Compass },
-    { name: "Room Categories", href: "/admin/rooms", icon: BedDouble },
-    { name: "Physical Rooms", href: "/admin/physical-rooms", icon: Key },
-    { name: "Bookings", href: "/admin/bookings", icon: CalendarDays },
-    { name: "Dining", href: "/admin/dining", icon: UtensilsCrossed },
-    { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
-    { name: "Travel Stories", href: "/admin/stories", icon: BookOpen },
-    { name: "Attractions", href: "/admin/attractions", icon: MapPin },
-    { name: "Facilities", href: "/admin/facilities", icon: Wifi },
-    { name: "Contact Queries", href: "/admin/contact-queries", icon: MessageSquare },
-    { name: "Reviews Manager", href: "/admin/feedback", icon: Star },
-    { name: "Slider Settings", href: "/admin/sliders", icon: SlidersHorizontal },
-    { name: "Payment Settings", href: "/admin/payment-settings", icon: CreditCard },
-    { name: "Settings", href: "/admin/settings", icon: Settings },
+    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, tKey: "admin.dashboard" },
+    { name: "Homepage Content", href: "/admin/homepage", icon: Home, tKey: "admin.homepagecontent" },
+    { name: "Site Images", href: "/admin/images", icon: ImagePlus, tKey: "admin.siteimages" },
+    { name: "Experiences", href: "/admin/experiences", icon: Compass, tKey: "admin.experiences" },
+    { name: "Room Categories", href: "/admin/rooms", icon: BedDouble, tKey: "admin.roomcategories" },
+    { name: "Physical Rooms", href: "/admin/physical-rooms", icon: Key, tKey: "admin.physicalrooms" },
+    { name: "Bookings", href: "/admin/bookings", icon: CalendarDays, tKey: "admin.bookings" },
+    { name: "Dining", href: "/admin/dining", icon: UtensilsCrossed, tKey: "admin.dining" },
+    { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, tKey: "admin.gallery" },
+    { name: "Travel Stories", href: "/admin/stories", icon: BookOpen, tKey: "admin.travelstories" },
+    { name: "Attractions", href: "/admin/attractions", icon: MapPin, tKey: "admin.attractions" },
+    { name: "Facilities", href: "/admin/facilities", icon: Wifi, tKey: "admin.facilities" },
+    { name: "Contact Queries", href: "/admin/contact-queries", icon: MessageSquare, tKey: "admin.contactqueries" },
+    { name: "Reviews Manager", href: "/admin/feedback", icon: Star, tKey: "admin.reviewsmanager" },
+    { name: "Slider Settings", href: "/admin/sliders", icon: SlidersHorizontal, tKey: "admin.slidersettings" },
+    { name: "Payment Settings", href: "/admin/payment-settings", icon: CreditCard, tKey: "admin.paymentsettings" },
+    { name: "Settings", href: "/admin/settings", icon: Settings, tKey: "admin.settings" },
 ];
 
 export function AdminLayout() {
+    const { t } = useTranslation();
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -99,16 +102,16 @@ export function AdminLayout() {
                             const isActive = pathname.startsWith(item.href);
                             return (
                                 <li key={item.name}>
-                                    <Link
-                                        to={item.href}
-                                        className={`flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors ${isActive
-                                            ? "bg-primary/10 text-primary border-r-4 border-primary"
-                                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                            }`}
-                                    >
-                                        <item.icon className="h-5 w-5" />
-                                        {item.name}
-                                    </Link>
+                                        <Link
+                                            to={item.href}
+                                            className={`flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors ${isActive
+                                                ? "bg-primary/10 text-primary border-r-4 border-primary"
+                                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                                }`}
+                                        >
+                                            <item.icon className="h-5 w-5" />
+                                            {t(item.tKey, item.name)}
+                                        </Link>
                                 </li>
                             );
                         })}
@@ -121,7 +124,7 @@ export function AdminLayout() {
                         onClick={handleLogout}
                     >
                         <LogOut className="h-5 w-5" />
-                        Logout
+                        {t('admin.logout', 'Logout')}
                     </Button>
                 </div>
             </aside>
@@ -169,7 +172,7 @@ export function AdminLayout() {
                                                         }`}
                                                 >
                                                     <item.icon className="h-5 w-5" />
-                                                    {item.name}
+                                                    {t(item.tKey, item.name)}
                                                 </Link>
                                             </li>
                                         );
@@ -183,7 +186,7 @@ export function AdminLayout() {
                                     onClick={handleLogout}
                                 >
                                     <LogOut className="h-5 w-5" />
-                                    Logout
+                                    {t('admin.logout', 'Logout')}
                                 </Button>
                             </div>
                         </div>

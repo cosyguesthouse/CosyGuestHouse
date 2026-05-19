@@ -3,8 +3,11 @@ import { useRef } from "react";
 import * as LucideIcons from "lucide-react";
 import { facilitiesData as staticFacilitiesData } from "@/data/siteData";
 import { useFacilitiesData } from "@/hooks/useSupabaseData";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 const FacilitiesSection = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: facilities = [] } = useFacilitiesData();
@@ -26,8 +29,8 @@ const FacilitiesSection = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Amenities</p>
-          <h2 className="section-heading">Our Facilities</h2>
+          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('facilities.subtitle', 'Amenities')}</p>
+          <h2 className="section-heading">{t('facilities.heading', 'Our Facilities')}</h2>
           <div className="gold-divider mt-6" />
         </motion.div>
 
@@ -45,7 +48,7 @@ const FacilitiesSection = () => {
                   {renderIcon(f.icon)}
                 </div>
                 <span className="font-body text-xs tracking-widest uppercase text-muted-foreground text-center">
-                  {f.name || f.label}
+                  <Translate text={f.name || f.label} />
                 </span>
               </motion.div>
             );

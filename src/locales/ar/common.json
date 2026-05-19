@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "بيت",
+    "experiences": "الخبرات",
+    "stay": "يقضي",
+    "dining": "تناول الطعام",
+    "stories": "قصص",
+    "attractions": "جاذبية",
+    "contact": "اتصال",
+    "bookNow": "احجز الآن",
+    "admin": "مسؤل",
+    "about": "معلومات عنا",
+    "aboutus": "معلومات عنا",
+    "ourrooms": "غرفنا",
+    "travelstories": "قصص السفر",
+    "contactus": "اتصل بنا",
+    "feedback": "تعليق"
+  },
+  "hero": {
+    "title": "بيت الضيافة المريح",
+    "subtitle": "حيث تلتقي الراحة بجمال المدينة الزرقاء.",
+    "exploreStay": "اكتشف البقاء",
+    "viewDining": "عرض تناول الطعام"
+  },
+  "rooms": {
+    "heading": "غرفنا وأجنحتنا",
+    "accommodation": "إقامة",
+    "book": "احجز الآن"
+  },
+  "booking": {
+    "guests": "اختيار الضيف",
+    "name": "اسم الضيف الرئيسي *",
+    "email": "بريد إلكتروني *",
+    "phone": "متحرك *"
+  },
+  "dining": {
+    "subtitle": "طعم راجستان",
+    "readMore": "اقرأ المزيد",
+    "readLess": "اقرأ أقل"
+  },
+  "stories": {
+    "journal": "مجلة",
+    "heading": "قصص السفر",
+    "readMore": "اقرأ المزيد"
+  },
+  "contact": {
+    "reachUs": "تواصل معنا",
+    "title": "اتصل بنا",
+    "findUs": "ابحث عنا",
+    "getInTouch": "تواصل معنا",
+    "address": "عنوان",
+    "writeToUs": "اكتب لنا",
+    "sendMessage": "أرسل رسالة"
+  },
+  "footer": {
+    "about": "معلومات عنا",
+    "contact": "اتصل بنا",
+    "links": "يستكشف",
+    "findUs": "ابحث عنا",
+    "rights": "جميع الحقوق محفوظة",
+    "aboutus": "معلومات عنا",
+    "ourrooms": "غرفنا",
+    "travelstories": "قصص السفر",
+    "contactus": "اتصل بنا",
+    "feedback": "تعليق",
+    "attractions": "جاذبية",
+    "experiences": "الخبرات",
+    "dining": "تناول الطعام"
+  },
+  "admin": {
+    "dashboard": "لوحة القيادة",
+    "rooms": "الغرف",
+    "bookings": "الحجوزات",
+    "settings": "إعدادات",
+    "logout": "تسجيل الخروج",
+    "homepagecontent": "محتوى الصفحة الرئيسية",
+    "siteimages": "صور الموقع",
+    "experiences": "الخبرات",
+    "roomcategories": "فئات الغرف",
+    "physicalrooms": "الغرف المادية",
+    "dining": "تناول الطعام",
+    "gallery": "معرض",
+    "travelstories": "قصص السفر",
+    "attractions": "جاذبية",
+    "facilities": "مرافق",
+    "contactqueries": "استفسارات الاتصال",
+    "reviewsmanager": "مدير المراجعات",
+    "slidersettings": "إعدادات المنزلق",
+    "paymentsettings": "إعدادات الدفع"
+  }
+}

@@ -8,6 +8,8 @@ import { useSiteImages } from "@/hooks/useSupabaseData";
 import guesthouseImg from "@/assets/guesthouse-exterior.jpg";
 import blueCityImg from "@/assets/blue-city-view.jpg";
 import rooftopImg from "@/assets/rooftop-dining.jpg";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 function useSettings() {
     return useQuery({
@@ -20,6 +22,7 @@ function useSettings() {
 }
 
 export default function AboutPage() {
+    const { t } = useTranslation();
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: settings } = useSettings();
@@ -49,8 +52,8 @@ export default function AboutPage() {
                     transition={{ duration: 0.9 }}
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
                 >
-                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">Heritage</p>
-                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">Our Story</h1>
+                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">{t('about.heritage', 'Heritage')}</p>
+                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">{t('about.story', 'Our Story')}</h1>
                     <div className="gold-divider mt-6" />
                 </motion.div>
             </div>
@@ -63,12 +66,14 @@ export default function AboutPage() {
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.8 }}
                     >
-                        <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">A Legacy of Hospitality</p>
-                        <h2 className="section-heading text-left">40 Years of<br />Warm Welcome</h2>
+                        <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('about.subtitle', 'A Legacy of Hospitality')}</p>
+                        <h2 className="section-heading text-left">
+                            <Translate text={"40 Years of\nWarm Welcome"} />
+                        </h2>
                         <div className="gold-divider !mx-0 my-6" />
                         {paragraphs.map((p: string, i: number) => (
                             <p key={i} className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light mb-4">
-                                {p}
+                                <Translate text={p} />
                             </p>
                         ))}
                     </motion.div>
@@ -94,9 +99,9 @@ export default function AboutPage() {
                 {/* Values */}
                 <div className="grid md:grid-cols-3 gap-8">
                     {[
-                        { icon: "🏛️", title: "Guest House", desc: "A Guest House that has stood for generations, preserving the architecture and soul of Rajasthan." },
-                        { icon: "❤️", title: "Hospitality", desc: "Every guest is treated as family — with warmth, care, and genuine Rajasthani love." },
-                        { icon: "🌅", title: "Experience", desc: "From fort views to rooftop dining, we curate every moment of your Jodhpur journey." },
+                        { icon: "🏛️", title: t("about.val1Title", "Guest House"), desc: t("about.val1Desc", "A Guest House that has stood for generations, preserving the architecture and soul of Rajasthan.") },
+                        { icon: "❤️", title: t("about.val2Title", "Hospitality"), desc: t("about.val2Desc", "Every guest is treated as family — with warmth, care, and genuine Rajasthani love.") },
+                        { icon: "🌅", title: t("about.val3Title", "Experience"), desc: t("about.val3Desc", "From fort views to rooftop dining, we curate every moment of your Jodhpur journey.") },
                     ].map((v, i) => (
                         <motion.div
                             key={i}

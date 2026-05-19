@@ -2,8 +2,11 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { diningData as staticDiningData } from "@/data/siteData";
 import { useDiningData, useHomepageData, useSiteImages } from "@/hooks/useSupabaseData";
+import { useTranslation } from "react-i18next";
+import { Translate } from "./Translate";
 
 const DiningSection = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: diningItems = [] } = useDiningData();
@@ -59,18 +62,18 @@ const DiningSection = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <p className="section-heading mb-6">{staticDiningData.subtitle}</p>
+            <p className="section-heading mb-6">{t('dining.subtitle', staticDiningData.subtitle)}</p>
             <div className="gold-divider !mx-0 mb-6" />
             <div className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light mb-8 whitespace-pre-line">
               <p>
-                  {expanded || !isLong ? desc : `${desc.slice(0, 150)}...`}
+                  <Translate text={expanded || !isLong ? desc : `${desc.slice(0, 150)}...`} />
               </p>
               {isLong && (
                   <button 
                       onClick={() => setExpanded(!expanded)}
                       className="text-accent hover:underline text-xs mt-2 block font-medium"
                   >
-                      {expanded ? "Read Less" : "Read More"}
+                      {expanded ? t('dining.readLess', "Read Less") : t('dining.readMore', "Read More")}
                   </button>
               )}
             </div>

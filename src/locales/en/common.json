@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "home": "Home",
+    "experiences": "Experiences",
+    "stay": "Stay",
+    "dining": "Dining",
+    "stories": "Stories",
+    "attractions": "Attractions",
+    "contact": "Contact",
+    "bookNow": "Book Now",
+    "admin": "Admin",
+    "about": "About Us",
+    "aboutus": "About Us",
+    "ourrooms": "Our Rooms",
+    "travelstories": "Travel Stories",
+    "contactus": "Contact Us",
+    "feedback": "Feedback"
+  },
+  "hero": {
+    "title": "Cosy Guest House",
+    "subtitle": "Where Comfort Meets the Beauty of the Blue City.",
+    "exploreStay": "Explore Stay",
+    "viewDining": "View Dining"
+  },
+  "rooms": {
+    "heading": "Our Rooms & Suites",
+    "accommodation": "Accommodation",
+    "book": "Book Now"
+  },
+  "booking": {
+    "guests": "Guest Selection",
+    "name": "Lead Guest Name *",
+    "email": "Email *",
+    "phone": "Mobile *"
+  },
+  "dining": {
+    "subtitle": "A Taste of Rajasthan",
+    "readMore": "Read More",
+    "readLess": "Read Less"
+  },
+  "stories": {
+    "journal": "Journal",
+    "heading": "Travel Stories",
+    "readMore": "Read More"
+  },
+  "contact": {
+    "reachUs": "Reach Us",
+    "title": "Contact Us",
+    "findUs": "Find Us",
+    "getInTouch": "Get In Touch",
+    "address": "Address",
+    "writeToUs": "Write to Us",
+    "sendMessage": "Send a Message"
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact Us",
+    "links": "Explore",
+    "findUs": "Find Us",
+    "rights": "All rights reserved",
+    "aboutus": "About Us",
+    "ourrooms": "Our Rooms",
+    "travelstories": "Travel Stories",
+    "contactus": "Contact Us",
+    "feedback": "Feedback",
+    "attractions": "Attractions",
+    "experiences": "Experiences",
+    "dining": "Dining"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "rooms": "Rooms",
+    "bookings": "Bookings",
+    "settings": "Settings",
+    "logout": "Logout",
+    "homepagecontent": "Homepage Content",
+    "siteimages": "Site Images",
+    "experiences": "Experiences",
+    "roomcategories": "Room Categories",
+    "physicalrooms": "Physical Rooms",
+    "dining": "Dining",
+    "gallery": "Gallery",
+    "travelstories": "Travel Stories",
+    "attractions": "Attractions",
+    "facilities": "Facilities",
+    "contactqueries": "Contact Queries",
+    "reviewsmanager": "Reviews Manager",
+    "slidersettings": "Slider Settings",
+    "paymentsettings": "Payment Settings"
+  },
+  "facilities": {
+    "subtitle": "Amenities",
+    "heading": "Our Facilities"
+  },
+  "reviews": {
+    "subtitle": "Guest Voices",
+    "heading": "What Our Guests Say"
+  },
+  "experiences": {
+    "subtitle": "Discover"
+  },
+  "attractions": {
+    "subtitle": "Discover",
+    "exploreAll": "Explore All Attractions"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "home": "घर",
+    "experiences": "अनुभव",
+    "stay": "रहना",
+    "dining": "भोजन",
+    "stories": "कहानियां",
+    "attractions": "आकर्षण",
+    "contact": "संपर्क",
+    "bookNow": "अभी बुक करें",
+    "admin": "व्यवस्थापक",
+    "about": "हमारे बारे में",
+    "aboutus": "हमारे बारे में",
+    "ourrooms": "हमारे कमरे",
+    "travelstories": "यात्रा कहानियाँ",
+    "contactus": "हमसे संपर्क करें",
+    "feedback": "प्रतिक्रिया"
+  },
+  "hero": {
+    "title": "आरामदायक गेस्ट हाउस",
+    "subtitle": "जहां आराम नीले शहर की सुंदरता से मिलता है।",
+    "exploreStay": "अन्वेषण करें रहो",
+    "viewDining": "भोजन देखें"
+  },
+  "rooms": {
+    "heading": "हमारे कमरे और सुइट्स",
+    "accommodation": "आवास",
+    "book": "अभी बुक करें"
+  },
+  "booking": {
+    "guests": "अतिथि चयन",
+    "name": "मुख्य अतिथि का नाम*",
+    "email": "ईमेल*",
+    "phone": "गतिमान *"
+  },
+  "dining": {
+    "subtitle": "राजस्थान का स्वाद",
+    "readMore": "और पढ़ें",
+    "readLess": "कम पढ़ें"
+  },
+  "stories": {
+    "journal": "पत्रिका",
+    "heading": "यात्रा कहानियाँ",
+    "readMore": "और पढ़ें"
+  },
+  "contact": {
+    "reachUs": "हम तक पहुंचें",
+    "title": "हमसे संपर्क करें",
+    "findUs": "हमें लगता है",
+    "getInTouch": "संपर्क में रहो",
+    "address": "पता",
+    "writeToUs": "हमें लिखें",
+    "sendMessage": "एक संदेश भेजो"
+  },
+  "footer": {
+    "about": "हमारे बारे में",
+    "contact": "हमसे संपर्क करें",
+    "links": "अन्वेषण करना",
+    "findUs": "हमें लगता है",
+    "rights": "सर्वाधिकार सुरक्षित",
+    "aboutus": "हमारे बारे में",
+    "ourrooms": "हमारे कमरे",
+    "travelstories": "यात्रा कहानियाँ",
+    "contactus": "हमसे संपर्क करें",
+    "feedback": "प्रतिक्रिया",
+    "attractions": "आकर्षण",
+    "experiences": "अनुभव",
+    "dining": "भोजन"
+  },
+  "admin": {
+    "dashboard": "डैशबोर्ड",
+    "rooms": "कमरा",
+    "bookings": "बुकिंग के",
+    "settings": "सेटिंग्स",
+    "logout": "लॉग आउट",
+    "homepagecontent": "मुखपृष्ठ सामग्री",
+    "siteimages": "साइट छवियाँ",
+    "experiences": "अनुभव",
+    "roomcategories": "कक्ष श्रेणियाँ",
+    "physicalrooms": "भौतिक कमरे",
+    "dining": "भोजन",
+    "gallery": "गैलरी",
+    "travelstories": "यात्रा कहानियाँ",
+    "attractions": "आकर्षण",
+    "facilities": "सुविधाएँ",
+    "contactqueries": "संपर्क प्रश्न",
+    "reviewsmanager": "समीक्षा प्रबंधक",
+    "slidersettings": "स्लाइडर सेटिंग्स",
+    "paymentsettings": "भुगतान सेटिंग"
+  },
+  "facilities": {
+    "subtitle": "सुविधाएं",
+    "heading": "हमारी सुविधाओं"
+  },
+  "reviews": {
+    "subtitle": "अतिथि आवाज़ें",
+    "heading": "हमारे मेहमान क्या कहते हैं"
+  },
+  "experiences": {
+    "subtitle": "खोज करना"
+  },
+  "attractions": {
+    "subtitle": "खोज करना",
+    "exploreAll": "सभी आकर्षणों का अन्वेषण करें"
+  }
+}

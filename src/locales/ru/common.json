@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "Дом",
+    "experiences": "Опыт",
+    "stay": "Оставаться",
+    "dining": "Столовая",
+    "stories": "Истории",
+    "attractions": "Достопримечательности",
+    "contact": "Контакт",
+    "bookNow": "Забронируйте сейчас",
+    "admin": "Админ",
+    "about": "О нас",
+    "aboutus": "О нас",
+    "ourrooms": "Наши номера",
+    "travelstories": "Истории путешествий",
+    "contactus": "Связаться с нами",
+    "feedback": "Обратная связь"
+  },
+  "hero": {
+    "title": "Уютный Гостевой Дом",
+    "subtitle": "Где комфорт встречается с красотой голубого города.",
+    "exploreStay": "Исследуйте пребывание",
+    "viewDining": "Посмотреть столовую"
+  },
+  "rooms": {
+    "heading": "Наши номера и люксы",
+    "accommodation": "Размещение",
+    "book": "Забронируйте сейчас"
+  },
+  "booking": {
+    "guests": "Выбор гостя",
+    "name": "Имя ведущего гостя *",
+    "email": "Электронная почта *",
+    "phone": "Мобильный *"
+  },
+  "dining": {
+    "subtitle": "Вкус Раджастана",
+    "readMore": "Читать далее",
+    "readLess": "Читать меньше"
+  },
+  "stories": {
+    "journal": "Журнал",
+    "heading": "Истории путешествий",
+    "readMore": "Читать далее"
+  },
+  "contact": {
+    "reachUs": "Свяжитесь с нами",
+    "title": "Связаться с нами",
+    "findUs": "Найдите нас",
+    "getInTouch": "Свяжитесь с нами",
+    "address": "Адрес",
+    "writeToUs": "Напишите нам",
+    "sendMessage": "Отправить сообщение"
+  },
+  "footer": {
+    "about": "О нас",
+    "contact": "Связаться с нами",
+    "links": "Исследовать",
+    "findUs": "Найдите нас",
+    "rights": "Все права защищены",
+    "aboutus": "О нас",
+    "ourrooms": "Наши номера",
+    "travelstories": "Истории путешествий",
+    "contactus": "Связаться с нами",
+    "feedback": "Обратная связь",
+    "attractions": "Достопримечательности",
+    "experiences": "Опыт",
+    "dining": "Столовая"
+  },
+  "admin": {
+    "dashboard": "Панель управления",
+    "rooms": "Номера",
+    "bookings": "Бронирование",
+    "settings": "Настройки",
+    "logout": "Выход из системы",
+    "homepagecontent": "Содержание домашней страницы",
+    "siteimages": "Изображения сайта",
+    "experiences": "Опыт",
+    "roomcategories": "Категории номеров",
+    "physicalrooms": "Физические помещения",
+    "dining": "Столовая",
+    "gallery": "Галерея",
+    "travelstories": "Истории путешествий",
+    "attractions": "Достопримечательности",
+    "facilities": "Удобства",
+    "contactqueries": "Контактные вопросы",
+    "reviewsmanager": "Менеджер по отзывам",
+    "slidersettings": "Настройки ползунка",
+    "paymentsettings": "Настройки оплаты"
+  }
+}

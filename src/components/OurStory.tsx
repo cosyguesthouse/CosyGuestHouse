@@ -2,8 +2,11 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { storyData as staticStoryData } from "@/data/siteData";
 import { useHomepageData, useSiteImages } from "@/hooks/useSupabaseData";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 const OurStory = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data } = useHomepageData();
@@ -42,13 +45,13 @@ const OurStory = () => {
           className="flex flex-col gap-6"
         >
           <p className="font-body text-xs tracking-[0.3em] uppercase text-accent">
-            {staticStoryData.subtitle}
+            <Translate text={staticStoryData.subtitle} />
           </p>
-          <h2 className="section-heading">{title}</h2>
+          <h2 className="section-heading"><Translate text={title} /></h2>
           <div className="gold-divider !mx-0" />
           {parsedParagraphs.map((p: string, i: number) => (
             <p key={i} className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light">
-              {p}
+              <Translate text={p} />
             </p>
           ))}
         </motion.div>

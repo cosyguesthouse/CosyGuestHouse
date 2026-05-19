@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "home": "Heim",
+    "experiences": "Erfahrungen",
+    "stay": "Bleiben",
+    "dining": "Essen",
+    "stories": "Geschichten",
+    "attractions": "Attraktionen",
+    "contact": "Kontakt",
+    "bookNow": "Buchen Sie jetzt",
+    "admin": "Admin",
+    "about": "Über uns",
+    "aboutus": "Über uns",
+    "ourrooms": "Unsere Zimmer",
+    "travelstories": "Reisegeschichten",
+    "contactus": "Kontaktieren Sie uns",
+    "feedback": "Rückmeldung"
+  },
+  "hero": {
+    "title": "Gemütliches Gästehaus",
+    "subtitle": "Wo Komfort auf die Schönheit der blauen Stadt trifft.",
+    "exploreStay": "Entdecken Sie Aufenthalt",
+    "viewDining": "Essen ansehen"
+  },
+  "rooms": {
+    "heading": "Unsere Zimmer & Suiten",
+    "accommodation": "Unterkunft",
+    "book": "Buchen Sie jetzt"
+  },
+  "booking": {
+    "guests": "Gästeauswahl",
+    "name": "Name des Hauptgastes *",
+    "email": "E-Mail *",
+    "phone": "Mobil *"
+  },
+  "dining": {
+    "subtitle": "Ein Vorgeschmack auf Rajasthan",
+    "readMore": "Mehr lesen",
+    "readLess": "Weniger lesen"
+  },
+  "stories": {
+    "journal": "Zeitschrift",
+    "heading": "Reisegeschichten",
+    "readMore": "Mehr lesen"
+  },
+  "contact": {
+    "reachUs": "Erreichen Sie uns",
+    "title": "Kontaktieren Sie uns",
+    "findUs": "Finden Sie uns",
+    "getInTouch": "Nehmen Sie Kontakt auf",
+    "address": "Adresse",
+    "writeToUs": "Schreiben Sie uns",
+    "sendMessage": "Senden Sie eine Nachricht"
+  },
+  "footer": {
+    "about": "Über uns",
+    "contact": "Kontaktieren Sie uns",
+    "links": "Erkunden",
+    "findUs": "Finden Sie uns",
+    "rights": "Alle Rechte vorbehalten",
+    "aboutus": "Über uns",
+    "ourrooms": "Unsere Zimmer",
+    "travelstories": "Reisegeschichten",
+    "contactus": "Kontaktieren Sie uns",
+    "feedback": "Rückmeldung",
+    "attractions": "Attraktionen",
+    "experiences": "Erfahrungen",
+    "dining": "Essen"
+  },
+  "admin": {
+    "dashboard": "Armaturenbrett",
+    "rooms": "Zimmer",
+    "bookings": "Buchungen",
+    "settings": "Einstellungen",
+    "logout": "Abmelden",
+    "homepagecontent": "Homepage-Inhalt",
+    "siteimages": "Site-Bilder",
+    "experiences": "Erfahrungen",
+    "roomcategories": "Zimmerkategorien",
+    "physicalrooms": "Physische Räume",
+    "dining": "Essen",
+    "gallery": "Galerie",
+    "travelstories": "Reisegeschichten",
+    "attractions": "Attraktionen",
+    "facilities": "Einrichtungen",
+    "contactqueries": "Kontaktanfragen",
+    "reviewsmanager": "Bewertungsmanager",
+    "slidersettings": "Slider-Einstellungen",
+    "paymentsettings": "Zahlungseinstellungen"
+  },
+  "facilities": {
+    "subtitle": "Ausstattung",
+    "heading": "Unsere Einrichtungen"
+  },
+  "reviews": {
+    "subtitle": "Gaststimmen",
+    "heading": "Was unsere Gäste sagen"
+  },
+  "experiences": {
+    "subtitle": "Entdecken"
+  },
+  "attractions": {
+    "subtitle": "Entdecken",
+    "exploreAll": "Entdecken Sie alle Attraktionen"
+  }
+}

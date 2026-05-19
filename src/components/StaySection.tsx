@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { roomData as staticRoomData } from "@/data/siteData";
 import { useRoomsData, useSiteImages } from "@/hooks/useSupabaseData";
+import { useTranslation } from "react-i18next";
+import { Translate } from "./Translate";
 import {
   Carousel,
   CarouselContent,
@@ -14,6 +16,7 @@ import {
 } from "@/components/ui/carousel";
 
 const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const images = room.images?.length > 0 ? room.images : [staticRoomData.images[0]]; // Need at least 1 image to avoid crash
   const features = room.features || [];
@@ -80,21 +83,21 @@ const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
         className="flex flex-col gap-6"
       >
         <div>
-          <h3 className="font-heading text-4xl md:text-5xl font-light mb-2">{room.name}</h3>
+          <h3 className="font-heading text-4xl md:text-5xl font-light mb-2"><Translate text={room.name} /></h3>
           {room.price && (
             <p className="text-xl text-warm-gold">From ₹{room.price} / night</p>
           )}
         </div>
         <div className="gold-divider !mx-0" />
         <p className="font-body text-sm md:text-base text-muted-foreground leading-relaxed font-light whitespace-pre-line">
-          {room.description || "No description available."}
+          <Translate text={room.description || "No description available."} />
         </p>
 
         <div className="grid grid-cols-2 gap-3 mt-2">
           {features.map((f: string, i: number) => (
             <div key={i} className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />
-              <span className="font-body text-xs md:text-sm text-muted-foreground">{f}</span>
+              <span className="font-body text-xs md:text-sm text-muted-foreground"><Translate text={f} /></span>
             </div>
           ))}
         </div>
@@ -104,7 +107,7 @@ const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
             to="/stay"
             className="inline-block px-10 py-3.5 bg-primary text-primary-foreground text-xs tracking-[0.2em] uppercase font-medium hover:bg-primary/90 transition-all duration-300"
           >
-            Book Now
+            {t('rooms.book', 'Book')}
           </Link>
         </div>
       </motion.div>
@@ -113,6 +116,7 @@ const RoomCard = ({ room, inView }: { room: any; inView: boolean }) => {
 };
 
 const StaySection = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: rooms = [], isLoading } = useRoomsData();
@@ -154,8 +158,8 @@ const StaySection = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-12"
         >
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Accommodation</p>
-          <h2 className="section-heading">Our Rooms & Suites</h2>
+          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('rooms.accommodation', 'Accommodation')}</p>
+          <h2 className="section-heading">{t('rooms.heading', 'Our Rooms & Suites')}</h2>
           <div className="gold-divider mt-6" />
         </motion.div>
 

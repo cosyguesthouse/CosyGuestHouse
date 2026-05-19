@@ -12,9 +12,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { useRoomsData, useSiteImages } from "@/hooks/useSupabaseData";
 import { roomData as staticRoom } from "@/data/siteData";
 import heroImg from "@/assets/room-neela-mahal.jpg";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
+import { useRoomsData, useSiteImages } from "@/hooks/useSupabaseData";
 
 import * as Popover from '@radix-ui/react-popover';
 
@@ -66,7 +68,7 @@ const getPriceForDate = (date: Date, room: any) => {
 
 type GuestRoom = { adults: number; childAbove5: number; childBelow5: number; extraMattress: boolean };
 
-function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms: GuestRoom[], maxRooms: number, isSingleOrBudget: boolean, onChange: (rooms: GuestRoom[]) => void }) {
+function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange, t }: { rooms: GuestRoom[], maxRooms: number, isSingleOrBudget: boolean, onChange: (rooms: GuestRoom[]) => void, t: any }) {
     const handleAddRoom = () => {
         if (rooms.length < maxRooms) {
             onChange([...rooms, { adults: 2, childAbove5: 0, childBelow5: 0, extraMattress: false }]);
@@ -89,7 +91,7 @@ function GuestSelector({ rooms, maxRooms, isSingleOrBudget, onChange }: { rooms:
 
     return (
         <div className="w-80 p-4 bg-background border shadow-2xl rounded-lg z-50 flex flex-col">
-            <h4 className="font-heading tracking-wider text-sm mb-4 border-b pb-2">Guest Selection</h4>
+            <h4 className="font-heading tracking-wider text-sm mb-4 border-b pb-2">{t('booking.guests', 'Guest Selection')}</h4>
             <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-accent/20">
                 {rooms.map((room, idx) => (
                     <div key={idx} className="bg-secondary/20 p-3 rounded space-y-3">
@@ -194,6 +196,7 @@ function BookingModal({
     availabilityMap: Record<string, {total: number; available: number; pRooms: any[]}>;
     onClose: () => void 
 }) {
+    const { t } = useTranslation();
     const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
     
     // Booking config state
@@ -476,6 +479,7 @@ function BookingModal({
                                             <Popover.Portal>
                                                 <Popover.Content className="z-[200] mt-1 outline-none" align="end" side="bottom" sideOffset={5} collisionPadding={20}>
                                                     <GuestSelector 
+                                                        t={t}
                                                         rooms={guestRooms} 
                                                         maxRooms={maxAvailable || 1}
                                                         isSingleOrBudget={isSingleOrBudget}
@@ -540,16 +544,16 @@ function BookingModal({
                                     <span>Booking for {guestRooms.length} room(s) and {totalGuests} guest(s).</span>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label>Lead Guest Name *</Label>
+                                    <Label>{t('booking.name', 'Lead Guest Name *')}</Label>
                                     <Input value={form.guest_name} onChange={e => setForm({ ...form, guest_name: e.target.value })} required />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <Label>Email *</Label>
+                                        <Label>{t('booking.email', 'Email *')}</Label>
                                         <Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <Label>Mobile *</Label>
+                                        <Label>{t('booking.phone', 'Mobile *')}</Label>
                                         <Input value={form.mobile} onChange={e => setForm({ ...form, mobile: e.target.value })} required />
                                     </div>
                                 </div>
@@ -658,6 +662,7 @@ function RoomCard({
     searchRange?: DateRange;
     onBook: () => void;
 }) {
+    const { t } = useTranslation();
     const [slide, setSlide] = useState(0);
     const images = room.images?.length > 0 ? room.images : [staticRoom.images[0]];
     const features = room.features || [];
@@ -686,7 +691,7 @@ function RoomCard({
                 
                 {/* Dynamic Status Badge */}
                 <div className={`absolute top-4 left-4 px-3 py-1.5 text-xs tracking-wider rounded font-semibold text-white shadow-lg backdrop-blur-md ${isSoldOut ? 'bg-red-500/80' : availability <= 2 ? 'bg-amber-600/80 z-20' : 'bg-black/60'}`}>
-                    {isSoldOut ? "Sold Out" : availability === 1 ? "1 Room Left" : `${availability} Rooms Left`}
+                    {isSoldOut ? t('booking.soldOut', 'Sold Out') : availability === 1 ? t('booking.oneRoomLeft', '1 Room Left') : `${availability} ${t('booking.roomsLeft', 'Rooms Left')}`}
                 </div>
 
                 {images.length > 1 && (
@@ -705,24 +710,24 @@ function RoomCard({
                     <div className="absolute bottom-4 right-4 bg-background/95 px-3 py-1.5 rounded text-sm font-medium shadow-lg backdrop-blur-sm flex flex-col items-end">
                         <div className="flex items-center gap-1.5">
                             <span className="text-accent font-semibold">₹{displayPrice}</span>
-                            <span className="text-muted-foreground text-xs"> / night</span>
+                            <span className="text-muted-foreground text-xs"> / <Translate text={"night"} /></span>
                         </div>
-                        {isSeasonal && <span className="text-[9px] text-accent uppercase font-bold tracking-tighter">Seasonal rate applied</span>}
+                        {isSeasonal && <span className="text-[9px] text-accent uppercase font-bold tracking-tighter"><Translate text={"Seasonal rate applied"} /></span>}
                     </div>
                 )}
             </div>
 
             {/* Content */}
             <div className="p-6">
-                <h3 className="font-heading text-2xl font-light mb-2">{room.name}</h3>
+                <h3 className="font-heading text-2xl font-light mb-2"><Translate text={room.name} /></h3>
                 <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5 line-clamp-2">
-                    {room.description || "No description available."}
+                    <Translate text={room.description || "No description available."} />
                 </p>
                 <div className="grid grid-cols-2 gap-x-2 gap-y-3 mb-6">
                     {features.slice(0, 4).map((f: string, i: number) => (
                         <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                             <span className="text-accent/80 p-1 bg-accent/10 rounded">{getIcon(f)}</span>
-                            {f}
+                            <span><Translate text={f} /></span>
                         </div>
                     ))}
                 </div>
@@ -732,7 +737,7 @@ function RoomCard({
                     className="w-full py-6 text-sm tracking-[0.1em] uppercase font-semibold"
                     variant={isSoldOut ? "secondary" : "default"}
                 >
-                    {isSoldOut ? "Unavailable" : "Select Room"}
+                    {isSoldOut ? t('booking.unavailable', 'Unavailable') : t('booking.selectRoom', 'Select Room')}
                 </Button>
             </div>
         </motion.div>
@@ -740,6 +745,7 @@ function RoomCard({
 }
 
 export default function StayPage() {
+    const { t } = useTranslation();
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-50px" });
     const { data: rooms = [], isLoading } = useRoomsData();
@@ -826,11 +832,11 @@ export default function StayPage() {
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
                 >
                     <span className="px-4 py-1.5 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white/90 text-[10px] tracking-widest uppercase mb-6 font-medium">
-                        The Blue City Haven Experience
+                        <Translate text={"The Blue City Haven Experience"} />
                     </span>
-                    <h1 className="font-heading text-5xl md:text-7xl font-light text-white drop-shadow-md">Our Rooms & Suites</h1>
+                    <h1 className="font-heading text-5xl md:text-7xl font-light text-white drop-shadow-md">{t('navbar.stay', 'Our Rooms & Suites')}</h1>
                     <p className="font-body text-base md:text-lg text-white/90 mt-6 max-w-2xl font-light leading-relaxed">
-                        Thoughtfully designed spaces blending classical heritage with elegant comfort for a truly memorable stay.
+                        <Translate text={"Thoughtfully designed spaces blending classical heritage with elegant comfort for a truly memorable stay."} />
                     </p>
                 </motion.div>
                 
@@ -842,11 +848,11 @@ export default function StayPage() {
                                 <Button variant="ghost" className="flex-1 justify-start h-12 w-full text-left font-normal border-r border-border rounded-none hover:bg-secondary/20">
                                     <CalendarIcon className="mr-3 h-5 w-5 text-accent" />
                                     <div>
-                                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Stay Dates</p>
+                                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{t('booking.stayDates', 'Stay Dates')}</p>
                                         <p className="font-medium text-sm">
                                             {searchRange?.from && searchRange?.to ? 
                                                 `${format(searchRange.from, 'MMM d')} - ${format(searchRange.to, 'MMM d')}`  
-                                                : "Select Dates"
+                                                : t('booking.selectDates', 'Select Dates')
                                             }
                                         </p>
                                     </div>

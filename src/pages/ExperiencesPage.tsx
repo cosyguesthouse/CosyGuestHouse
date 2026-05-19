@@ -6,8 +6,11 @@ import { experiencesData as staticData } from "@/data/siteData";
 import { useExperiencesData, useSiteImages } from "@/hooks/useSupabaseData";
 import blueCityViewImg from "@/assets/blue-city-view.jpg";
 import { ImageSlider } from "@/components/ui/ImageSlider";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 
 function ExperiencePageCard({ exp, index, inView }: { exp: any, index: number, inView: boolean }) {
+    const { t } = useTranslation();
     const [expanded, setExpanded] = useState(false);
     const desc = exp.description || "";
     const isLong = desc.length > 150;
@@ -23,19 +26,19 @@ function ExperiencePageCard({ exp, index, inView }: { exp: any, index: number, i
                 <ImageSlider images={exp.images || []} fallbackImage={exp.image_url || exp.image} sliderType="experience_slider" />
             </div>
             <h3 className="font-heading text-2xl font-light mb-3 group-hover:text-accent transition-colors duration-300">
-                {exp.title}
+                <Translate text={exp.title} />
             </h3>
             <div className="w-8 h-px bg-accent mb-3" />
             <div className="font-body text-sm text-muted-foreground leading-relaxed flex-grow">
                 <p>
-                    {expanded || !isLong ? desc : `${desc.slice(0, 150)}...`}
+                    <Translate text={expanded || !isLong ? desc : `${desc.slice(0, 150)}...`} />
                 </p>
                 {isLong && (
                     <button 
                         onClick={() => setExpanded(!expanded)}
                         className="text-accent hover:underline text-xs mt-2 block font-medium"
                     >
-                        {expanded ? "Read Less" : "Read More"}
+                        {expanded ? t("dining.readLess", "Read Less") : t("dining.readMore", "Read More")}
                     </button>
                 )}
             </div>
@@ -44,6 +47,7 @@ function ExperiencePageCard({ exp, index, inView }: { exp: any, index: number, i
 }
 
 export default function ExperiencesPage() {
+    const { t } = useTranslation();
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
     const { data: experiences = [] } = useExperiencesData();
@@ -65,11 +69,11 @@ export default function ExperiencesPage() {
                     transition={{ duration: 0.9 }}
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
                 >
-                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">Curated</p>
-                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">Experiences</h1>
+                    <p className="font-body text-xs tracking-[0.4em] uppercase text-warm-gold mb-4">{t('experiences.subtitle', 'Curated')}</p>
+                    <h1 className="font-heading text-5xl md:text-7xl font-light text-primary-foreground">{t('experiences.heading', 'Experiences')}</h1>
                     <div className="gold-divider mt-6" />
                     <p className="font-body text-sm text-primary-foreground/70 mt-4 max-w-lg">
-                        Discover Jodhpur through curated experiences crafted for the curious traveller.
+                        {t('experiences.description', 'Discover Jodhpur through curated experiences crafted for the curious traveller.')}
                     </p>
                 </motion.div>
             </div>

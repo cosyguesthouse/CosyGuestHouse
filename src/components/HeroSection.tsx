@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { heroData as staticHeroData } from "@/data/siteData";
 import { useHomepageData, useSiteImages } from "@/hooks/useSupabaseData";
+import { useTranslation } from "react-i18next";
+import { Translate } from "./Translate";
 
 const HeroSection = () => {
+  const { t } = useTranslation();
   const { data, isLoading } = useHomepageData();
   const { data: siteImages = [] } = useSiteImages();
 
@@ -57,7 +60,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="font-body text-xs md:text-sm tracking-[0.3em] uppercase text-primary-foreground/70 mb-6"
         >
-          Where Comfort Meets the Beauty of the Blue City.
+          {t('hero.subtitle', 'Where Comfort Meets the Beauty of the Blue City.')}
         </motion.p>
 
         <motion.h1
@@ -66,7 +69,7 @@ const HeroSection = () => {
           transition={{ duration: 1, delay: 0.5 }}
           className="font-heading text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-light text-primary-foreground max-w-5xl leading-tight"
         >
-          {headline}
+          <Translate text={headline} />
         </motion.h1>
 
         <motion.div
@@ -82,7 +85,7 @@ const HeroSection = () => {
           transition={{ duration: 1, delay: 1.2 }}
           className="font-body text-sm md:text-base text-primary-foreground/80 max-w-2xl leading-relaxed font-light"
         >
-          {subtext}
+          <Translate text={subtext} />
         </motion.p>
 
         <motion.div
@@ -95,13 +98,13 @@ const HeroSection = () => {
             href="#stay"
             className="px-10 py-3.5 bg-primary-foreground/15 border border-primary-foreground/40 text-primary-foreground text-xs tracking-[0.2em] uppercase font-medium hover:bg-primary-foreground/25 transition-all duration-300"
           >
-            Explore Stay
+            {t('hero.exploreStay', 'Explore Stay')}
           </a>
           <a
             href="#dining"
             className="px-10 py-3.5 bg-warm-gold/90 text-deep-navy text-xs tracking-[0.2em] uppercase font-medium hover:bg-warm-gold transition-all duration-300"
           >
-            View Dining
+            {t('hero.viewDining', 'View Dining')}
           </a>
         </motion.div>
       </div>

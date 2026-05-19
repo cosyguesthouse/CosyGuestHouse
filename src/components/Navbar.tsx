@@ -2,18 +2,21 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { siteConfig } from "@/data/siteData";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const navLinks = [
-  { label: "Experiences", href: "/experiences" },
-  { label: "Stay", href: "/stay" },
-  { label: "Dining", href: "/dining" },
-  { label: "Travel Stories", href: "/stories" },
-  { label: "Attractions", href: "/attractions" },
-  { label: "About Us", href: "/about" },
+  { label: "Experiences", href: "/experiences", tKey: "navbar.experiences" },
+  { label: "Stay", href: "/stay", tKey: "navbar.stay" },
+  { label: "Dining", href: "/dining", tKey: "navbar.dining" },
+  { label: "Travel Stories", href: "/stories", tKey: "navbar.stories" },
+  { label: "Attractions", href: "/attractions", tKey: "navbar.attractions" },
+  { label: "About Us", href: "/about", tKey: "navbar.about" },
 ];
 
 const Navbar = () => {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -53,9 +56,10 @@ const Navbar = () => {
                 : "text-muted-foreground hover:text-foreground"
                 } ${location.pathname === link.href ? "!text-accent" : ""}`}
             >
-              {link.label}
+              {t(link.tKey, link.label)}
             </Link>
           ))}
+          <LanguageSwitcher isLight={isLight} />
           <Link
             to="/stay"
             className={`ml-4 px-6 py-2.5 text-xs tracking-widest uppercase font-medium transition-all duration-300 ${isLight
@@ -63,7 +67,7 @@ const Navbar = () => {
               : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}
           >
-            Book Now
+            {t('navbar.bookNow', 'Book Now')}
           </Link>
         </div>
 
@@ -91,6 +95,7 @@ const Navbar = () => {
             className="lg:hidden bg-background/98 backdrop-blur-md border-b border-border overflow-hidden"
           >
             <div className="flex flex-col items-center py-8 gap-6">
+              <LanguageSwitcher isLight={false} />
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -98,7 +103,7 @@ const Navbar = () => {
                   onClick={() => setMobileOpen(false)}
                   className={`font-body text-sm tracking-widest uppercase text-foreground hover:text-accent transition-colors ${location.pathname === link.href ? "text-accent" : ""}`}
                 >
-                  {link.label}
+                  {t(link.tKey, link.label)}
                 </Link>
               ))}
               <Link
@@ -106,7 +111,7 @@ const Navbar = () => {
                 onClick={() => setMobileOpen(false)}
                 className="mt-2 px-8 py-3 bg-primary text-primary-foreground text-xs tracking-widest uppercase"
               >
-                Book Now
+                {t('navbar.bookNow', 'Book Now')}
               </Link>
             </div>
           </motion.div>

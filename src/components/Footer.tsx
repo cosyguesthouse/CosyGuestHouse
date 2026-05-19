@@ -4,6 +4,8 @@ import { Instagram, Phone, Mail, MessageCircle, MapPin, Facebook } from "lucide-
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { useTranslation } from "react-i18next";
+import { Translate } from "./Translate";
 
 // Fetch settings from Supabase with graceful fallback
 function useSettings() {
@@ -18,17 +20,18 @@ function useSettings() {
 }
 
 const quickLinks = [
-  { label: "Experiences", href: "/experiences" },
-  { label: "Our Rooms", href: "/stay" },
-  { label: "Dining", href: "/dining" },
-  { label: "Travel Stories", href: "/stories" },
-  { label: "Attractions", href: "/attractions" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "Feedback", href: "/feedback" },
+  { label: "Experiences", href: "/experiences", tKey: "footer.experiences" },
+  { label: "Our Rooms", href: "/stay", tKey: "footer.ourrooms" },
+  { label: "Dining", href: "/dining", tKey: "footer.dining" },
+  { label: "Travel Stories", href: "/stories", tKey: "footer.travelstories" },
+  { label: "Attractions", href: "/attractions", tKey: "footer.attractions" },
+  { label: "About Us", href: "/about", tKey: "footer.aboutus" },
+  { label: "Contact Us", href: "/contact", tKey: "footer.contactus" },
+  { label: "Feedback", href: "/feedback", tKey: "footer.feedback" },
 ];
 
 const Footer = () => {
+  const { t } = useTranslation();
   const { data: siteImages = [] } = useSiteImages();
   const { data: settings } = useSettings();
 
@@ -64,10 +67,10 @@ const Footer = () => {
 
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="font-heading text-3xl font-light mb-4">{name}</h3>
+            <h3 className="font-heading text-3xl font-light mb-4"><Translate text={name} /></h3>
             <div className="w-12 h-[1px] bg-warm-gold mb-6" />
             <p className="font-body text-sm text-primary-foreground/70 leading-relaxed font-light">
-              {description}
+              <Translate text={description} />
             </p>
             {/* Social Icons */}
             <div className="flex gap-4 mt-6">
@@ -94,7 +97,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-body text-xs tracking-[0.3em] uppercase text-warm-gold mb-6">Explore</h4>
+            <h4 className="font-body text-xs tracking-[0.3em] uppercase text-warm-gold mb-6">{t('footer.links', 'Explore')}</h4>
             <nav className="space-y-3">
               {quickLinks.map((l) => (
                 <Link
@@ -102,7 +105,7 @@ const Footer = () => {
                   to={l.href}
                   className="block font-body text-sm text-primary-foreground/70 hover:text-primary-foreground hover:translate-x-1 transition-all duration-300"
                 >
-                  {l.label}
+                  {t(l.tKey, l.label)}
                 </Link>
               ))}
             </nav>
@@ -110,7 +113,7 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-body text-xs tracking-[0.3em] uppercase text-warm-gold mb-6">Contact</h4>
+            <h4 className="font-body text-xs tracking-[0.3em] uppercase text-warm-gold mb-6">{t('footer.contact', 'Contact')}</h4>
             <div className="space-y-4">
               {phone && (
                 <a href={`tel:${phone}`}
@@ -145,13 +148,13 @@ const Footer = () => {
 
           {/* Address */}
           <div>
-            <h4 className="font-body text-xs tracking-[0.3em] uppercase text-warm-gold mb-6">Find Us</h4>
+            <h4 className="font-body text-xs tracking-[0.3em] uppercase text-warm-gold mb-6">{t('footer.findUs', 'Find Us')}</h4>
             <div className="flex items-start gap-3 text-sm text-primary-foreground/70">
               <MapPin size={15} strokeWidth={1.2} className="mt-0.5 shrink-0 text-warm-gold" />
               <address className="font-body font-light not-italic leading-relaxed">
-                {addressL1 && <>{addressL1}<br /></>}
-                {addressL2 && <>{addressL2}<br /></>}
-                {addressCity}
+                {addressL1 && <><Translate text={addressL1} /><br /></>}
+                {addressL2 && <><Translate text={addressL2} /><br /></>}
+                <Translate text={addressCity} />
               </address>
             </div>
             {tripadvisor && (

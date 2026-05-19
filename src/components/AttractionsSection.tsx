@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useAttractionsData } from "@/hooks/useSupabaseData";
 import { ImageSlider } from "@/components/ui/ImageSlider";
 import { MapPin, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Translate } from "@/components/Translate";
 import blueCityImg from "@/assets/blue-city-view.jpg";
 
 const staticPreview = [
@@ -14,6 +16,7 @@ const staticPreview = [
 ];
 
 const AttractionsSection = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const { data: attractions = [] } = useAttractionsData();
@@ -29,11 +32,11 @@ const AttractionsSection = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">Discover</p>
-          <h2 className="section-heading">Explore Jodhpur</h2>
+          <p className="font-body text-xs tracking-[0.3em] uppercase text-accent mb-4">{t('attractions.subtitle', 'Discover')}</p>
+          <h2 className="section-heading">{t('navbar.attractions', 'Explore Jodhpur')}</h2>
           <div className="gold-divider mt-6" />
           <p className="font-body text-sm text-muted-foreground mt-6 max-w-xl mx-auto">
-            Step beyond our gates and immerse yourself in the magic of the Blue City.
+            <Translate text={"Step beyond our gates and immerse yourself in the magic of the Blue City."} />
           </p>
         </motion.div>
 
@@ -55,12 +58,12 @@ const AttractionsSection = () => {
               </div>
               <div className="p-4">
                 <h3 className="font-heading text-lg font-light mb-1 group-hover:text-accent transition-colors duration-300">
-                  {attraction.title}
+                  <Translate text={attraction.title} />
                 </h3>
                 {attraction.location && (
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <MapPin size={11} className="text-accent flex-shrink-0" />
-                    <span>{attraction.location}</span>
+                    <span><Translate text={attraction.location} /></span>
                   </div>
                 )}
               </div>
@@ -78,7 +81,7 @@ const AttractionsSection = () => {
             to="/attractions"
             className="inline-flex items-center gap-3 px-10 py-3.5 border border-accent text-accent text-xs tracking-[0.2em] uppercase font-medium hover:bg-accent hover:text-background transition-all duration-300"
           >
-            Explore All Attractions
+            {t('attractions.exploreAll', 'Explore All Attractions')}
             <ArrowRight size={14} />
           </Link>
         </motion.div>

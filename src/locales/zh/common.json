@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "家",
+    "experiences": "经验",
+    "stay": "停留",
+    "dining": "用餐",
+    "stories": "故事",
+    "attractions": "景点",
+    "contact": "接触",
+    "bookNow": "立即预订",
+    "admin": "行政",
+    "about": "关于我们",
+    "aboutus": "关于我们",
+    "ourrooms": "我们的房间",
+    "travelstories": "旅行故事",
+    "contactus": "联系我们",
+    "feedback": "反馈"
+  },
+  "hero": {
+    "title": "舒适旅馆",
+    "subtitle": "舒适与蓝色之城之美的邂逅。",
+    "exploreStay": "探索住宿",
+    "viewDining": "查看餐饮"
+  },
+  "rooms": {
+    "heading": "我们的客房和套房",
+    "accommodation": "住宿",
+    "book": "立即预订"
+  },
+  "booking": {
+    "guests": "嘉宾选择",
+    "name": "主宾姓名 *",
+    "email": "电子邮件 *",
+    "phone": "移动的 *"
+  },
+  "dining": {
+    "subtitle": "拉贾斯坦邦的味道",
+    "readMore": "阅读更多",
+    "readLess": "少读"
+  },
+  "stories": {
+    "journal": "杂志",
+    "heading": "旅行故事",
+    "readMore": "阅读更多"
+  },
+  "contact": {
+    "reachUs": "联系我们",
+    "title": "联系我们",
+    "findUs": "找到我们",
+    "getInTouch": "联系我们",
+    "address": "地址",
+    "writeToUs": "写信给我们",
+    "sendMessage": "发送消息"
+  },
+  "footer": {
+    "about": "关于我们",
+    "contact": "联系我们",
+    "links": "探索",
+    "findUs": "找到我们",
+    "rights": "版权所有",
+    "aboutus": "关于我们",
+    "ourrooms": "我们的房间",
+    "travelstories": "旅行故事",
+    "contactus": "联系我们",
+    "feedback": "反馈",
+    "attractions": "景点",
+    "experiences": "经验",
+    "dining": "用餐"
+  },
+  "admin": {
+    "dashboard": "仪表板",
+    "rooms": "客房",
+    "bookings": "预订",
+    "settings": "设置",
+    "logout": "退出",
+    "homepagecontent": "首页内容",
+    "siteimages": "现场图片",
+    "experiences": "经验",
+    "roomcategories": "房间类别",
+    "physicalrooms": "实体房间",
+    "dining": "用餐",
+    "gallery": "画廊",
+    "travelstories": "旅行故事",
+    "attractions": "景点",
+    "facilities": "设施",
+    "contactqueries": "联系查询",
+    "reviewsmanager": "评论经理",
+    "slidersettings": "滑块设置",
+    "paymentsettings": "付款设置"
+  }
+}

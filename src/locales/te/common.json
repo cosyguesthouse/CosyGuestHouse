@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "హోమ్",
+    "experiences": "అనుభవాలు",
+    "stay": "ఉండు",
+    "dining": "డైనింగ్",
+    "stories": "కథలు",
+    "attractions": "ఆకర్షణలు",
+    "contact": "సంప్రదించండి",
+    "bookNow": "ఇప్పుడే బుక్ చేయండి",
+    "admin": "అడ్మిన్",
+    "about": "మా గురించి",
+    "aboutus": "మా గురించి",
+    "ourrooms": "మా రూములు",
+    "travelstories": "ప్రయాణ కథనాలు",
+    "contactus": "మమ్మల్ని సంప్రదించండి",
+    "feedback": "అభిప్రాయం"
+  },
+  "hero": {
+    "title": "హాయిగా ఉండే గెస్ట్ హౌస్",
+    "subtitle": "ఎక్కడ కంఫర్ట్ బ్లూ సిటీ అందాన్ని కలుస్తుంది.",
+    "exploreStay": "బసను అన్వేషించండి",
+    "viewDining": "డైనింగ్ చూడండి"
+  },
+  "rooms": {
+    "heading": "మా గదులు & సూట్లు",
+    "accommodation": "వసతి",
+    "book": "ఇప్పుడే బుక్ చేయండి"
+  },
+  "booking": {
+    "guests": "అతిథి ఎంపిక",
+    "name": "ప్రధాన అతిథి పేరు *",
+    "email": "ఇమెయిల్ *",
+    "phone": "మొబైల్ *"
+  },
+  "dining": {
+    "subtitle": "రాజస్థాన్ యొక్క రుచి",
+    "readMore": "మరింత చదవండి",
+    "readLess": "తక్కువ చదవండి"
+  },
+  "stories": {
+    "journal": "జర్నల్",
+    "heading": "ప్రయాణ కథనాలు",
+    "readMore": "మరింత చదవండి"
+  },
+  "contact": {
+    "reachUs": "మమ్మల్ని చేరుకోండి",
+    "title": "మమ్మల్ని సంప్రదించండి",
+    "findUs": "మమ్మల్ని కనుగొనండి",
+    "getInTouch": "సన్నిహితంగా ఉండండి",
+    "address": "చిరునామా",
+    "writeToUs": "మాకు వ్రాయండి",
+    "sendMessage": "సందేశం పంపండి"
+  },
+  "footer": {
+    "about": "మా గురించి",
+    "contact": "మమ్మల్ని సంప్రదించండి",
+    "links": "అన్వేషించండి",
+    "findUs": "మమ్మల్ని కనుగొనండి",
+    "rights": "అన్ని హక్కులు ప్రత్యేకించబడ్డాయి",
+    "aboutus": "మా గురించి",
+    "ourrooms": "మా రూములు",
+    "travelstories": "ప్రయాణ కథనాలు",
+    "contactus": "మమ్మల్ని సంప్రదించండి",
+    "feedback": "అభిప్రాయం",
+    "attractions": "ఆకర్షణలు",
+    "experiences": "అనుభవాలు",
+    "dining": "డైనింగ్"
+  },
+  "admin": {
+    "dashboard": "డాష్‌బోర్డ్",
+    "rooms": "గదులు",
+    "bookings": "బుకింగ్స్",
+    "settings": "సెట్టింగ్‌లు",
+    "logout": "లాగ్అవుట్",
+    "homepagecontent": "హోమ్‌పేజీ కంటెంట్",
+    "siteimages": "సైట్ చిత్రాలు",
+    "experiences": "అనుభవాలు",
+    "roomcategories": "గది వర్గాలు",
+    "physicalrooms": "భౌతిక గదులు",
+    "dining": "డైనింగ్",
+    "gallery": "గ్యాలరీ",
+    "travelstories": "ప్రయాణ కథనాలు",
+    "attractions": "ఆకర్షణలు",
+    "facilities": "సౌకర్యాలు",
+    "contactqueries": "సంప్రదింపు ప్రశ్నలు",
+    "reviewsmanager": "సమీక్షల నిర్వాహకుడు",
+    "slidersettings": "స్లైడర్ సెట్టింగ్‌లు",
+    "paymentsettings": "చెల్లింపు సెట్టింగ్‌లు"
+  }
+}

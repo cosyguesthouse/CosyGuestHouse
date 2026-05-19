@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "home": "家",
+    "experiences": "体験談",
+    "stay": "滞在する",
+    "dining": "ダイニング",
+    "stories": "ストーリー",
+    "attractions": "アトラクション",
+    "contact": "接触",
+    "bookNow": "今すぐ予約する",
+    "admin": "管理者",
+    "about": "私たちについて",
+    "aboutus": "私たちについて",
+    "ourrooms": "私たちの部屋",
+    "travelstories": "トラベルストーリー",
+    "contactus": "お問い合わせ",
+    "feedback": "フィードバック"
+  },
+  "hero": {
+    "title": "コージー ゲスト ハウス",
+    "subtitle": "ブルーシティの美しさと快適さが融合した場所。",
+    "exploreStay": "エクスプロア・ステイ",
+    "viewDining": "ビューダイニング"
+  },
+  "rooms": {
+    "heading": "私たちの客室とスイート",
+    "accommodation": "宿泊施設",
+    "book": "今すぐ予約する"
+  },
+  "booking": {
+    "guests": "ゲストセレクション",
+    "name": "リードゲスト名 *",
+    "email": "電子メール *",
+    "phone": "携帯 *"
+  },
+  "dining": {
+    "subtitle": "ラジャスタン州の味",
+    "readMore": "続きを読む",
+    "readLess": "もっと読む"
+  },
+  "stories": {
+    "journal": "ジャーナル",
+    "heading": "トラベルストーリー",
+    "readMore": "続きを読む"
+  },
+  "contact": {
+    "reachUs": "お問い合わせください",
+    "title": "お問い合わせ",
+    "findUs": "私たちを探す",
+    "getInTouch": "連絡する",
+    "address": "住所",
+    "writeToUs": "お問い合わせください",
+    "sendMessage": "メッセージを送信する"
+  },
+  "footer": {
+    "about": "私たちについて",
+    "contact": "お問い合わせ",
+    "links": "探検する",
+    "findUs": "私たちを探す",
+    "rights": "無断転載を禁じます",
+    "aboutus": "私たちについて",
+    "ourrooms": "私たちの部屋",
+    "travelstories": "トラベルストーリー",
+    "contactus": "お問い合わせ",
+    "feedback": "フィードバック",
+    "attractions": "アトラクション",
+    "experiences": "体験談",
+    "dining": "ダイニング"
+  },
+  "admin": {
+    "dashboard": "ダッシュボード",
+    "rooms": "客室",
+    "bookings": "予約",
+    "settings": "設定",
+    "logout": "ログアウト",
+    "homepagecontent": "ホームページのコンテンツ",
+    "siteimages": "サイト画像",
+    "experiences": "体験談",
+    "roomcategories": "部屋のカテゴリー",
+    "physicalrooms": "物理的な部屋",
+    "dining": "ダイニング",
+    "gallery": "ギャラリー",
+    "travelstories": "トラベルストーリー",
+    "attractions": "アトラクション",
+    "facilities": "設備",
+    "contactqueries": "お問い合わせ",
+    "reviewsmanager": "レビューマネージャー",
+    "slidersettings": "スライダー設定",
+    "paymentsettings": "支払い設定"
+  }
+}
