@@ -33,7 +33,7 @@ export default async function handler(req: any, res: any) {
             <div style="height: 4px; width: 60px; background: #3b82f6; margin: auto; border-radius: 2px;"></div>
           </div>
           
-          <p style="font-size: 16px; line-height: 1.6;">Hello <strong>\${name}</strong>,</p>
+          <p style="font-size: 16px; line-height: 1.6;">Hello <strong>${name}</strong>,</p>
           <p style="font-size: 16px; line-height: 1.6;">Thank you for choosing our guest house for your stay! We are delighted to confirm your booking. Your comfort and satisfaction are very important to us, and we look forward to hosting you.</p>
           
           <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 25px 0;">
@@ -41,19 +41,19 @@ export default async function handler(req: any, res: any) {
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
                 <td style="padding: 8px 0; color: #64748b;">Room:</td>
-                <td style="padding: 8px 0; font-weight: 600;">\${room_category}</td>
+                <td style="padding: 8px 0; font-weight: 600;">${room_category}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;">Check-in:</td>
-                <td style="padding: 8px 0; font-weight: 600;">\${checkin}</td>
+                <td style="padding: 8px 0; font-weight: 600;">${checkin}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;">Check-out:</td>
-                <td style="padding: 8px 0; font-weight: 600;">\${checkout}</td>
+                <td style="padding: 8px 0; font-weight: 600;">${checkout}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;">Guests:</td>
-                <td style="padding: 8px 0; font-weight: 600;">\${guests}</td>
+                <td style="padding: 8px 0; font-weight: 600;">${guests}</td>
               </tr>
             </table>
           </div>
