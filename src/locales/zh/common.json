@@ -87,5 +87,20 @@
     "reviewsmanager": "评论经理",
     "slidersettings": "滑块设置",
     "paymentsettings": "付款设置"
+  },
+  "facilities": {
+    "subtitle": "便利设施",
+    "heading": "我们的设施"
+  },
+  "reviews": {
+    "subtitle": "嘉宾心声",
+    "heading": "我们的客人怎么说"
+  },
+  "experiences": {
+    "subtitle": "发现"
+  },
+  "attractions": {
+    "subtitle": "发现",
+    "exploreAll": "探索所有景点"
   }
 }

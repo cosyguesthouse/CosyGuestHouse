@@ -87,5 +87,20 @@
     "reviewsmanager": "مدير المراجعات",
     "slidersettings": "إعدادات المنزلق",
     "paymentsettings": "إعدادات الدفع"
+  },
+  "facilities": {
+    "subtitle": "وسائل الراحة",
+    "heading": "مرافقنا"
+  },
+  "reviews": {
+    "subtitle": "أصوات الضيوف",
+    "heading": "ماذا يقول ضيوفنا"
+  },
+  "experiences": {
+    "subtitle": "يكتشف"
+  },
+  "attractions": {
+    "subtitle": "يكتشف",
+    "exploreAll": "استكشف جميع المعالم السياحية"
   }
 }

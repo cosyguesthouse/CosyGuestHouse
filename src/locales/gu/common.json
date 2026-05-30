@@ -87,5 +87,20 @@
     "reviewsmanager": "સમીક્ષાઓ મેનેજર",
     "slidersettings": "સ્લાઇડર સેટિંગ્સ",
     "paymentsettings": "ચુકવણી સેટિંગ્સ"
+  },
+  "facilities": {
+    "subtitle": "સુવિધાઓ",
+    "heading": "અમારી સુવિધાઓ"
+  },
+  "reviews": {
+    "subtitle": "મહેમાન અવાજો",
+    "heading": "અમારા મહેમાનો શું કહે છે"
+  },
+  "experiences": {
+    "subtitle": "શોધો"
+  },
+  "attractions": {
+    "subtitle": "શોધો",
+    "exploreAll": "બધા આકર્ષણોનું અન્વેષણ કરો"
   }
 }

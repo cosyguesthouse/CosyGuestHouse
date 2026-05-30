@@ -87,5 +87,20 @@
     "reviewsmanager": "ਸਮੀਖਿਆਵਾਂ ਪ੍ਰਬੰਧਕ",
     "slidersettings": "ਸਲਾਈਡਰ ਸੈਟਿੰਗਾਂ",
     "paymentsettings": "ਭੁਗਤਾਨ ਸੈਟਿੰਗਾਂ"
+  },
+  "facilities": {
+    "subtitle": "ਸਹੂਲਤਾਂ",
+    "heading": "ਸਾਡੀਆਂ ਸਹੂਲਤਾਂ"
+  },
+  "reviews": {
+    "subtitle": "ਮਹਿਮਾਨ ਆਵਾਜ਼ਾਂ",
+    "heading": "ਸਾਡੇ ਮਹਿਮਾਨ ਕੀ ਕਹਿੰਦੇ ਹਨ"
+  },
+  "experiences": {
+    "subtitle": "ਖੋਜੋ"
+  },
+  "attractions": {
+    "subtitle": "ਖੋਜੋ",
+    "exploreAll": "ਸਾਰੇ ਆਕਰਸ਼ਣਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ"
   }
 }

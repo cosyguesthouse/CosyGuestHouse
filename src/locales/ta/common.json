@@ -87,5 +87,20 @@
     "reviewsmanager": "விமர்சனங்கள் மேலாளர்",
     "slidersettings": "ஸ்லைடர் அமைப்புகள்",
     "paymentsettings": "கட்டண அமைப்புகள்"
+  },
+  "facilities": {
+    "subtitle": "வசதிகள்",
+    "heading": "எங்கள் வசதிகள்"
+  },
+  "reviews": {
+    "subtitle": "விருந்தினர் குரல்கள்",
+    "heading": "எங்கள் விருந்தினர்கள் என்ன சொல்கிறார்கள்"
+  },
+  "experiences": {
+    "subtitle": "கண்டறியவும்"
+  },
+  "attractions": {
+    "subtitle": "கண்டறியவும்",
+    "exploreAll": "அனைத்து ஈர்ப்புகளையும் ஆராயுங்கள்"
   }
 }

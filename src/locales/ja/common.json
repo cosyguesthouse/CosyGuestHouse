@@ -87,5 +87,20 @@
     "reviewsmanager": "レビューマネージャー",
     "slidersettings": "スライダー設定",
     "paymentsettings": "支払い設定"
+  },
+  "facilities": {
+    "subtitle": "アメニティ",
+    "heading": "私たちの施設"
+  },
+  "reviews": {
+    "subtitle": "ゲストの声",
+    "heading": "ゲストの声"
+  },
+  "experiences": {
+    "subtitle": "発見する"
+  },
+  "attractions": {
+    "subtitle": "発見する",
+    "exploreAll": "すべての観光スポットを探索する"
   }
 }

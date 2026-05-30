@@ -87,5 +87,20 @@
     "reviewsmanager": "Менеджер по отзывам",
     "slidersettings": "Настройки ползунка",
     "paymentsettings": "Настройки оплаты"
+  },
+  "facilities": {
+    "subtitle": "Удобства",
+    "heading": "Наши возможности"
+  },
+  "reviews": {
+    "subtitle": "Гостевые голоса",
+    "heading": "Что говорят наши гости"
+  },
+  "experiences": {
+    "subtitle": "Обнаружить"
+  },
+  "attractions": {
+    "subtitle": "Обнаружить",
+    "exploreAll": "Исследуйте все достопримечательности"
   }
 }

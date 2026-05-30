@@ -87,5 +87,20 @@
     "reviewsmanager": "पुनरावलोकने व्यवस्थापक",
     "slidersettings": "स्लाइडर सेटिंग्ज",
     "paymentsettings": "पेमेंट सेटिंग्ज"
+  },
+  "facilities": {
+    "subtitle": "सुविधा",
+    "heading": "आमच्या सुविधा"
+  },
+  "reviews": {
+    "subtitle": "अतिथी आवाज",
+    "heading": "आमचे पाहुणे काय म्हणतात"
+  },
+  "experiences": {
+    "subtitle": "शोधा"
+  },
+  "attractions": {
+    "subtitle": "शोधा",
+    "exploreAll": "सर्व आकर्षणे एक्सप्लोर करा"
   }
 }

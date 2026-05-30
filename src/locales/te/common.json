@@ -87,5 +87,20 @@
     "reviewsmanager": "సమీక్షల నిర్వాహకుడు",
     "slidersettings": "స్లైడర్ సెట్టింగ్‌లు",
     "paymentsettings": "చెల్లింపు సెట్టింగ్‌లు"
+  },
+  "facilities": {
+    "subtitle": "సౌకర్యాలు",
+    "heading": "మా సౌకర్యాలు"
+  },
+  "reviews": {
+    "subtitle": "అతిథి స్వరాలు",
+    "heading": "మా అతిథులు ఏమి చెబుతారు"
+  },
+  "experiences": {
+    "subtitle": "కనుగొనండి"
+  },
+  "attractions": {
+    "subtitle": "కనుగొనండి",
+    "exploreAll": "అన్ని ఆకర్షణలను అన్వేషించండి"
   }
 }
